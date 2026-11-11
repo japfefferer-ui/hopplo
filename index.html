@@ -97,14 +97,64 @@ h1,.overlay h2,.btn,.chip,.grid button{text-transform:uppercase}
 .pad{gap:18px;padding:4px}
 .pad.duo{gap:14px}
 .pad.duo[data-p="0"]{--tc:var(--red)} .pad.duo[data-p="1"]{--tc:var(--blue)}
+
+/* start page */
+.cards{display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(4px,1.6cqmin,12px);width:min(100%,700px)}
+.card{display:flex;flex-direction:column;align-items:center;gap:3px;min-width:0;padding:clamp(5px,1.6cqmin,10px);margin:4px 4px 10px;border:0;background:var(--panel);color:var(--fg);font-family:var(--font);font-size:inherit;cursor:pointer;
+  box-shadow:0 -3px 0 0 var(--line),0 3px 0 0 var(--line),-3px 0 0 0 var(--line),3px 0 0 0 var(--line),0 8px 0 0 #0c0b18}
+.card:hover{background:#2f2b52}
+.card:active{transform:translateY(5px);box-shadow:0 -3px 0 0 var(--line),0 3px 0 0 var(--line),-3px 0 0 0 var(--line),3px 0 0 0 var(--line)}
+.card canvas{width:min(100%,46cqh);height:auto;aspect-ratio:3/2;background:#0e0d1c}
+.card b{color:var(--gold);text-transform:uppercase;letter-spacing:.05em}
+.card span{color:var(--muted);font-size:.8em;line-height:1.25}
+@container (max-width:470px){ .cards{grid-template-columns:1fr} .card{flex-direction:row;text-align:left;gap:10px;margin-bottom:8px} .card canvas{width:30%;flex:none} .card div{display:flex;flex-direction:column} }
+@container (max-height:330px){ .card span{display:none} #hubOv .tag{display:none} }
+.card div{display:flex;flex-direction:column;align-items:inherit;gap:2px}
+/* escape game: dialogs, chat, stick */
+.dlg{position:absolute;z-index:6;left:50%;top:50%;transform:translate(-50%,-50%);box-sizing:border-box;width:min(94%,470px);max-height:92%;overflow:auto;display:flex;flex-direction:column;gap:8px;align-items:center;text-align:center;
+  background:#1d1b2e;box-shadow:0 0 0 3px var(--line),0 0 0 6px #0c0b18;padding:clamp(8px,2.6cqmin,16px);font-size:clamp(12px,3.3cqmin,15px)}
+.dlg h3{margin:0;color:var(--gold);font-size:1.15em;letter-spacing:.06em;text-transform:uppercase}
+.dlg .body{text-align:left;display:grid;gap:.55em;width:100%}
+.dlg .body b{color:var(--gold)}
+.dlg .dim{color:var(--muted);font-size:.92em}
+.dlg .pg{border-top:2px solid var(--line);padding-top:.5em;display:grid;gap:.4em}
+.dlg .btn{margin-bottom:8px}
+.sy{width:1.9em;height:1.9em;image-rendering:pixelated;vertical-align:middle}
+.nb{white-space:nowrap}
+.mapimg{width:min(100%,330px);image-rendering:pixelated;display:block;margin:0 auto}
+.slots{display:flex;gap:6px;justify-content:center}
+.slot{width:2.5em;height:2.5em;background:#0e0d1c;outline:2px solid var(--line);display:grid;place-items:center;font-weight:800;font-size:1.15em}
+.keys{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.keys.dig{grid-template-columns:repeat(3,3em)}
+.kb{font-family:var(--font);font-weight:800;font-size:1.05em;color:var(--fg);background:var(--panel);border:0;outline:2px solid var(--line);outline-offset:-2px;padding:.35em .3em;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px;min-width:0}
+.kb span{font-size:.62em;font-weight:400;color:var(--muted)}
+.kb:active{background:#3d3970}
+#eLockM{color:#ffb3a8;min-height:1.3em;margin:0}
+#chat{position:absolute;z-index:5;left:max(6px,env(safe-area-inset-left,0px));top:13cqh;width:min(48%,310px);display:flex;flex-direction:column;gap:4px;pointer-events:none;text-align:left;font-size:clamp(10px,2.9cqmin,13px)}
+#chatLog{display:flex;flex-direction:column;align-items:flex-start;gap:2px;max-height:34cqh;overflow:hidden}
+#chatLog div{background:rgba(14,13,26,.74);padding:1px 5px;max-width:100%;overflow-wrap:anywhere}
+#chatLog div.old{display:none}
+#chat.open #chatLog{overflow-y:auto;pointer-events:auto;background:rgba(14,13,26,.5)}
+#chat.open #chatLog div.old{display:block}
+#chatRow{display:none;pointer-events:auto;gap:4px;flex-wrap:wrap;align-items:center}
+#chat.open #chatRow{display:flex}
+#chatIn{flex:1 1 8em;min-width:0;font-family:var(--font);font-size:16px;padding:.25em .4em;border:0;border-radius:0;background:var(--fg);color:#17162b}
+#chatQ{display:flex;flex-wrap:wrap;gap:4px;width:100%}
+.qc,#chatGo{font-family:var(--font);font-weight:800;font-size:.95em;color:var(--fg);background:var(--panel);border:0;outline:2px solid var(--line);outline-offset:-2px;padding:.3em .55em;cursor:pointer}
+@container (min-width:760px){ .stage.net .dlg{left:auto;right:max(10px,1.5cqw);transform:translateY(-50%)} .stage.net #chat{width:min(34%,300px)} }
+.stick{grid-column:1/-1;width:calc(var(--bs)*1.9);height:calc(var(--bs)*1.9);display:grid;place-items:center;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;background:rgba(20,18,36,.5);
+  box-shadow:0 -4px 0 0 #fff,0 4px 0 0 #fff,-4px 0 0 0 #fff,4px 0 0 0 #fff}
+.stick i{width:42%;height:42%;background:rgba(255,255,255,.7);pointer-events:none}
 @media (max-height:520px){ header{display:none} body{padding-block:0} .wrap{gap:0} .stage{border-radius:0} }
 </style>
 
 <div class="wrap">
-  <header><h1>HOPPLO</h1><span>Piraten-Abenteuer · 50 Level · Affenrennen</span></header>
+  <header><h1>HOPPLO</h1><span>Piraten-Spielekiste · Abenteuer · Affenrennen · Escape-Insel</span></header>
   <div class="stage" id="stage">
     <canvas id="game" width="640" height="384" aria-label="Spielfeld"></canvas>
     <div class="top">
+      <button id="chatBtn" type="button" aria-label="Chat" hidden><svg viewBox="0 0 24 24"><path d="M3 4h18v12H10l-5 4v-4H3z"/></svg></button>
+      <button id="logBtn" type="button" aria-label="Logbuch" hidden><svg viewBox="0 0 24 24"><path d="M2 5c3.500-1.500 7-1.500 10 .5 3-2 6.500-2 10-.5v14c-3.500-1.500-7-1.500-10 .5-3-2-6.500-2-10-.5zM11 7.300c-2.300-1.200-4.700-1.400-7-.8v9.800c2.300-.5 4.700-.3 7 .7zM13 7.300v9.700c2.300-1 4.700-1.200 7-.7V6.500c-2.300-.6-4.700-.4-7 .8z" fill-rule="evenodd"/></svg></button>
       <button id="pauseBtn" type="button" aria-label="Pause" hidden><svg viewBox="0 0 24 24"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg></button>
       <button id="muteBtn" type="button" aria-label="Ton an oder aus"><svg viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9zM16 8v8c1.500-.8 2.500-2.300 2.500-4S17.500 8.800 16 8z"/></svg></button>
       <button id="fsBtn" type="button" aria-label="Vollbild"><svg viewBox="0 0 24 24"><path d="M4 4h6v2H6v4H4zM14 4h6v6h-2V6h-4zM4 14h2v4h4v2H4zM18 14h2v6h-6v-2h4z"/></svg></button>
@@ -112,8 +162,25 @@ h1,.overlay h2,.btn,.chip,.grid button{text-transform:uppercase}
     <div class="pad" id="padL" hidden></div>
     <div class="pad" id="padR" hidden></div>
 
-    <div class="overlay" id="menu">
+    <div class="overlay" id="hubOv">
       <h2>HOPPLO</h2>
+      <p class="dim tag">Piraten-Spielekiste: allein, zu zweit an einem Gerät oder online mit deiner Crew.</p>
+      <div class="cards">
+        <button class="card" id="gJump" type="button"><canvas width="96" height="64" aria-hidden="true"></canvas><div><b>Abenteuer</b><span>Jump'n'Run · 50 Level · Bosse</span></div></button>
+        <button class="card" id="gKart" type="button"><canvas width="96" height="64" aria-hidden="true"></canvas><div><b>Affenrennen</b><span>Kart-Rennen · 12 Strecken · Cups</span></div></button>
+        <button class="card" id="gEsc" type="button"><canvas width="96" height="64" aria-hidden="true"></canvas><div><b>Escape-Insel</b><span>Rätsel-Koop · 5 Kapitel · Chat</span></div></button>
+      </div>
+      <div class="row">
+        <button class="btn" id="hubOn" type="button">Online-Raum</button>
+        <button class="btn alt sm" id="helpBtn" type="button">Hilfe</button>
+        <button class="btn alt sm" id="infoBtn" type="button">Info</button>
+      </div>
+      <p id="menuMsg" class="err" hidden></p>
+      <p class="dim portrait-tip">Tipp: Halt dein Handy quer, dann ist das Spielfeld größer.</p>
+    </div>
+
+    <div class="overlay" id="menu" hidden>
+      <h2 class="sm">ABENTEUER</h2>
       <div class="row">
         <button class="btn alt sm" id="lvBtn" type="button">Level 1</button>
         <button class="btn alt sm" id="hatBtn" type="button">Hut: Kopftuch</button>
@@ -123,14 +190,8 @@ h1,.overlay h2,.btn,.chip,.grid button{text-transform:uppercase}
         <button class="btn" id="b1" type="button">1 Spieler</button>
         <button class="btn" id="b2" type="button">2 Spieler</button>
         <button class="btn" id="bOn" type="button">Online</button>
-        <button class="btn" id="bKart" type="button">Affenrennen</button>
+        <button class="btn alt" data-back type="button">Zurück</button>
       </div>
-      <div class="row">
-        <button class="btn alt sm" id="helpBtn" type="button">Hilfe</button>
-        <button class="btn alt sm" id="infoBtn" type="button">Info</button>
-      </div>
-      <p id="menuMsg" class="err" hidden></p>
-      <p class="dim portrait-tip">Tipp: Halt dein Handy quer, dann ist das Spielfeld größer.</p>
     </div>
 
     <div class="overlay" id="levelsOv" hidden>
@@ -142,10 +203,11 @@ h1,.overlay h2,.btn,.chip,.grid button{text-transform:uppercase}
     <div class="overlay" id="helpOv" hidden>
       <h2 class="sm">HILFE</h2>
       <div class="txt">
-        <div><b>Tastatur:</b> <kbd>A</kbd> <kbd>D</kbd> laufen, <kbd>W</kbd> springen, <kbd>S</kbd> schießen. Allein und online gehen auch Pfeiltasten und <kbd>Leertaste</kbd>. Spieler 2 am selben Gerät nimmt die Pfeiltasten. Controller gehen auch.</div>
+        <div><b>Abenteuer:</b> <kbd>A</kbd> <kbd>D</kbd> laufen, <kbd>W</kbd> springen, <kbd>S</kbd> schießen. Allein und online gehen auch Pfeiltasten und <kbd>Leertaste</kbd>. Spieler 2 am selben Gerät nimmt die Pfeiltasten. Controller gehen auch.</div>
         <div><b>Truhen:</b> Von unten anspringen. Bombe: Kanonenkugeln schießen. Feder: Doppelsprung. Herz: ein Treffer frei. Goldschädel: kurz unbesiegbar.</div>
         <div><b>Gut zu wissen:</b> Mit Power-up kostet ein Treffer nur das Power-up. Fahnen sind Checkpoints. Fässer mit Trommel schleudern dich hoch. Mehrere Gegner am Stück plattspringen gibt Bonus-Münzen, 50 Münzen geben ein Herz.</div>
         <div><b>Affenrennen:</b> Gas geht von allein. Lenken mit <kbd>A</kbd> <kbd>D</kbd> oder den Pfeiltasten, driften mit <kbd>Leertaste</kbd>, Item mit <kbd>E</kbd> oder <kbd>Enter</kbd>, bremsen mit <kbd>S</kbd>. Lang driften gibt einen Turbo, dicht hinter einem anderen Affen fährst du im Windschatten schneller. Mit <kbd>R</kbd> setzt du dich zurück auf die Strecke. Fahrer und Wagen wählst du im Rennmenü: leichte Wagen kommen schneller in Fahrt, schwere sind am Ende schneller und schubsen stärker. Zu zweit driftet Spieler 1 mit der linken Umschalttaste und nutzt Items mit <kbd>W</kbd>, Spieler 2 nimmt die rechte Umschalttaste und <kbd>↑</kbd>.</div>
+        <div><b>Escape-Insel:</b> Laufen mit <kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> oder den Pfeiltasten, ansehen und benutzen mit <kbd>E</kbd>, Logbuch mit <kbd>Q</kbd>, Chat mit <kbd>Enter</kbd>. Am Handy gibt es links ein Steuerfeld und rechts einen Knopf. Online liest jeder in Hinweisen etwas anderes, und manche Bannkreise lassen nur einen Teil der Crew durch. Ihr kommt nur weiter, wenn ihr euch im Chat sagt, was ihr seht. Falsche Versuche und Tipps kosten Zeit.</div>
         <div><b>Edelsteine:</b> In jedem Level liegen 3. Damit schaltest du neue Hüte frei. Jedes zehnte Level endet mit einem Boss. Davor steht eine dunkle Waffenkiste mit Bombe drauf: Sie gibt dir die Kanone, so oft du willst.</div>
       </div>
       <button class="btn alt sm" data-back type="button">Zurück</button>
@@ -155,7 +217,7 @@ h1,.overlay h2,.btn,.chip,.grid button{text-transform:uppercase}
       <h2 class="sm">INFO</h2>
       <div class="txt">
         <div>Hopplo ist ein privates Hobby-Projekt ohne Werbung, ohne Tracking und ohne Cookies. Figuren, Grafiken, Musik und Level sind selbst gemacht.</div>
-        <div><b>Daten:</b> Dein Spielstand liegt nur in deinem Browser. Im Online-Modus verbinden sich die Geräte direkt miteinander. Dabei sehen deine Mitspieler und der Vermittlungsdienst PeerJS deine IP-Adresse. Die Seite selbst wird von GitHub ausgeliefert.</div>
+        <div><b>Daten:</b> Dein Spielstand liegt nur in deinem Browser. Im Online-Modus verbinden sich die Geräte direkt miteinander. Dabei sehen deine Mitspieler und der Vermittlungsdienst PeerJS deine IP-Adresse. Chat-Nachrichten gehen nur an die Geräte in deinem Raum und werden nirgends gespeichert. Die Seite selbst wird von GitHub ausgeliefert.</div>
       </div>
       <button class="btn alt sm" data-back type="button">Zurück</button>
     </div>
@@ -212,11 +274,54 @@ h1,.overlay h2,.btn,.chip,.grid button{text-transform:uppercase}
       </div>
     </div>
 
+    <div class="overlay" id="escOv" hidden>
+      <h2 class="sm">ESCAPE-INSEL</h2>
+      <p>Gestrandet auf der verfluchten Insel. Findet Schlüssel, Hinweise und Schalter und entkommt gemeinsam. Online liest jeder nur einen Teil der Hinweise: Ohne Absprache im Chat kommt ihr nicht weiter.</p>
+      <div class="row"><button class="btn alt sm" id="ecPrev" type="button" aria-label="Vorheriges Kapitel">‹</button><b id="ecName" style="min-width:15em;color:#fff">Kapitel 1</b><button class="btn alt sm" id="ecNext" type="button" aria-label="Nächstes Kapitel">›</button></div>
+      <p class="dim" id="ecInfo"></p>
+      <div class="row"><button class="btn" id="eOn" type="button">Online (2–4)</button><button class="btn" id="e1" type="button">Allein</button><button class="btn alt" data-back type="button">Zurück</button></div>
+    </div>
+
+    <div class="overlay" id="ewinOv" hidden>
+      <h2 class="sm" id="ewinTitle">KAPITEL GESCHAFFT!</h2>
+      <p id="ewinText"></p>
+      <p id="ewinExtra" class="dim"></p>
+      <div class="row">
+        <button class="btn" id="eNextBtn" type="button">Nächstes Kapitel</button>
+        <button class="btn alt" id="eAgainBtn" type="button">Nochmal</button>
+        <button class="btn alt" id="eMenuBtn" type="button">Menü</button>
+      </div>
+    </div>
+
+    <div class="dlg" id="eMsg" hidden role="dialog" aria-labelledby="eMsgT">
+      <h3 id="eMsgT"></h3>
+      <div class="body" id="eMsgB"></div>
+      <button class="btn sm" id="eMsgOk" type="button">Weiter</button>
+    </div>
+    <div class="dlg" id="eLock" hidden role="dialog" aria-labelledby="eLockT">
+      <h3 id="eLockT"></h3>
+      <div id="eLockI"></div>
+      <div class="slots" id="eLockS"></div>
+      <div class="keys" id="eLockK"></div>
+      <p id="eLockM"></p>
+      <div class="row"><button class="btn alt sm" id="eLockDel" type="button">Löschen</button><button class="btn sm" id="eLockOk" type="button">Öffnen</button><button class="btn alt sm" id="eLockX" type="button">Zurück</button></div>
+    </div>
+    <div class="dlg" id="eLog" hidden role="dialog" aria-labelledby="eLogT">
+      <h3 id="eLogT">Logbuch</h3>
+      <div class="body" id="eLogB"></div>
+      <button class="btn sm" id="eLogX" type="button">Schließen</button>
+    </div>
+    <div id="chat" hidden>
+      <div id="chatLog" aria-live="polite"></div>
+      <div id="chatRow"><input id="chatIn" maxlength="140" placeholder="Nachricht an die Crew" autocomplete="off" aria-label="Chat-Nachricht"><button id="chatGo" type="button">Senden</button><div id="chatQ"></div></div>
+    </div>
+
     <div class="overlay" id="pauseOv" hidden>
       <h2 class="sm" id="pauseTitle">PAUSE</h2>
       <div class="row">
         <button class="btn" id="resumeBtn" type="button">Weiter</button>
         <button class="btn alt" id="musicBtn" type="button">Musik: an</button>
+        <button class="btn alt" id="eRestart" type="button" hidden>Kapitel neu starten</button>
         <button class="btn alt" id="menuBtn1" type="button">Menü</button>
       </div>
     </div>
@@ -255,6 +360,9 @@ try { const o = parseInt(localStorage.getItem('hopplo.max')); if(o > save.max) s
 if(!save.gems || typeof save.gems !== 'object') save.gems = {};
 if(!save.kt || typeof save.kt !== 'object') save.kt = {};
 if(!save.cups || typeof save.cups !== 'object') save.cups = {};
+if(!save.esc || typeof save.esc !== 'object') save.esc = {};
+if(!save.esc.best || typeof save.esc.best !== 'object') save.esc.best = {};
+if(!save.esc.stars || typeof save.esc.stars !== 'object') save.esc.stars = {};
 if(!Array.isArray(save.ksel) || save.ksel.length !== 2 || !save.ksel.every(a => Array.isArray(a) && a.length === 2)) save.ksel = [[0,0],[1,1]];
 const persist = () => { try { localStorage.setItem('hopplo.save', JSON.stringify(save)); } catch(e) {} };
 const bits = m => (m&1) + ((m>>1)&1) + ((m>>2)&1);
@@ -764,8 +872,8 @@ let bossNear = false;
 function note(m,t,dur,type,vol){ const o = ac.createOscillator(), g = ac.createGain(); o.type = type; o.frequency.value = 440*Math.pow(2,(m-69)/12);
   g.gain.setValueAtTime(vol,t); g.gain.exponentialRampToValueAtTime(0.0001,t+dur); o.connect(g); g.connect(ac.destination); o.start(t); o.stop(t+dur+0.02); }
 setInterval(() => {
-  if(!ac || ac.state !== 'running' || save.mute || !save.music || (state !== 'play' && state !== 'kart') || dbg.manual){ mus.next = 0; return; }
-  const spd = state==='kart' ? 0.125 : bossNear ? 0.125 : 0.165, tr = TRANS[(state==='kart' ? kart.tr.th : theme.id) % 5];
+  if(!ac || ac.state !== 'running' || save.mute || !save.music || !inGame() || dbg.manual){ mus.next = 0; return; }
+  const spd = state==='kart' ? 0.125 : state==='esc' ? (E.st.cd > 0 ? 0.12 : 0.19) : bossNear ? 0.125 : 0.165, tr = TRANS[(state==='kart' ? kart.tr.th : state==='esc' ? E.map.th : theme.id) % 5];
   if(mus.next < ac.currentTime) mus.next = ac.currentTime + 0.05;
   while(mus.next < ac.currentTime + 0.3){
     const i = mus.i % 48, t = mus.next, m = MEL[i];
@@ -777,7 +885,8 @@ setInterval(() => {
 }, 90);
 
 /* ================= State ================= */
-let state = 'menu', mode = 'solo', curLevel = 1, selLevel = 1;
+let state = 'menu', mode = 'solo', curLevel = 1, selLevel = 1, curGame = 'jump';
+const inGame = () => state==='play' || state==='kart' || state==='esc';
 let grid = [], LW = 0, goalX = 0, theme = THEMES[0], diff = 0, turrets = [], arena = null, gemPos = [], gemMask = 0;
 let players = [], enemies = [], items = [], shots = [], parts = [], bumps = new Map(), cpOn = new Set();
 const ghosts = new Map(), localKilled = new Map(), picked = new Map();
@@ -831,7 +940,7 @@ function mkPlayer(slot,id){
 }
 function startLevel(n,m){
   ensureAudio();
-  kart.on = false; mode = m; curLevel = n; loadLevel(n);
+  kart.on = false; E.on = false; curGame = 'jump'; mode = m; curLevel = n; loadLevel(n);
   const old = players;
   players = m==='duo' ? [mkPlayer(0,0), mkPlayer(1,1)] : [mkPlayer(0, m==='online' ? net.myId : 0)];
   players.forEach(p => { const o = old.find(q => q.id===p.id); if(o){ p.coins = o.coins; p.cc = o.cc; p.deaths = o.deaths; p.power = o.power; } });
@@ -843,12 +952,13 @@ function startLevel(n,m){
 
 /* ================= Input ================= */
 const keys = {};
-const touch = [{l:false,r:false,j:false,f:false},{l:false,r:false,j:false,f:false}];
+const touch = [{l:false,r:false,j:false,f:false,ax:0,ay:0},{l:false,r:false,j:false,f:false,ax:0,ay:0}];
 addEventListener('keydown', e => {
   if(e.target && e.target.tagName==='INPUT') return;
-  if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code) && (state==='play' || state==='kart')) e.preventDefault();
+  if(['Space','ArrowUp','ArrowDown','ArrowLeft','ArrowRight'].includes(e.code) && inGame()) e.preventDefault();
+  if(state==='esc' && $('pauseOv').hidden && !e.repeat && eKey(e)){ e.preventDefault(); return; }
   keys[e.code] = true;
-  if(e.code==='KeyP' || e.code==='Escape'){ if(!$('pauseOv').hidden) resume(); else if(state==='play') pause(); }
+  if(e.code==='KeyP' || e.code==='Escape'){ if(!$('pauseOv').hidden) resume(); else if(state==='play' || state==='esc') pause(); }
 });
 addEventListener('keyup', e => { keys[e.code] = false; });
 addEventListener('blur', () => { for(const k in keys) keys[k] = false; });
@@ -887,12 +997,13 @@ function fillPad(elm,p,acts,duo){
   }
 }
 function updatePads(){
-  const want = mode==='duo' ? 'duo' : 'solo';
+  const want = E.on ? 'esc' : mode==='duo' ? 'duo' : 'solo';
   if(want !== padMode){ padMode = want;
-    for(const t of touch){ t.l = t.r = t.j = t.f = false; }
-    if(want==='duo'){ fillPad($('padL'),0,['f','j','l','r'],true); fillPad($('padR'),1,['f','j','l','r'],true); }
+    for(const t of touch){ t.l = t.r = t.j = t.f = false; t.ax = t.ay = 0; }
+    if(want==='esc') eFillPads();
+    else if(want==='duo'){ fillPad($('padL'),0,['f','j','l','r'],true); fillPad($('padR'),1,['f','j','l','r'],true); }
     else { fillPad($('padL'),0,['l','r'],false); fillPad($('padR'),0,['f','j'],false); } }
-  const on = touchUI && (state==='play' || state==='kart') && $('pauseOv').hidden;
+  const on = touchUI && inGame() && $('pauseOv').hidden;
   $('padL').hidden = !on; $('padR').hidden = !on;
 }
 
@@ -1314,7 +1425,8 @@ function hostMsg(id,m){
     case 'f': if(state==='play') spawnShot(id, +m.x || 0, +m.y || 0, m.d > 0 ? 1 : -1); break;
     case 'g': authWin(id); break;
     case 'kc': (net.ksel = net.ksel || {})[id] = [m.ch|0, m.veh|0]; break;
-    default: if(kart.on) kHostMsg(id,m);
+    case 'ch': if(typeof m.s==='string'){ const s = m.s.replace(/\s+/g,' ').trim().slice(0,140); if(s){ chatAdd(id,s); broadcast({t:'ch',id,s}, id); } } break;
+    default: if(kart.on) kHostMsg(id,m); else eHostMsg(id,m);
   }
 }
 function clientMsg(m){
@@ -1322,18 +1434,20 @@ function clientMsg(m){
   switch(m.t){
     case 'wel':
       net.role = 'client'; net.myId = m.id; net.ids = m.ids; net.lob = m.lob || null; curLevel = m.level; send({t:'kc',ch:save.ksel[0][0],veh:save.ksel[0][1]});
-      if(m.playing){ startLevel(m.level,'online'); gemMask = m.gm | 0;
+      if(m.esc && typeof m.esc==='object' && m.esc.st && Array.isArray(m.esc.st.v)) eStart(Math.max(0,Math.min(ECH.length-1,m.esc.ch|0)), m.esc.seed|0, 'online', m.esc.st);
+      else if(m.playing){ startLevel(m.level,'online'); gemMask = m.gm | 0;
         for(const k in m.tiles){ const [x,y] = k.split(',').map(Number); if(grid[y] && x < LW) grid[y][x] = m.tiles[k]; }
         if(m.won){ state = 'win'; showWin(0); } }
       else showLobby();
       break;
     case 'full': leaveNet('Der Raum ist voll (max. 4 Spieler).', true); break;
     case 'lob': net.ids = m.ids; net.lob = m; if(!$('lobbyOv').hidden) showLobby(); break;
-    case 'go': if(m.game==='kart'){ if(Array.isArray(m.ids)) net.ids = m.ids; kart.osel = m.sel && typeof m.sel==='object' ? m.sel : null; kart.cup = null; kart.cls = Math.max(0,Math.min(2,m.cls|0)); kStart(Math.max(0,Math.min(KTRACKS.length-1,m.track|0)),kart.cls,'online'); } else startLevel(m.level,'online'); break;
+    case 'ch': if(typeof m.s==='string') chatAdd(Math.max(0,Math.min(3,m.id|0)), m.s.slice(0,140)); break;
+    case 'go': if(m.game==='esc') eStart(Math.max(0,Math.min(ECH.length-1,m.ch|0)), m.seed|0, 'online'); else if(m.game==='kart'){ if(Array.isArray(m.ids)) net.ids = m.ids; kart.osel = m.sel && typeof m.sel==='object' ? m.sel : null; kart.cup = null; kart.cls = Math.max(0,Math.min(2,m.cls|0)); kStart(Math.max(0,Math.min(KTRACKS.length-1,m.track|0)),kart.cls,'online'); } else startLevel(m.level,'online'); break;
     case 's': if(state==='play') applySnap(m); break;
     case 'tile': if(state==='play' || state==='win') applyTile(m); break;
     case 'win': if(state==='play'){ state = 'win'; sfx.win(); finishLevel(); showWin(m.by); } break;
-    default: kClientMsg(m);
+    default: kClientMsg(m); eClientMsg(m);
   }
 }
 function getPeerLib(){
@@ -1375,11 +1489,11 @@ let netTimer = 0;
 function netFail(msg){ clearTimeout(netTimer); closeNet(); state = 'menu'; show('onlineOv'); onMsg(msg, true); }
 function onMsg(t, err){ const elm = $('onMsg'); elm.textContent = t; elm.className = err ? 'err' : ''; }
 function closeNet(){
-  const p = net.peer; net.peer = null; net.role = 'off'; net.conns.clear(); net.hostConn = null; net.myId = 0; net.ids = [0]; ghosts.clear(); net.lob = null; net.ksel = null; kart.sess = null;
+  const p = net.peer; net.peer = null; net.role = 'off'; net.conns.clear(); net.hostConn = null; net.myId = 0; net.ids = [0]; ghosts.clear(); net.lob = null; net.ksel = null; kart.sess = null; $('chatLog').innerHTML = '';
   try { if(p) p.destroy(); } catch(e) {}
 }
 function leaveNet(msg, toOnline){
-  clearTimeout(netTimer); closeNet(); toMenu();
+  clearTimeout(netTimer); closeNet(); toMenu(!!msg);
   if(toOnline){ show('onlineOv'); onMsg(msg || '', true); }
   else if(msg){ $('menuMsg').textContent = msg; $('menuMsg').hidden = false; }
 }
@@ -1399,13 +1513,13 @@ async function hostRoom(){
       if(id === undefined){ try { conn.send({t:'full'}); } catch(e) {} setTimeout(() => { try { conn.close(); } catch(e) {} }, 400); return; }
       conn._id = id; net.conns.set(id, conn);
       net.ids = [0, ...net.conns.keys()].sort();
-      conn.send({t:'wel', id, ids:net.ids, playing: state==='play' || state==='win', won: state==='win', level:curLevel, tiles:tileLog, gm:gemMask, lob:lobState()});
-      broadcast(lobState(), id);
+      conn.send({t:'wel', id, ids:net.ids, playing: state==='play' || state==='win', won: state==='win', level:curLevel, tiles:tileLog, gm:gemMask, lob:lobState(), esc: E.on && state==='esc' ? {ch:E.ch, seed:E.seed, st:E.st} : null});
+      broadcast(lobState(), id); if(E.on) eJoined(id);
       if(!$('lobbyOv').hidden) showLobby();
     };
     const drop = () => {
       if(conn._id === undefined || net.conns.get(conn._id) !== conn) return;
-      net.conns.delete(conn._id); ghosts.delete(conn._id); if(kart.on) kDrop(conn._id);
+      net.conns.delete(conn._id); ghosts.delete(conn._id); if(kart.on) kDrop(conn._id); if(E.on) eDrop(conn._id);
       net.ids = [0, ...net.conns.keys()].sort(); broadcast(lobState());
       if(!$('lobbyOv').hidden) showLobby();
     };
@@ -1444,16 +1558,16 @@ async function joinRoom(){
     else if(net.role === 'off') netFail(NOCONN);
   });
 }
-function lobState(){ return {t:'lob', ids:net.ids, game:lobbyGame, track:kart.sel < KTRACKS.length ? kart.sel : 0, cls:kart.cls, level:selLevel}; }
+function lobState(){ return {t:'lob', ids:net.ids, game:lobbyGame, track:kart.sel < KTRACKS.length ? kart.sel : 0, cls:kart.cls, level:selLevel, ech:E.sel}; }
 function showLobby(){
   state = 'menu'; show('lobbyOv');
   $('roomCode').textContent = net.code;
   const host = net.role === 'host';
-  const lb = host ? lobState() : (net.lob || {}), what = lb.game==='kart' ? `Affenrennen · ${KTRACKS[lb.track|0].name} · Tempo ${KCLS[Math.max(0,Math.min(2,lb.cls|0))][0]}` : lb.level ? `Abenteuer · ${lvlName(lb.level)}` : '';
+  const lb = host ? lobState() : (net.lob || {}), ec = Math.max(0, Math.min(ECH.length-1, lb.ech|0)), what = lb.game==='esc' ? `Escape-Insel · Kapitel ${ec+1} · ${ECH[ec].name}` : lb.game==='kart' ? `Affenrennen · ${KTRACKS[lb.track|0].name} · Tempo ${KCLS[Math.max(0,Math.min(2,lb.cls|0))][0]}` : lb.level ? `Abenteuer · ${lvlName(lb.level)}` : '';
   $('lobbyInfo').textContent = host ? 'Gib den Code an deine Crew, dann drück Start.' : (what ? what + '. ' : '') + 'Der Host startet das Spiel.';
   $('startBtn').hidden = !host; $('gameBtn').hidden = !host; $('trkBtn').hidden = !host; $('tmpBtn').hidden = !host || lobbyGame!=='kart';
-  $('gameBtn').textContent = 'Spiel: ' + (lobbyGame==='kart' ? 'Affenrennen' : 'Abenteuer');
-  $('trkBtn').textContent = lobbyGame==='kart' ? 'Strecke: ' + KTRACKS[lb.track].name : lvlName(selLevel);
+  $('gameBtn').textContent = 'Spiel: ' + (lobbyGame==='esc' ? 'Escape-Insel' : lobbyGame==='kart' ? 'Affenrennen' : 'Abenteuer');
+  $('trkBtn').textContent = lobbyGame==='esc' ? `Kapitel ${E.sel+1}: ${ECH[E.sel].name}` : lobbyGame==='kart' ? 'Strecke: ' + KTRACKS[lb.track].name : lvlName(selLevel);
   $('tmpBtn').textContent = 'Tempo: ' + KCLS[kart.cls][0];
   if(host) broadcast(lb);
   $('chips').innerHTML = net.ids.map(i => `<span class="chip" style="color:${PCOL[i%4]}">P${i+1}${i===net.myId ? ' (du)' : ''}</span>`).join('');
@@ -1494,24 +1608,24 @@ function goLevel(n){
   if(net.role==='host') broadcast({t:'go', level:n});
   startLevel(n, mode);
 }
-const OVS = ['menu','levelsOv','helpOv','infoOv','onlineOv','lobbyOv','pauseOv','winOv','kartOv','kresOv'];
+const OVS = ['hubOv','menu','levelsOv','helpOv','infoOv','onlineOv','lobbyOv','pauseOv','winOv','kartOv','kresOv','escOv','ewinOv'];
 function show(id){
   OVS.forEach(o => { $(o).hidden = o !== id; });
-  $('pauseBtn').hidden = state !== 'play' && state !== 'kart';
-  updatePads();
+  $('pauseBtn').hidden = !inGame();
+  updatePads(); chatVis();
 }
 function pause(){
-  if(state !== 'play' && state !== 'kart') return;
+  if(!inGame()) return;
   const on = mode === 'online';
   $('pauseTitle').textContent = on ? 'MENÜ' : 'PAUSE';
   $('menuBtn1').textContent = on ? 'Verlassen' : 'Menü';
   if(!on){ pausedFrom = state; state = 'pause'; }
-  $('pauseOv').hidden = false; updatePads();
+  $('pauseOv').hidden = false; updatePads(); chatVis();
 }
 function resume(){
   $('pauseOv').hidden = true;
   if(state === 'pause'){ state = pausedFrom; last = performance.now(); acc = 0; }
-  $('pauseBtn').hidden = state !== 'play' && state !== 'kart'; updatePads();
+  $('pauseBtn').hidden = !inGame(); updatePads();
   if(document.activeElement && document.activeElement.blur) document.activeElement.blur();
 }
 function updMenu(){
@@ -1522,11 +1636,11 @@ function updMenu(){
   const nx = HATS.find(h => h[1] > tg);
   $('gemTotal').textContent = `◆ ${tg}/150` + (nx ? ` · ${nx[0]} ab ${nx[1]}` : '');
 }
-function toMenu(){
-  state = 'menu'; mode = 'solo'; players = []; ghosts.clear(); kart.on = false;
+function toMenu(hub){
+  state = 'menu'; mode = 'solo'; players = []; ghosts.clear(); kart.on = false; E.on = false; eDlg(null);
   selLevel = Math.max(1, Math.min(save.max, selLevel));
   loadLevel(selLevel); enemies.forEach(e => e.active = true);
-  $('menuMsg').hidden = true; updMenu(); show('menu');
+  $('menuMsg').hidden = true; updMenu(); if(hub) show('hubOv'); else goHome(curGame);
 }
 function quit(){ if(net.role !== 'off') leaveNet(); else toMenu(); }
 function buildGrid(){
@@ -1543,19 +1657,19 @@ function buildGrid(){
 }
 $('b1').onclick = () => startLevel(selLevel,'solo');
 $('b2').onclick = () => startLevel(selLevel,'duo');
-$('bOn').onclick = () => { lobbyGame = 'jump'; onMsg(onGithub ? '' : 'Hinweis: Online klappt nur in der GitHub-Pages-Version.'); show('onlineOv'); };
+$('bOn').onclick = () => openOnline('jump','menu');
 $('lvBtn').onclick = () => { buildGrid(); show('levelsOv'); };
 $('lvBack').onclick = () => show('menu');
 $('unlockBtn').onclick = () => { save.max = MAXLVL; persist(); buildGrid(); };
 $('hatBtn').onclick = () => { const tg = totalGems(); do { save.hat = (save.hat+1) % HATS.length; } while(HATS[save.hat][1] > tg); persist(); updMenu(); };
 $('helpBtn').onclick = () => show('helpOv');
 $('infoBtn').onclick = () => show('infoOv');
-document.querySelectorAll('[data-back]').forEach(b => { b.onclick = () => show('menu'); });
-$('onBack').onclick = () => { clearTimeout(netTimer); closeNet(); show('menu'); };
+document.querySelectorAll('[data-back]').forEach(b => { b.onclick = () => show('hubOv'); });
+$('onBack').onclick = () => { clearTimeout(netTimer); closeNet(); show(onFrom); };
 $('hostBtn').onclick = hostRoom;
 $('joinBtn').onclick = joinRoom;
 $('codeIn').addEventListener('keydown', e => { if(e.key === 'Enter') joinRoom(); });
-$('startBtn').onclick = () => { if(net.role!=='host') return; if(lobbyGame==='kart') kOnline(kart.sel < KTRACKS.length ? kart.sel : 0); else { broadcast({t:'go', level:selLevel}); startLevel(selLevel,'online'); } };
+$('startBtn').onclick = () => { if(net.role!=='host') return; if(lobbyGame==='esc') eGo(E.sel,'online'); else if(lobbyGame==='kart') kOnline(kart.sel < KTRACKS.length ? kart.sel : 0); else { broadcast({t:'go', level:selLevel}); startLevel(selLevel,'online'); } };
 $('leaveBtn').onclick = () => leaveNet();
 $('nextBtn').onclick = () => goLevel(Math.min(MAXLVL, curLevel+1));
 $('againBtn').onclick = () => goLevel(curLevel);
@@ -1942,7 +2056,7 @@ function kBuild(ti){
 /* ----- race setup ----- */
 function kStart(ti,cls,m){
   ensureAudio();
-  const K = kart; mode = m; K.ti = ti; K.cls = cls; K.top = KCLS[cls][1];
+  const K = kart; E.on = false; curGame = 'kart'; mode = m; K.ti = ti; K.cls = cls; K.top = KCLS[cls][1];
   const tr = K.tr = kBuild(ti);
   const humans = m==='online' ? net.ids.slice() : m==='duo' ? [0,1] : [0], ais = [];
   for(let i=0;i<8 && ais.length < 8-humans.length;i++) if(!humans.includes(i)) ais.push(i);
@@ -2424,7 +2538,6 @@ function kGo(m){
 }
 function kOnline(ti){ const sel = {}; net.ids.forEach(id => { sel[id] = id===0 ? save.ksel[0] : ((net.ksel && net.ksel[id]) || [id,id]); });
   kart.cup = null; kart.osel = sel; broadcast({t:'go',game:'kart',track:ti,cls:kart.cls,ids:net.ids,sel}); kStart(ti,kart.cls,'online'); }
-$('bKart').onclick = () => { kUpdMenu(); show('kartOv'); };
 $('ktPrev').onclick = () => { kart.sel = (kart.sel + KTRACKS.length + KCUPS.length - 1) % (KTRACKS.length + KCUPS.length); kUpdMenu(); };
 $('ktNext').onclick = () => { kart.sel = (kart.sel + 1) % (KTRACKS.length + KCUPS.length); kUpdMenu(); };
 $('kcBtn').onclick = () => { kart.cls = (kart.cls+1) % 3; kUpdMenu(); if(!$('lobbyOv').hidden) showLobby(); };
@@ -2434,10 +2547,10 @@ $('vhPrev').onclick = () => kCyc(1,KVEH.length,-1); $('vhNext').onclick = () => 
 $('kpBtn').onclick = () => { kart.selP = 1 - kart.selP; kUpdSel(); };
 $('k1').onclick = () => kGo('solo');
 $('k2').onclick = () => kGo('duo');
-$('gameBtn').onclick = () => { lobbyGame = lobbyGame==='kart' ? 'jump' : 'kart'; showLobby(); };
-$('trkBtn').onclick = () => { if(lobbyGame==='kart') kart.sel = ((kart.sel < KTRACKS.length ? kart.sel : -1) + 1) % KTRACKS.length; else selLevel = selLevel % save.max + 1; showLobby(); };
+$('gameBtn').onclick = () => { lobbyGame = lobbyGame==='jump' ? 'kart' : lobbyGame==='kart' ? 'esc' : 'jump'; showLobby(); };
+$('trkBtn').onclick = () => { if(lobbyGame==='esc') E.sel = (E.sel+1) % ECH.length; else if(lobbyGame==='kart') kart.sel = ((kart.sel < KTRACKS.length ? kart.sel : -1) + 1) % KTRACKS.length; else selLevel = selLevel % save.max + 1; showLobby(); };
 $('tmpBtn').onclick = () => { kart.cls = (kart.cls+1) % 3; showLobby(); };
-$('kOn').onclick = () => { lobbyGame = 'kart'; onMsg(onGithub ? 'Online-Rennen: Einer erstellt den Raum, die anderen geben den Code ein.' : 'Hinweis: Online klappt nur in der GitHub-Pages-Version, nicht hier in der Vorschau.'); show('onlineOv'); };
+$('kOn').onclick = () => openOnline('kart','kartOv');
 $('kNext').onclick = () => {
   const K = kart;
   if(K.cup){ if(K.cup.race < 2){ K.cup.race++; kStart(KCUPS[K.cup.ci][1][K.cup.race],K.cls,mode); } else kShowCup(); }
@@ -2447,26 +2560,831 @@ $('kAgain').onclick = () => { if(net.role==='host') kOnline(kart.ti); else kStar
 $('kMenu').onclick = quit;
 
 
+/* Escape-Insel maps. Checked by t/emapcheck.js, pasted into the game by t/mk8.py */
+const EMAPS = [
+[
+'########################################',
+'#################EEEE###################',
+'#################EEEE###################',
+'##################F#####################',
+'#......................................#',
+'#.p......T.......c..........T........p.#',
+'#......................................#',
+'~~~~~~~~~~~~~~~~~~~~B~~~~~~~~~~~~~~~~~~~',
+'~~~~~~~~~~~~~~~~~~~~B~~~~~~~~~~~~~~~~~~~',
+'#..T..........,,,,,,,.......#######....#',
+'#.............,.....b.......#,,,,,#..T.#',
+'#...d.d.d.....,.............#,,L,,#....#',
+'#.............,.............#,,,,,#....#',
+'#...d.d.d.....,..o..........###K###....#',
+'#.............,........................#',
+'#...d.d.d.....,.....T..................#',
+'#.............,........................#',
+'##############G#########################',
+'#.............,........................#',
+'#..o..........,...............T........#',
+'#.a...T.......,........................#',
+'#.o...........S.S......................#',
+'#.............S.S..........o...........#',
+'~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~'
+],
+[
+'############################################',
+'####################EEEE####################',
+'####################EEEE####################',
+'#####################F######################',
+'#,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#',
+'#,x,,#,,,,,,,,,,,,,c,,,,,,,,,,,,,,,,,,#,,x,#',
+'#,,,,#,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,#,,,,#',
+'######################D#####################',
+'#####,,,,,,,,,,,,,,,,,,,,,,,,,,,############',
+'#,m,#,,,,,,,,,,,,,,,,,,,,,,,,,,,############',
+'#,,,,,,,t,,t,,t,,t,,t,,,,,,,,,,,############',
+'#####,,,,,,,,,,,,,,,,,,,,,,,,,,,############',
+'#####,,,,,,,,,,,,,,,,,,,,,,,,,,,############',
+'######################G#####################',
+'#TT..........#########..........T.....T.TTT#',
+'#T...........#:::::::###...................#',
+'#............#:::::::#L#......o............#',
+'#...a........w:::::::..#...................#',
+'#............#:::::::###........T..........#',
+'#.T..........#:::::::#.....................#',
+'#............~~~~~~~~~.....................#',
+'#..............................o...........#',
+'#......S.S.........................T.......#',
+'#......S.S.................................#',
+'#.T.......................T................#',
+'############################################'
+],
+[
+'##############################################',
+'#%%%%%%%%%%%%%%%#######EEEE###################',
+'#%%%%%%%%%%%%%%%#######EEEE###################',
+'#%%%%%%%%%%%%%%%########F#####################',
+'#%%%%%%%%%%%%%%%#,,,,,,,,,,,,,,,,,,,,,,,#...##',
+'#%%%%%%%%%%%%%%%#,,,,,,,,,,,c,,,,,,,,,,,R...##',
+'#%%%%%%%%%%%%%%%#####u###########v#######...##',
+'#%%%%%%%%%%%%%%%##,,,,,,,#####,,,,,,,####...##',
+'#%%%%%%%%%%%%%%%##,x,x,x,#####,y,y,y,####...##',
+'#%%%%%%%%%%%%%k%##,,,,,,,#####,,,,,,,####...##',
+'########w#########,x,x,x,#####,y,y,y,####...##',
+'#...............##,,,,,,,#####,,,,,,,####...##',
+'#....a..........#########################...##',
+'#...............#...........................##',
+'#..T............#.......T.............o.....##',
+'#...............K...........................##',
+'#...............#....o......................##',
+'#.....o.........#...............T........b..##',
+'#...S.S.........#...........................##',
+'#...S.S....T....#.........o.................##',
+'#...............#...........................##',
+'##############################################'
+],
+[
+'################################################',
+'#.........#r.r.r.r.r.#1.1.1.1.#2.2.2.2..########',
+'#.........#..........#........#.........########',
+'#....a....w..........#.1.1.1..#.2.2.2...########',
+'#.........#..........#........#.........########',
+'#.........###############.#########.############',
+'#.S.S.....A....................................#',
+'#.S.S.....###b###########.#########.#######....#',
+'#.........############........#.........###....#',
+'#.........############.3.3.3..#.4.4.4...###....#',
+'######################........#.........###....#',
+'######################3.3.3.3.#4.4.4.4..###....#',
+'###########################################....#',
+'############################################C###',
+'#,,,,,,,,,,,,,,,,,,,M,,#,,,,,,#,,,,,,#,,,,,,,,,#',
+'#,,,,,,,,,,,,,,,,,,,,,,p,,,,,,q,,,,,,p,,c,,,,,,#',
+'#,,,,,,,,,,,,,,,,,,,,,,#,,,,,,#,,,,,,#,,,,,,,,,#',
+'#EE,,,,,,,,,,#########################,,,,L,,,,#',
+'#EE,,,,,,,,,,#########################,,,,,,,,,#',
+'#,,,,,,,,,,,,,,,,,,,,,,#,,,,,,#,,,,,,#,,,,,,,,,#',
+'#,,,,,,,,,,,,,,,,,,,,,,s,,,,,,z,,,,,,s,,,,,,,,,#',
+'#,,,,,,,,,,,,,,,,,,,,,,#,,,,,,#,,,,,,#,,,,,,,,,#',
+'################################################'
+],
+[
+'################################################',
+'##########,,,,,,,,,,,,,,,,,#####################',
+'##########,,,,,,,,,,,,,,,,,#####################',
+'##########,,g,,,g,,,g,,,g,,#####################',
+'##########,,,,,,,,,,,,,,,,,#............########',
+'##########,n,,,,,,h,,,,,,,,D............########',
+'##########,,,,,,,,,,,,,,,,,#########....########',
+'##########,,,,,,,,,,,,,,,,,#########....########',
+'##################,#################....########',
+'##########..q..............#########....########',
+'##########.................#########....########',
+'##########~~~~~~~~~~c~~~~~~#########....########',
+'##########~~~~~~~~~~c~~~~~~#...................#',
+'##########~~~~~~~~~~c~~~~~~#.x.......e.......x.#',
+'##########.................#...................#',
+'##########..............p..##########F##########',
+'##########..q..............#####...........#####',
+'##########.................#####...........#####',
+'##########~~~~~~b~~~~~~~~~~#####...........#####',
+'##########~~~~~~b~~~~~~~~~~#####...........#####',
+'##########~~~~~~b~~~~~~~~~~#####...EEEE....#####',
+'##########.................#####...EEEE....#####',
+'##########...S.S...a.......#####################',
+'##########...S.S........p..#####################',
+'##########.................#####################',
+'################################################'
+]
+];
+/* ================= Escape-Insel: co-op puzzle game seen from above ================= */
+const E = { on:false, sel:0, ch:0, seed:1, def:null, map:null, objs:[], sec:{}, st:null, me:{x:0,y:0,face:1,walk:0,mv:false}, oth:new Map(), tick:0, dlg:null, notes:[], cracks:new Set(),
+  toasts:[], target:-1, dirty:false, lock:null, shake:0, res:null, fall:0, fallTo:null, reqT:0, gpPrev:false };
+const EPEN = { lock:10, pick:15, seq:10, check:20, trap:5, tip:30, late:30 };
+const ESYM_N = ['Anker','Schädel','Fisch','Stern','Mond','Sonne','Krone','Welle'];
+const EGEM = [['Rubin','#ff5a5a'],['Saphir','#4fa8ff'],['Smaragd','#52d470'],['Topas','#ffc94a']];
+const ROPEC = [['rot','#ff5a5a'],['blau','#4fa8ff'],['grün','#52d470'],['gelb','#ffc94a'],['weiß','#f6f1e4']];
+const ENAME = { key:'Rostiger Schlüssel', ckey:'Kristallschlüssel' };
+const st2 = (g,c,lw) => { g.strokeStyle = OL; g.lineWidth = lw+1.3; g.stroke(); g.strokeStyle = c; g.lineWidth = lw; g.stroke(); };
+const ESYM = [
+  (g,c) => { g.beginPath(); g.arc(8,8.6,5,0.3,2.84); st2(g,c,1.5); limb(g,[8,4.8,8,13.8],c,1.5); limb(g,[5.2,6.8,10.8,6.8],c,1.4); el(g,8,3.2,1.6); st2(g,c,1.1); },
+  (g,c) => { el(g,8,6.8,5.2,4.8); fs(g,c); rr(g,5.4,9.8,5.2,4.2,1); fs(g,c); el(g,6,7,1.4); fs(g,OL,null); el(g,10,7,1.4); fs(g,OL,null); ln(g,[7.2,11.6,7.2,13.6],OL,0.6); ln(g,[8.8,11.6,8.8,13.6],OL,0.6); },
+  (g,c) => { poly(g,[10.4,8,14.8,4.4,14.8,11.6]); fs(g,c); el(g,7,8,5.6,3.7); fs(g,c); el(g,4.4,7.2,0.9); fs(g,OL,null); },
+  (g,c) => { const p = []; for(let i=0;i<10;i++){ const r = i%2 ? 2.7 : 6.6, a = -Math.PI/2 + i*Math.PI/5; p.push(8+Math.cos(a)*r, 8.4+Math.sin(a)*r); } poly(g,p); fs(g,c); },
+  (g,c) => { g.beginPath(); g.moveTo(10.8,1.8); g.bezierCurveTo(1,2.2,1,13.8,10.8,14.2); g.bezierCurveTo(6.4,11.4,6.4,4.6,10.8,1.8); g.closePath(); fs(g,c); },
+  (g,c) => { for(let i=0;i<8;i++){ const a = i*Math.PI/4; limb(g,[8+Math.cos(a)*5,8+Math.sin(a)*5,8+Math.cos(a)*7,8+Math.sin(a)*7],c,1.1); } el(g,8,8,3.3); fs(g,c); },
+  (g,c) => { poly(g,[2.6,13,2,4.4,5.4,8,8,3,10.6,8,14,4.4,13.4,13]); fs(g,c); ln(g,[3.2,11,12.8,11],OL,0.6); },
+  (g,c) => { for(const y of [5,10.6]){ g.beginPath(); g.moveTo(1.6,y+0.6); g.bezierCurveTo(4,y-2.6,6,y-2.6,8,y+0.6); g.bezierCurveTo(10,y+3.8,12,y+3.8,14.4,y+0.6); st2(g,c,1.4); } }
+];
+const ERUNE = [
+  (g,c) => { limb(g,[8,13.6,8,2.6],c,1.4); limb(g,[3.6,2.6,3.6,7.4,12.4,7.4,12.4,2.6],c,1.4); },
+  (g,c) => { limb(g,[3.6,2.8,12.4,6.2,3.6,9.8,12.4,13.2],c,1.4); },
+  (g,c) => { el(g,8,8,5); st2(g,c,1.4); el(g,8,8,1.5); fs(g,c); },
+  (g,c) => { limb(g,[3.6,2.8,12.4,2.8,3.6,13.2,12.4,13.2,3.6,2.8],c,1.4); },
+  (g,c) => { limb(g,[8,13.6,8,2.6],c,1.4); limb(g,[4,6.8,8,2.6,12,6.8],c,1.4); limb(g,[5,11,11,11],c,1.4); },
+  (g,c) => { limb(g,[12.4,3,3.6,3,3.6,13,12.4,13,12.4,8,7.6,8],c,1.4); },
+  (g,c) => { limb(g,[4,5.6,12,13.4],c,1.4); limb(g,[12,5.6,4,13.4],c,1.4); limb(g,[3.6,2.8,12.4,2.8],c,1.4); },
+  (g,c) => { g.beginPath(); g.arc(1.6,8,6,-1,1); st2(g,c,1.4); g.beginPath(); g.arc(14.4,8,6,Math.PI-1,Math.PI+1); st2(g,c,1.4); el(g,8,8,1.2); fs(g,c); }
+];
+const eImgs = new Map();
+function eImg(kind,i){ const k = kind+i; let u = eImgs.get(k);
+  if(!u){ u = pixelize(32,32,g => { g.scale(2,2); (kind==='s' ? ESYM : ERUNE)[i](g, kind==='s' ? '#ffd84a' : '#7fe9ff'); }).toDataURL(); eImgs.set(k,u); } return u; }
+const eSy = i => `<span class="nb"><img class="sy" alt="" src="${eImg('s',i)}"> <b>${ESYM_N[i]}</b></span>`;
+const eRu = i => `<img class="sy" alt="Rune" src="${eImg('r',i)}">`;
+const eShuf = (r,a) => { for(let i=a.length-1;i>0;i--){ const j = Math.floor(r()*(i+1)); [a[i],a[j]] = [a[j],a[i]]; } return a; };
+
+/* ----- themes and tile art ----- */
+const ETH = [
+ {n:'Strand', void:'#2b86d6', fl:[['#f1d58a','#e2bf6a','#f9e6ad','speck'],['#c98a4b','#8a5a2e','#dba566','plank'],['#b9b2a0','#8f8878','#d8d2c0','slab']], wall:['#b8a58c','#cdbda6','#7d6b58','rock'], liq:['#3fa9f0','#2b86d6','#d6f3ff'], tall:['palm',0.62], small:['rock',0.7]},
+ {n:'Dschungel', void:'#1f5a3c', fl:[['#4fae4a','#3f9a3e','#6cc65a','grass'],['#8fa58a','#6b8068','#b4c8ae','slab'],['#c9c2ae','#8f8878','#e6e0cc','slab']], wall:['#6b8068','#86a182','#465c4a','brick'], liq:['#3aa7c9','#1d6f95','#c9f3f0'], tall:['tree',0.7], small:['bush',0.75]},
+ {n:'Höhle', void:'#0f0d1f', fl:[['#4d4874','#3b375c','#625d8f','speck'],['#6f68a8','#4d4874','#8d86b8','slab'],['#6f68a8','#4d4874','#8d86b8','slab']], wall:['#2e2a55','#3b375c','#1a1736','rock'], liq:['#243a85','#162458','#6f8fe0'], tall:['stalag',0.9], small:['crystal',0.6]},
+ {n:'Geisterschiff', void:'#0b1433', fl:[['#a8743f','#6f4623','#c08a50','plank'],['#8a5a34','#5c3413','#a8743f','plank'],['#8a5a34','#5c3413','#a8743f','plank']], wall:['#5a3a1e','#6f4623','#3d2512','wood'], liq:['#1f3476','#182a66','#6f8fe0'], tall:['barrel',1], small:['barrel',1]},
+ {n:'Vulkan', void:'#1c141b', fl:[['#44353f','#2d222b','#5e4b57','speck'],['#705e6a','#3d3039','#a08c98','slab'],['#705e6a','#3d3039','#a08c98','slab']], wall:['#2d222b','#3a2a33','#150f15','rock'], liq:['#ff5a1f','#c9301a','#ffd24a'], tall:['lavarock',0.8], small:['lavarock',0.6]}
+];
+function eFloor(ti,k,v){ return sprite('ef'+ti+k+v,16,16,g => { const [c0,c1,c2,sty] = ETH[ti].fl[k], r = mulberry32(ti*131+k*17+v*7+3);
+  g.fillStyle = c0; g.fillRect(0,0,16,16);
+  if(sty==='speck' || sty==='grass'){ for(let i=0;i<5;i++){ el(g,1.5+r()*13,1.5+r()*13,0.6+r()*1.1,0.5+r()*0.7); g.fillStyle = i%2 ? c1 : c2; g.fill(); }
+    if(sty==='grass') for(let i=0;i<3;i++){ const x = 2+r()*11, y = 4+r()*10; ln(g,[x-1.2,y-2,x,y,x+1.2,y-2.2],c2,0.7); } }
+  else if(sty==='plank'){ g.fillStyle = c1; for(const y of [0,5.4,10.8]) g.fillRect(0,y,16,0.8); g.fillRect(3+r()*10,0.8+v*5.4,0.8,4.6); for(let i=0;i<2;i++) g.fillRect(2+r()*12,2+r()*12,1,1);
+    g.fillStyle = c2; for(const y of [0.8,6.2,11.6]) g.fillRect(0,y,16,0.7); }
+  else { g.fillStyle = c1; g.fillRect(0,0,16,0.9); g.fillRect(0,0,0.9,16); g.fillStyle = c2; g.fillRect(0.9,0.9,15.1,0.8); g.fillRect(0.9,0.9,0.8,15.1);
+    if(v===1) ln(g,[5,6,8,8,7,12],c1,0.6); if(v===2) ln(g,[11,3,10,6,12,9],c1,0.6); } }); }
+function eWall(ti,face,v){ return sprite('ew'+ti+(face?1:0)+v,16,16,g => { const [c0,c1,c2,sty] = ETH[ti].wall, r = mulberry32(ti*57+v*11+(face?5:0)+1);
+  g.fillStyle = c0; g.fillRect(0,0,16,16);
+  if(sty==='rock') for(let i=0;i<4;i++){ el(g,2+r()*12,2+r()*(face?6:12),1.4+r()*1.8,1+r()*1.2); g.fillStyle = i%2 ? c1 : c2; g.globalAlpha = i%2 ? 1 : 0.5; g.fill(); g.globalAlpha = 1; }
+  else if(sty==='brick'){ g.fillStyle = c2; for(const y of [0,5.4,10.8]) g.fillRect(0,y,16,0.8); for(const [x,y] of [[4,0.8],[12,0.8],[0,6.2],[8,6.2],[4,11.6],[12,11.6]]) g.fillRect(x,y,0.8,4.6);
+    g.fillStyle = c1; g.fillRect(1.6+r()*4,1.8,3,1); g.fillRect(9+r()*3,7.2,3,1); }
+  else { g.fillStyle = c2; for(const x of [0,5.4,10.8]) g.fillRect(x,0,0.8,16); g.fillStyle = c1; for(const x of [0.8,6.2,11.6]) g.fillRect(x,0,0.7,16); }
+  if(face){ g.fillStyle = c2; g.fillRect(0,10,16,6); g.fillStyle = OL; g.fillRect(0,9.4,16,0.8); g.fillStyle = 'rgba(255,255,255,.14)'; g.fillRect(0,10.2,16,0.9); g.fillStyle = 'rgba(0,0,0,.3)'; g.fillRect(0,15,16,1); } }); }
+function eLiq(ti,f){ return sprite('el'+ti+f,16,16,g => { const [c0,c1,c2] = ETH[ti].liq; g.fillStyle = c0; g.fillRect(0,0,16,16);
+  g.fillStyle = c1; g.fillRect((f*4+9)%16,11,5,1); g.fillRect((f*4+1)%16,5,4,1); g.fillStyle = c2; g.fillRect((f*4)%16,3,4,1); g.fillRect((f*4+7)%16,8,3,1); g.fillRect((f*4+12)%16,14,3,1); }); }
+function eDecor(name,sc){ const a = KSC[name]; return sprite('ed'+name+sc, a[0]*sc, a[1]*sc, g => { g.scale(sc,sc); a[2](g); }); }
+
+/* ----- object art: [width, height, draw] ----- */
+const eShadow = (g,w,y) => { el(g,8,y,w,1.3); fs(g,'rgba(0,0,0,.24)',null); };
+const EOA = {
+  bottle:[16,16,g => { eShadow(g,5.6,13.6); g.translate(8,9.4); g.rotate(-0.45); rr(g,-5.6,-2.9,8.6,5.8,2.4); fs(g,'#7fd9c4'); rr(g,2.6,-1.4,3.6,2.8,0.6); fs(g,'#7fd9c4'); rr(g,5.8,-1.7,1.8,3.4,0.5); fs(g,'#b5743a'); rr(g,-3.8,-1.7,4.8,3.4,0.6); fs(g,'#f6f1e4',null); }],
+  sign:[16,20,g => { eShadow(g,4.4,18.8); rr(g,7,9,2,10,0.6); fs(g,'#8a5a2e'); rr(g,1.4,1.6,13.2,9,1.2); fs(g,'#c98a4b'); ln(g,[4,4.6,12,4.6],'#6b3f1b',0.9); ln(g,[4,7.4,10,7.4],'#6b3f1b',0.9); }],
+  tablet:[16,20,g => { eShadow(g,5.4,18.8); g.beginPath(); g.moveTo(2.4,19); g.lineTo(2.4,7); g.quadraticCurveTo(2.4,1.6,8,1.6); g.quadraticCurveTo(13.6,1.6,13.6,7); g.lineTo(13.6,19); g.closePath(); fs(g,'#9a9eb4');
+    for(const y of [6.6,9.6,12.6,15.6]) ln(g,[5,y,y > 15 ? 9 : 11,y],'#55596f',0.9); el(g,5.4,4.4,1.6,0.9); fs(g,'rgba(255,255,255,.4)',null); }],
+  book:[16,20,g => { eShadow(g,4.4,18.8); rr(g,6.8,11,2.4,8,0.6); fs(g,'#6b3f1b'); poly(g,[1.4,4.4,8,6.2,14.6,4.4,14.6,11,8,12.8,1.4,11]); fs(g,'#f6f1e4'); ln(g,[8,6.2,8,12.8],OL,0.6);
+    for(const y of [7,9]){ ln(g,[3.4,y,6.4,y+0.8],'#8f8aa8',0.6); ln(g,[9.6,y+0.8,12.6,y],'#8f8aa8',0.6); } }],
+  map:[16,20,g => { eShadow(g,5,18.8); ln(g,[4,19,6,10],'#6b3f1b',1.2); ln(g,[12,19,10,10],'#6b3f1b',1.2); rr(g,1.6,1.6,12.8,10.4,1); fs(g,'#ecd9a8'); ln(g,[4,4.4,7,6,9,4.6,12,7],'#b57a12',0.7);
+    ln(g,[9.6,8.2,11.4,10],'#e2483b',0.8); ln(g,[11.4,8.2,9.6,10],'#e2483b',0.8); }],
+  lever:(on,col) => [16,16,g => { eShadow(g,5.6,14.4); rr(g,2.6,10,10.8,4.6,1.4); fs(g,'#55596f'); const a = on ? 0.62 : -0.62, hx = 8+Math.sin(a)*8.4, hy = 11-Math.cos(a)*8.4; limb(g,[8,11,hx,hy],'#c9cedb',1.5); el(g,hx,hy,2.1); fs(g,col); }],
+  plate:dn => [16,16,g => { rr(g,1.6,2.2,12.8,11.6,1.6); fs(g,dn ? '#55596f' : '#8f93a8'); rr(g,3.4,dn ? 4.4 : 3.6,9.2,7.6,1); fs(g,dn ? '#6a6f8c' : '#c9cedb',dn ? null : OL,0.5); if(!dn){ g.fillStyle = 'rgba(0,0,0,.25)'; g.fillRect(3.6,11.2,8.8,0.9); } }],
+  gate:(col,icon) => [16,24,g => { eShadow(g,7,22.8);
+    for(let i=0;i<3;i++){ const x = 0.7+i*5; poly(g,[x,23,x,5.4,x+2.3,2.6,x+4.6,5.4,x+4.6,23]); fs(g,'#a8672f'); ln(g,[x+1.4,7,x+1.4,21],'#c98a4b',0.7); }
+    rr(g,0.3,9,15.4,2.8,0.6); fs(g,col); rr(g,0.3,17,15.4,2.8,0.6); fs(g,col);
+    if(icon==='lock'){ g.beginPath(); g.arc(8,11,2,Math.PI,0); g.strokeStyle = OL; g.lineWidth = 2; g.stroke(); g.strokeStyle = '#c9cedb'; g.lineWidth = 1; g.stroke(); rr(g,5,10.8,6,5.4,1); fs(g,'#ffd84a'); el(g,8,13.4,0.9); fs(g,OL,null); }
+    else if(icon==='key'){ el(g,8,13.2,2.7); fs(g,'#c9cedb'); el(g,8,12.6,0.9); fs(g,OL,null); ln(g,[8,12.8,8,14.8],OL,0.8); }
+    else if(icon==='inv'){ ln(g,[3,19.4,13,9.4],'#f6f1e4',1.3); } }],
+  gateOpen:col => [16,24,g => { for(const x of [0.4,12.6]){ poly(g,[x,23,x,5.4,x+1.5,3,x+3,5.4,x+3,23]); fs(g,'#a8672f'); rr(g,x-0.2,9,3.4,2.8,0.5); fs(g,col); } }],
+  bridge:[16,16,g => { g.fillStyle = '#b98048'; g.fillRect(1,0,14,16); g.fillStyle = '#754a25'; for(const y of [0,4,8,12]) g.fillRect(1,y,14,0.8); g.fillStyle = '#dba566'; for(const y of [0.8,4.8,8.8,12.8]) g.fillRect(1,y,14,0.7);
+    g.fillStyle = '#603d20'; g.fillRect(0,0,1.6,16); g.fillRect(14.4,0,1.6,16); }],
+  heap:v => [16,16,g => { if(v){ el(g,8,10.4,6.4,3.8); fs(g,'#c9a45a'); el(g,8,10.8,4.6,2.5); fs(g,'#4a3418',null); }
+    else { g.beginPath(); g.moveTo(1.6,13.4); g.quadraticCurveTo(8,1,14.4,13.4); g.closePath(); fs(g,'#e6c574'); el(g,6.4,8.6,1.6,1); fs(g,'rgba(255,255,255,.35)',null); ln(g,[6.6,10.2,9.4,12.4],'#a8802f',0.9); ln(g,[9.4,10.2,6.6,12.4],'#a8802f',0.9); } }],
+  rope:(col,cut) => [16,24,g => { el(g,8,22.6,3.4,1.1); fs(g,'#55596f'); if(cut){ limb(g,[8,22,8,17.6],'#d9c79a',1.8); limb(g,[8,0,8,5],'#d9c79a',1.8); ln(g,[7.2,5.4,6.4,7.4],'#d9c79a',0.7); ln(g,[8.8,5.4,9.6,7.4],'#d9c79a',0.7); }
+    else { limb(g,[8,0,8,22],'#d9c79a',1.9); rr(g,4.6,7.6,6.8,6,1); fs(g,col); } }],
+  ped:(si,dead) => [16,22,g => { eShadow(g,6,20.8); rr(g,3,16.4,10,4.4,1); fs(g,'#6a6f8c'); rr(g,4.6,10,6.8,7,0.6); fs(g,'#8f93a8'); rr(g,1.2,0.8,13.6,11.4,1.4); fs(g,dead ? '#55596f' : '#2b2233');
+    g.translate(2.6,1.1); g.scale(0.675,0.675); ESYM[si](g, dead ? '#8f8aa8' : '#ffd84a'); }],
+  totem:(si,lit) => [16,28,g => { eShadow(g,6,26.8); poly(g,[2.6,5,0.4,3,2.6,8.4]); fs(g,lit ? '#e2483b' : '#6f5943'); poly(g,[13.4,5,15.6,3,13.4,8.4]); fs(g,lit ? '#e2483b' : '#6f5943');
+    rr(g,2.6,1.4,10.8,25.4,2.4); fs(g,lit ? '#c98a4b' : '#8f7459'); for(const x of [5.6,10.4]){ el(g,x,5.4,1.5); fs(g,lit ? '#ffd84a' : '#2b2233'); } rr(g,5.4,8.6,5.2,1.8,0.6); fs(g,'#2b2233',null);
+    rr(g,3.2,12.2,9.6,10,1); fs(g,'#2b2233'); g.translate(3.5,12.7); g.scale(0.56,0.56); ESYM[si](g, lit ? '#ffd84a' : '#b3aed0'); }],
+  gem:gi => [16,22,g => { eShadow(g,6,20.8); rr(g,3,16.4,10,4.4,1); fs(g,'#705e6a'); rr(g,4.6,9.6,6.8,7.4,0.6); fs(g,'#a08c98'); rr(g,2.4,7.4,11.2,3.2,1); fs(g,'#705e6a');
+    poly(g,[8,0.6,12.2,4,8,8.8,3.8,4]); fs(g,EGEM[gi][1]); poly(g,[8,0.6,9.6,4,8,8.8,6.4,4]); fs(g,'rgba(255,255,255,.45)',null); }],
+  altar:[16,20,g => { eShadow(g,7,18.8); rr(g,2,8,12,10.6,1.2); fs(g,'#705e6a'); rr(g,0.6,4,14.8,5,1.2); fs(g,'#a08c98'); el(g,8,6.4,3,1.5); fs(g,'#ffc94a'); ln(g,[5,12,11,12],'#3d3039',0.8); ln(g,[5,15,11,15],'#3d3039',0.8); }],
+  boat:[30,20,g => { g.beginPath(); g.moveTo(1,6); g.quadraticCurveTo(2,19,15,19); g.quadraticCurveTo(28,19,29,6); g.closePath(); fs(g,'#a8672f'); g.beginPath(); g.moveTo(3.4,7.6); g.quadraticCurveTo(4.4,16.6,15,16.6); g.quadraticCurveTo(25.6,16.6,26.6,7.6); g.closePath(); fs(g,'#6b3f1b',null);
+    g.fillStyle = '#c98a4b'; g.fillRect(5,9.4,20,2); g.fillRect(8,13.4,14,1.8); g.fillStyle = OL; g.fillRect(1,5.6,28,1); ln(g,[3,3,11,10],'#dba566',1.1); ln(g,[27,3,19,10],'#dba566',1.1); }],
+  key:col => [14,14,g => { el(g,4.2,7,3.2); fs(g,col); el(g,4.2,7,1.2); fs(g,OL,null); limb(g,[7.2,7,12.8,7],col,1.5); limb(g,[10.6,7.4,10.6,9.8],col,1.3); limb(g,[12.6,7.4,12.6,9.2],col,1.3); }],
+  cnt:[
+    [12,15,g => KSC.barrel[2](g)],
+    [12,12,g => { el(g,6,5.4,4.6,4.2); fs(g,'#eceadf'); rr(g,3.8,8,4.4,3,0.7); fs(g,'#eceadf'); el(g,4.4,5.6,1.1); fs(g,OL,null); el(g,7.6,5.6,1.1); fs(g,OL,null); }],
+    [12,12,g => { el(g,6,10.8,4.6,1.1); fs(g,'rgba(0,0,0,.24)',null); el(g,6,6,4.8); fs(g,'#2d2d40'); el(g,4.4,4.4,1.4,1); fs(g,'#9a9ab8',null); }],
+    [10,16,g => { g.beginPath(); g.arc(5,4.2,2.6,Math.PI,0); g.strokeStyle = OL; g.lineWidth = 0.9; g.stroke(); rr(g,1.6,4.4,6.8,9.4,1.2); fs(g,'#ffd98a'); g.fillStyle = OL; g.fillRect(1.2,4,7.6,1.2); g.fillRect(1.2,13.2,7.6,1.4); ln(g,[5,5.4,5,13],OL,0.6); el(g,5,9.2,1.3,1.9); fs(g,'#ff9a3d',null); }]
+  ]
+};
+
+/* ----- puzzle types: secrets and what a player reads on the notes ----- */
+const ROWN = ['nördlichen','mittleren','südlichen'], COLN = ['westlichen','mittleren','östlichen'];
+const CNTN = ['die <b>Fässer</b> im Frachtraum (oben links)','die <b>Schädel</b> in der Kombüse (oben rechts)','die <b>Kanonenkugeln</b> in der Waffenkammer (unten links)','die <b>Laternen</b> im Lampenlager (unten rechts)'];
+const RULES = ['Regel 1: Hängt <b>kein rotes</b> Seil da, kappt das <b>zweite</b> Seil.','Regel 2: Sonst, wenn das <b>letzte</b> Seil <b>weiß</b> ist, kappt das <b>letzte</b> Seil.','Regel 3: Sonst, wenn <b>mehr als ein blaues</b> Seil da hängt, kappt das <b>letzte blaue</b> Seil.',
+  'Regel 4: Sonst, wenn <b>genau ein gelbes</b> Seil da hängt, kappt das <b>erste</b> Seil.','Regel 5: Trifft nichts davon zu, kappt das <b>vierte</b> Seil.'];
+function eMazeImg(S,pits,key){
+  const t = S.t, u = 8, c = document.createElement('canvas'); c.width = t[0].length*u; c.height = t.length*u + u; const g = c.getContext('2d');
+  g.fillStyle = '#2b2233'; g.fillRect(0,0,c.width,c.height);
+  t.forEach((row,y) => row.forEach((ch,x) => { if(ch !== '#'){ g.fillStyle = '#d9d2ee'; g.fillRect(x*u,y*u,u,u); } }));
+  if(pits) for(const [x,y] of S.pits){ const px = (x-S.zx)*u, py = (y-S.zy)*u; g.fillStyle = '#e2483b'; for(let i=1;i<7;i++){ g.fillRect(px+i,py+i,1,1); g.fillRect(px+7-i,py+i,1,1); } }
+  if(key){ const px = (S.key[0]-S.zx)*u, py = (S.key[1]-S.zy)*u; g.fillStyle = '#b57a12'; g.fillRect(px+1,py+1,6,6); g.fillStyle = '#ffd84a'; g.fillRect(px+2,py+2,4,4); }
+  const ex = S.ex*u, ey = t.length*u; g.fillStyle = '#7fe9ff'; g.fillRect(ex+3,ey+2,2,5); g.fillRect(ex+2,ey+2,4,1); g.fillRect(ex+1,ey+3,6,1);
+  return c.toDataURL();
+}
+const EPZ = {
+  code:{ split:1, sec:r => ({code:eShuf(r,[0,1,2,3,4,5,6,7]).slice(0,4)}),
+    note:(S,my) => my.roles.map(i => `Das <b>${i+1}. Zeichen</b> am Tor: ${eSy(S.code[i])}`) },
+  dig:{ split:1, sec:(r,ri) => { const pick = ri(9); return {pick, nr:((pick/3|0)+1+ri(2))%3, nc:(pick%3+1+ri(2))%3}; },
+    note:(S,my) => { const L = [`Der Schlüssel liegt in der <b>${ROWN[S.pick/3|0]} Reihe</b>.`,`Der Schlüssel liegt in der <b>${COLN[S.pick%3]} Spalte</b>.`,`Er liegt nicht in der ${ROWN[S.nr]} Reihe.`,`Er liegt nicht in der ${COLN[S.nc]} Spalte.`]; return my.roles.map(i => L[i]); } },
+  path:{ sec:(r,ri,c) => { const z = c.z, mid = z.h>>1, safe = new Set(), bad = new Set(), add = (x,y) => safe.add((z.x+x)+','+(z.y+y)); let row = mid;
+      for(let x=0;x<z.w;x++){ add(x,row); let to = x===z.w-1 ? mid : Math.max(0, Math.min(z.h-1, row + [-2,-1,0,1,2][ri(5)])); if(x%2===0 && x < z.w-1 && to===row) to = row > 0 && (row===z.h-1 || ri(2)) ? row-1 : row+1; for(let y=Math.min(row,to);y<=Math.max(row,to);y++) add(x,y); row = to; }
+      for(let y=0;y<z.h;y++) for(let x=0;x<z.w;x++){ const k = (z.x+x)+','+(z.y+y); if(!safe.has(k)) bad.add(k); } return {safe, bad}; },
+    note:(S,my) => my.solo ? ['Die leuchtenden Platten sind sicher, alle anderen brechen ein. Am Ende des Feldes wartet ein Hebel.']
+      : my.know ? ['<b>Du siehst leuchtende Platten</b> auf dem Feld: Das ist der sichere Weg.' + (my.half ? ` Du siehst aber nur die ${my.half===1 ? 'westliche' : 'östliche'} Hälfte, den Rest sieht jemand anderes.` : ''), 'Der Bannkreis lässt dich nicht aufs Feld. Stell dich südlich an den Graben und lotse die anderen im Chat hinüber.']
+      : ['Für dich sehen alle Platten gleich aus. Wer falsch tritt, bricht ein und landet wieder am Anfang.','<b>Jemand aus deiner Crew sieht den sicheren Weg leuchten.</b> Lass dich im Chat lotsen. Am Ende des Feldes wartet ein Hebel.'] },
+  order:{ split:1, sec:r => ({order:eShuf(r,[0,1,2,3,4]), syms:eShuf(r,[0,1,2,3,4,5,6,7]).slice(0,5)}),
+    note:(S,my) => { const POS = [[0,4],[1],[2],[3]], out = []; for(const r of my.roles) for(const k of POS[r]) out.push([k,`Als <b>${k+1}.</b> berührt ihr: ${eSy(S.syms[S.order[k]])}`]); return out.sort((a,b) => a[0]-b[0]).map(a => a[1]); } },
+  maze:{ sec:(r,ri,c) => { const z = c.z, CW = (z.w-1)/2, CH = (z.h-1)/2, t = Array.from({length:z.h}, () => Array(z.w).fill('#')), par = new Map(), K = (x,y) => x+','+y, ex = CW>>1, ey = CH-1, stack = [[ex,ey]];
+      par.set(K(ex,ey),null); t[1+2*ey][1+2*ex] = '.'; t[z.h-1][1+2*ex] = '.';
+      while(stack.length){ const [x,y] = stack[stack.length-1], nb = eShuf(r,[[1,0],[-1,0],[0,1],[0,-1]]).map(d => [x+d[0],y+d[1]]).filter(q => q[0]>=0 && q[1]>=0 && q[0]<CW && q[1]<CH && !par.has(K(q[0],q[1])));
+        if(!nb.length){ stack.pop(); continue; } const [nx,ny] = nb[0]; par.set(K(nx,ny),[x,y]); t[1+2*ny][1+2*nx] = '.'; t[1+y+ny][1+x+nx] = '.'; stack.push([nx,ny]); }
+      const depth = k => { let d = 0, q = par.get(k); while(q){ d++; q = par.get(K(q[0],q[1])); } return d; };
+      let best = null, bd = -1; for(const k of par.keys()){ const d = depth(k); if(d > bd){ bd = d; best = k; } }
+      const onPath = new Set(); for(let k=best;k;){ onPath.add(k); const q = par.get(k); k = q ? K(q[0],q[1]) : null; }
+      const cand = []; for(const [k,q] of par) if(q && !onPath.has(k) && onPath.has(K(q[0],q[1]))) cand.push(k);
+      let pits = cand.filter(() => r() < 0.75); if(pits.length < Math.min(3,cand.length)) pits = cand.slice();
+      const abs = k => { const [x,y] = k.split(',').map(Number); return [z.x+1+2*x, z.y+1+2*y]; };
+      for(let y=0;y<z.h;y++) for(let x=0;x<z.w;x++) c.g[z.y+y][z.x+x] = t[y][x];
+      const kp = abs(best), ko = c.objs.find(o => o.id==='ckey'); if(ko){ ko.tx = kp[0]; ko.ty = kp[1]; }
+      return {t, key:kp, pits:pits.map(abs), bad:new Set(pits.map(k => abs(k).join(','))), zx:z.x, zy:z.y, ex:1+2*ex, len:bd}; },
+    note:(S,my) => { if(!my.solo && !my.know) return ['Für dich ist das Pergament leer.','<b>Jemand aus deiner Crew kann die Karte lesen</b>, darf aber nicht in den Stollen. Geh hinein, beschreib im Chat, was du siehst, und lass dich lotsen. Vorsicht vor Fallgruben!'];
+      const a = my.solo || my.roles.includes(0), b = my.solo || my.roles.includes(2);
+      return [`<img class="mapimg" alt="Karte des Stollens" src="${eMazeImg(S,a,b)}">`, 'Der blaue Pfeil unten ist der Eingang.' + (a ? ' Rote Kreuze sind Fallgruben.' : '') + (b ? ' Das goldene Feld ist der Kristallschlüssel.' : '') + (a && b ? '' : ' Den Rest der Karte sieht jemand anderes.'),
+        my.solo ? 'Im Stollen ist es stockfinster. Merk dir den Weg gut.' : 'Der Bannkreis lässt dich nicht in den Stollen. Lass dir beschreiben, wo die anderen stehen, und lotse sie.']; } },
+  runes:{ sec:r => { const runes = eShuf(r,[0,1,2,3,4,5,6,7]).slice(0,4), map = eShuf(r,[1,2,3,4,5,6,7,8,9]).slice(0,8); return {runes, map, code:runes.map(i => map[i]).reverse()}; },
+    note:(S,my) => { if(!my.solo && !my.know) return ['Für dich ist die Tafel glatt und leer.','<b>Jemand aus deiner Crew kann sie lesen.</b> Dafür siehst du am Runentor etwas, das die anderen nicht sehen.'];
+      const a = my.solo || my.roles.includes(0), b = my.solo || my.roles.includes(2), half = h => S.map.slice(h*4,h*4+4).map((d,j) => `<span class="nb">${eRu(h*4+j)} = <b>${d}</b></span>`).join(' &nbsp; '), out = [];
+      if(a) out.push(half(0)); if(b) out.push(half(1)); if(!(a && b)) out.push('Die andere Hälfte der Tafel liest jemand anderes.');
+      if(a) out.push('Wichtig: Die Ziffern werden <b>von rechts nach links</b> eingegeben, also die Ziffer der letzten Rune zuerst.');
+      if(!my.solo) out.push('Die Runen am Tor siehst du selbst nicht. Lass sie dir beschreiben.'); return out; } },
+  twin:{ sec:(r,ri) => { const syms = Array.from({length:6}, () => ri(8)), pos = ri(6); return {syms, pos, pick:pos, alt:(syms[pos]+1+ri(7))%8}; } },
+  ropes:{ sec:(r,ri) => { const cols = Array.from({length:5}, () => ri(5)), n = c => cols.filter(x => x===c).length; return {cols, pick:!n(0) ? 1 : cols[4]===4 ? 4 : n(1) > 1 ? cols.lastIndexOf(1) : n(3)===1 ? 0 : 3}; },
+    note:(S,my) => { if(!my.solo && !my.know) return ['Für dich sind die Seiten leer.','<b>Jemand aus deiner Crew kann das Handbuch lesen</b>, kommt aber nicht in den Takelraum. Geh hinein und beschreib die fünf Seile von links nach rechts.'];
+      const a = my.solo || my.roles.includes(0), b = my.solo || my.roles.includes(2), out = ['Fünf Seile, gezählt von links nach rechts. Es gilt die erste Regel, die zutrifft.'];
+      RULES.forEach((t,i) => { if(i%2 ? b : a) out.push(t); }); if(!(a && b)) out.push('Die fehlenden Regeln stehen bei jemand anderem.'); if(!my.solo) out.push('Der Bannkreis lässt dich nicht in den Takelraum.'); return out; } },
+  count:{ split:1, sec:(r,ri,c) => { const show = [], code = []; for(let k=0;k<4;k++){ const n = c.objs.filter(o => o.k==='cnt' && o.kind===k).length, m = 2+ri(Math.min(n,9)-1); code.push(m); show.push(new Set(eShuf(r,Array.from({length:n},(_,i) => i)).slice(0,m))); } return {code, show}; },
+    note:(S,my) => my.roles.map(i => `Die <b>${i+1}. Ziffer</b>: Zähl ${CNTN[i]}.`) },
+  gems:{ split:1, sec:(r,ri) => { const G = EGEM.map(q => q[0]), sol = eShuf(r,[0,1,2,3]), pos = (s,a) => s.indexOf(a), perms = [], pool = [];
+      (function P(a,rest){ if(!rest.length) perms.push(a); rest.forEach((x,i) => P(a.concat(x), rest.filter((_,j) => j!==i))); })([],[0,1,2,3]);
+      for(let a=0;a<4;a++){ pool.push([s => pos(s,a)%3===0, t => `Der ${G[a]} liegt ${t ? '' : 'nicht '}ganz außen.`]);
+        for(let i=0;i<4;i++) pool.push([s => s[i]===a, t => t ? null : `Auf Sockel ${i+1} liegt nicht der ${G[a]}.`]);
+        for(let b=0;b<4;b++) if(a!==b){ pool.push([s => pos(s,a) < pos(s,b), t => t ? `Der ${G[a]} liegt irgendwo links vom ${G[b]}.` : null]);
+          if(a < b) pool.push([s => Math.abs(pos(s,a)-pos(s,b))===1, t => `Der ${G[a]} liegt ${t ? 'direkt' : 'nicht'} neben dem ${G[b]}.`]); } }
+      const cl = eShuf(r, pool.map(([f,tx]) => { const tv = f(sol), s = tx(tv); return s ? [q => f(q)===tv, s] : null; }).filter(Boolean)); let cand = perms; const clues = [];
+      for(const [f,s] of cl){ if(cand.length < 2) break; const nx = cand.filter(f); if(nx.length < cand.length){ cand = nx; clues.push(s); } }
+      for(const [,s] of cl){ if(clues.length >= 4) break; if(!clues.includes(s)) clues.push(s); }
+      return {sol, clues, left:cand.length, init:sol.map(q => (q+1+ri(3))%4)}; },
+    note:(S,my) => S.clues.filter((c,j) => my.roles.includes(j%4)).concat(['Die Sockel zählt ihr von links nach rechts, 1 bis 4. Stellt die Steine ein und drückt dann den Altar.']) }
+};
+
+/* ----- chapters ----- */
+const ECH = [
+ { name:'Der Strand', th:0, par:300,
+   intro:'Euer Schiff liegt zerschellt an den Klippen. Der einzige Weg ins Innere der Insel führt durch das Palisadentor im Norden. Seht euch erst mal am Strand um.',
+   leg:{ a:{k:'note',p:'p1',art:'bottle'}, G:{k:'door',lock:'p1',set:'sym',nm:'Palisadentor'}, b:{k:'note',p:'p2',art:'map'}, d:{k:'pick',p:'p2',art:'heap'},
+     K:{k:'door',item:'key',nm:'Hüttentür'}, L:{k:'lever',set:'br',msg:'Die Brücke über den Fluss fährt aus!'}, B:{k:'door',flag:'br',art:'bridge',fl:'~'},
+     c:{k:'note',p:'p3',art:'sign'}, p:{k:'plate',g:'p3'}, F:{k:'door',flag:'p3',nm:'Tor zum Dschungel'} },
+   grp:{ p3:{all:1,latch:1,msg:'Das Tor zum Dschungel schwingt auf!'} },
+   puz:{ p1:{t:'code',n:'Das Palisadentor',pre:'Eine Flaschenpost. Die Tinte ist verflucht: Jeder Pirat kann nur einen Teil davon lesen.',tip:'Am Strand liegt links unten eine Flaschenpost. Jeder liest darin andere Zeichen. Tragt alle vier in der richtigen Reihenfolge zusammen und gebt sie am Tor ein.'},
+     p2:{t:'dig',n:'Der vergrabene Schlüssel',pre:'Eine alte Schatzkarte, vom Salzwasser halb zerfressen.',give:'key',ok:'Ein rostiger Schlüssel! Der passt bestimmt zur Hütte.',no:'Nur eine Krabbe.',tip:'Links liegen neun Sandhaufen in drei Reihen und drei Spalten. Die Schatzkarte am Weg verrät jedem etwas anderes über Reihe und Spalte. Erst zusammen wisst ihr, wo ihr graben müsst. Der Schlüssel öffnet die Hütte, darin ist der Hebel für die Brücke.'},
+     p3:{t:'pub',n:'Die zwei Steinplatten',txt:'Zwei Steinplatten, eine ganz im Westen, eine ganz im Osten. Das Tor im Norden öffnet sich erst, wenn beide zur selben Zeit belastet sind.',solo:'Allein bleibt eine Platte unten, sobald du einmal draufstehst.',tip:'Stellt euch gleichzeitig auf beide Platten, eine Person im Westen, eine im Osten.'} } },
+ { name:'Der Dschungeltempel', th:1, par:420,
+   intro:'Der Pfad endet vor einem alten Tempel. Sein Tor ist verschlossen, und davor liegt ein Feld aus Steinplatten, über das noch niemand heil gekommen ist.',
+   leg:{ a:{k:'note',p:'p4',art:'sign'}, w:{k:'ward',p:'p4'}, L:{k:'lever',set:'p4',msg:'Das Tempeltor öffnet sich. Der Geisterpfad ist jetzt für alle sicher.'}, G:{k:'door',flag:'p4',nm:'Tempeltor'},
+     m:{k:'note',p:'p5',art:'tablet'}, t:{k:'seq',p:'p5'}, D:{k:'door',flag:'p5',nm:'Inneres Tor'}, c:{k:'note',p:'p6',art:'sign'}, x:{k:'lever',sync:'p6',msg:'Beide Hebel rasten ein. Der Ausgang ist frei!'}, F:{k:'door',flag:'p6',nm:'Ausgang'} },
+   zones:[{p:'p4',x:14,y:15,w:7,h:5,reset:[12,17]}],
+   puz:{ p4:{t:'path',n:'Der Geisterpfad',tip:'Nur ein Teil der Crew sieht die sicheren Platten leuchten, darf das Feld aber nicht betreten. Diese Person stellt sich südlich an den Graben und lotst die anderen Schritt für Schritt hinüber. Am Ende des Feldes ist ein Hebel.'},
+     p5:{t:'order',n:'Die fünf Totems',pre:'Ein Wandbild zeigt fünf Totems und eine Reihenfolge. Jeder erkennt nur einen Teil davon.',ok:'Die Totems glühen auf. Das innere Tor öffnet sich!',tip:'Das Wandbild im Nebenraum links verrät die Reihenfolge, aber jedem nur einen Teil. Berührt die Totems genau in dieser Reihenfolge. Welches Zeichen ein Totem trägt, steht dran, wenn ihr davorsteht.'},
+     p6:{t:'pub',n:'Die Zwillingshebel',txt:'Zwei Hebel, einer im Westflügel, einer im Ostflügel. Sie müssen im selben Augenblick gezogen werden. Zählt im Chat herunter!',solo:'Allein reicht ein Hebel.',tip:'Je eine Person geht zu jedem Hebel. Zählt im Chat 3, 2, 1 und zieht beide gleichzeitig.'} } },
+ { name:'Die Kristallhöhle', th:2, par:540,
+   intro:'Hinter dem Tempel führt ein Schacht in die Tiefe. Im alten Stollen ist es stockfinster, und irgendwo darin liegt der Kristallschlüssel.',
+   leg:{ a:{k:'note',p:'p7',art:'map'}, w:{k:'ward',p:'p7'}, k:{k:'item',id:'ckey',p:'p7',col:'#7fe9ff',msg:'Der Kristallschlüssel! Im Stollen flammen die Kristalle auf.'}, K:{k:'door',item:'ckey',nm:'Kristalltor'},
+     b:{k:'note',p:'p8',art:'tablet'}, R:{k:'door',lock:'p8',set:'dig',nm:'Runentor'}, c:{k:'note',p:'p9',art:'sign'}, u:{k:'ward',p:'p9',who:'d'}, v:{k:'ward',p:'p9'},
+     x:{k:'pick',p:'p9',art:'ped'}, y:{k:'pick',p:'p9',art:'ped',alt:1}, F:{k:'door',flag:'p9',nm:'Ausgang'} },
+   zones:[{p:'p7',x:1,y:1,w:15,h:9,reset:[8,11],dark:1}],
+   puz:{ p7:{t:'maze',n:'Der dunkle Stollen',pre:'Eine vergilbte Karte des alten Stollens.',tip:'Wer die Karte lesen kann, darf nicht in den Stollen. Die anderen gehen hinein, beschreiben, was sie sehen, und lassen sich lotsen. Auf der Karte sind die Fallgruben und der Schlüssel eingezeichnet. Der Schlüssel öffnet das Kristalltor im Osten.'},
+     p8:{t:'runes',n:'Das Runentor',pre:'Eine Steintafel voller Runen.',tip:'Am Runentor ganz im Nordosten sehen manche vier leuchtende Runen. Andere können auf der Steintafel im Südosten ablesen, welche Rune für welche Ziffer steht. Beschreibt euch die Runen gegenseitig.'},
+     p9:{t:'twin',n:'Die Zwillingskammern',txt:'Zwei Kammern, fast gleich eingerichtet. Genau ein Sockel trägt ein anderes Zeichen als sein Zwilling in der anderen Kammer. Berührt diesen Sockel, egal in welcher Kammer.',ok:'Die Wand gleitet zur Seite. Der Ausgang ist frei!',no:'Der Sockel bebt. Das war der falsche.',tip:'Jeder Bannkreis lässt nur einen Teil der Crew durch. Vergleicht im Chat Sockel für Sockel, welche Zeichen ihr seht, bis ihr den Unterschied findet. Die Nummer steht dran, wenn ihr vor einem Sockel steht.'} } },
+ { name:'Das Geisterschiff', th:3, par:540, boat:1,
+   intro:'In einer Grotte liegt ein altes Schiff vor Anker. Es ist eure Chance, von der Insel zu kommen. Aber die Geister der Mannschaft haben es gut gesichert.',
+   leg:{ a:{k:'note',p:'p10',art:'book'}, w:{k:'ward',p:'p10'}, r:{k:'pick',p:'p10',art:'rope'}, A:{k:'door',flag:'p10',nm:'Luke'}, b:{k:'note',p:'p11',art:'book'},
+     1:{k:'cnt',p:'p11',kind:0}, 2:{k:'cnt',p:'p11',kind:1}, 3:{k:'cnt',p:'p11',kind:2}, 4:{k:'cnt',p:'p11',kind:3}, C:{k:'door',lock:'p11',set:'dig',nm:'Kapitänskajüte'},
+     L:{k:'lever',tog:'red'}, M:{k:'lever',tog:'blue'}, p:{k:'door',flag:'red',nm:'Rote Tür'}, q:{k:'door',flag:'red',inv:1,nm:'Rote Gegentür'}, s:{k:'door',flag:'blue',nm:'Blaue Tür'}, z:{k:'door',flag:'blue',inv:1,nm:'Blaue Gegentür'}, c:{k:'note',p:'p12',art:'sign'} },
+   puz:{ p10:{t:'ropes',n:'Die Takelage',pre:'Das Handbuch des Takelmeisters.',ok:'Das Segel rauscht herab und gibt die Luke frei!',no:'Das falsche Seil!',tip:'Im Takelraum hängen fünf farbige Seile. Nur eines darf gekappt werden. Welches, steht im Handbuch an Deck. Wer das Handbuch lesen kann, kommt nicht in den Takelraum, also beschreibt euch die Seile.'},
+     p11:{t:'count',n:'Die Kapitänskajüte',pre:'Die Ladeliste des Quartiermeisters.',tip:'Der Code hat vier Ziffern. Die Ladeliste im Gang sagt jedem, was er zählen soll. Zählt in den vier Laderäumen und tragt die Zahlen in der richtigen Reihenfolge zusammen. Die Tür ist ganz im Osten.'},
+     p12:{t:'pub',n:'Die Farbschleusen',txt:'Rote Türen hören auf den roten Hebel, blaue auf den blauen. Öffnen sich die einen, schließen sich die Gegentüren. Einer bleibt am Hebel, die anderen laufen.',solo:'Allein stehen die Gegentüren offen.',tip:'Einer bleibt am roten Hebel und schaltet, während die anderen Stück für Stück durch die obere Schleuse gehen. Drüben steht der blaue Hebel. Damit holt ihr den Letzten durch die untere Schleuse nach. Das Boot hängt ganz im Westen.'} } },
+ { name:'Der Vulkan', th:4, par:480, boat:1,
+   intro:'Der letzte Schatz der Insel liegt in der Kammer der vier Edelsteine, mitten im Vulkan. Holt ihn und verschwindet, bevor der Berg ausbricht.',
+   leg:{ a:{k:'note',p:'p13',art:'sign'}, p:{k:'plate',g:'pa'}, q:{k:'plate',g:'pb'}, b:{k:'door',flag:'pa',art:'bridge',fl:'~'}, c:{k:'door',flag:'pb',art:'bridge',fl:'~'},
+     n:{k:'note',p:'p14',art:'tablet'}, g:{k:'dial',p:'p14'}, h:{k:'check',p:'p14'}, D:{k:'door',flag:'p14',nm:'Tor der Schatzkammer'}, e:{k:'note',p:'p15',art:'sign'}, x:{k:'lever',sync:'p15',msg:'Das Tor zum Steg ist offen. Lauft!'}, F:{k:'door',flag:'p15',nm:'Tor zum Steg'} },
+   grp:{ pa:{}, pb:{} },
+   cd:{after:'p14',sec:45,back:[29,5],reset:'p15'},
+   puz:{ p13:{t:'pub',n:'Die Lavabrücken',txt:'Die Brücke fährt nur aus, solange jemand auf einer der beiden Steinplatten steht, die zu ihr gehören.',solo:'Allein bleiben die Platten unten.',tip:'Einer stellt sich auf die Platte, der andere geht über die Brücke und stellt sich drüben auf die zweite Platte. Dann kann der Erste nachkommen.'},
+     p14:{t:'gems',n:'Die vier Edelsteine',pre:'Eine Inschrift an der Wand der Schatzkammer. Jeder liest darin andere Zeilen.',ok:'Der Altar nimmt die Steine an. Das Tor im Osten öffnet sich!',tip:'Jeder liest in der Inschrift andere Hinweise. Tragt alle zusammen und überlegt, welcher Edelstein auf welchen Sockel gehört. Stellt die Steine ein und drückt erst dann den Altar.'},
+     p15:{t:'pub',n:'Die Flucht',txt:'Zwei Hebel, einer im Westen und einer im Osten der Halle. Zieht sie im selben Augenblick, dann öffnet sich das Tor zum Steg.',solo:'Allein reicht ein Hebel.',tip:'Sobald der Altar die Lösung annimmt, bricht der Vulkan aus. Lauft durch das Tor im Osten, zieht die beiden Hebel in der Halle gleichzeitig und rennt zum Boot.'} } }
+];
+
+/* ----- who knows what: every puzzle deals its hints to four roles, roles are spread over the players in the room ----- */
+const eIds = () => mode==='online' ? net.ids : [0];
+const eMe = () => mode==='online' ? net.myId : 0;
+const eSolo = () => eIds().length < 2;
+function eOwner(p,r){ const ids = eIds(); return ids[(r + E.sec[p].off) % ids.length]; }
+function eMy(p){ const id = eMe(), solo = eSolo(), roles = []; for(let r=0;r<4;r++) if(solo || eOwner(p,r)===id) roles.push(r);
+  const a = roles.includes(0), b = roles.includes(2); return {roles, solo, know:solo || a || b, half:solo || (a && b) ? 0 : a ? 1 : b ? 2 : 0}; }
+function eWard(o,id){ if(eSolo()) return false; const k = eOwner(o.p,0)===id || eOwner(o.p,2)===id; return o.who==='d' ? !k : k; }
+function eOpen(o){ const st = E.st; if(o.lock) return !!st.f[o.lock]; if(o.item) return !!st.v[o.i]; const f = !!st.f[o.flag]; return o.inv ? (eSolo() || !f) : f; }
+const eCntOn = o => E.sec[o.p].show[o.kind].has(o.n);
+const eLeverOn = o => o.tog ? !!E.st.f[o.tog] : o.sync ? E.st.v[o.i] > E.st.t : !!E.st.v[o.i];
+function ePlayers(){ const m = E.me, a = [{id:eMe(), x:m.x, y:m.y, face:m.face, anim:eAnim(m), hat:save.hat, fl:E.fall ? 1 : 0}]; for(const g of E.oth.values()) a.push(g); return a; }
+const ePos = id => id===eMe() ? E.me : E.oth.get(id);
+const eAnim = m => m.mv ? 1 + (Math.floor(m.walk) % 2) : 0;
+
+/* ----- build a chapter: map, objects, secrets (same seed gives the same secrets on every device) ----- */
+function eBuild(ci,seed){
+  const C = ECH[ci], rows = EMAPS[ci], H = rows.length, W = rows[0].length, g = rows.map(r => [...r]);
+  const M = {W,H,g,th:C.th,sol:new Uint8Array(W*H),at:new Int16Array(W*H).fill(-1),zone:new Int8Array(W*H).fill(-1),spawn:[],ex:[0,1e9,0,0]}, objs = [], cnt = {};
+  for(let y=0;y<H;y++) for(let x=0;x<W;x++){ const c = g[y][x], sp = C.leg[c];
+    if(c==='S'){ M.spawn.push([x,y]); g[y][x] = '.'; }
+    else if(c==='E'){ M.ex[0] += x*16+8; M.ex[1] = Math.min(M.ex[1], y*16); M.ex[3] = Math.max(M.ex[3], y*16+16); M.ex[2]++; }
+    else if(sp){ const n = cnt[c] = cnt[c]===undefined ? 0 : cnt[c]+1; objs.push(Object.assign({i:objs.length,c,n,tx:x,ty:y}, sp)); g[y][x] = sp.fl || '?'; } }
+  for(const o of objs) if(g[o.ty][o.tx]==='?'){ let f = '.'; for(const [dx,dy] of [[-1,0],[1,0],[0,-1],[0,1]]){ const q = (g[o.ty+dy] || [])[o.tx+dx]; if(q==='.' || q===',' || q===':'){ f = q; break; } } g[o.ty][o.tx] = f; }
+  const sec = {};
+  Object.keys(C.puz).forEach((p,k) => { const def = C.puz[p], r = mulberry32((seed ^ ((k+1)*40503 + ci*7919)) >>> 0), ri = n => Math.floor(r()*n);
+    const S = sec[p] = {off:ri(4)}, fn = EPZ[def.t] && EPZ[def.t].sec; if(fn) Object.assign(S, fn(r, ri, {g, objs, z:(C.zones || []).find(q => q.p===p)})); });
+  for(let y=0;y<H;y++) for(let x=0;x<W;x++){ const c = g[y][x]; M.sol[y*W+x] = c==='#' || c==='~' || c===' ' || c==='T' || c==='o' || c==='%' ? 1 : 0; }
+  for(const o of objs){ o.cx = o.tx*16+8; o.cy = o.ty*16+8; M.at[o.ty*W+o.tx] = o.i; }
+  (C.zones || []).forEach((z,zi) => { for(let y=z.y;y<z.y+z.h;y++) for(let x=z.x;x<z.x+z.w;x++) M.zone[y*W+x] = zi; });
+  if(M.ex[2]) M.ex[0] /= M.ex[2];
+  const st = {t:0,pen:0,f:{},v:objs.map(o => o.k==='dial' ? sec[o.p].init[o.n] : 0),q:{},inv:[],tips:{},cd:0,cdOn:0,done:0};
+  return {M,objs,sec,st};
+}
+function eStart(ci,seed,m,st0){
+  ensureAudio(); kart.on = false; mode = m; curGame = 'esc';
+  const B = eBuild(ci,seed); E.on = true; E.ch = ci; E.sel = ci; E.seed = seed; E.def = ECH[ci]; E.map = B.M; E.objs = B.objs; E.sec = B.sec; E.st = st0 || B.st;
+  E.oth.clear(); E.notes = []; E.cracks.clear(); E.toasts = []; E.target = -1; E.tick = 0; E.dirty = true; E.shake = 0; E.res = null; E.fall = 0; E.lock = null; E.reqT = 0;
+  const sp = B.M.spawn[Math.max(0, eIds().indexOf(eMe())) % B.M.spawn.length];
+  Object.assign(E.me, {x:sp[0]*16+8, y:sp[1]*16+13, face:1, walk:0, mv:false, dx:0, dy:-1});
+  state = 'esc'; show(null); eDlg(null);
+  if(document.activeElement && document.activeElement.blur) document.activeElement.blur();
+  last = performance.now(); acc = 0;
+  if(!st0) eSay(`Kapitel ${ci+1} · ${E.def.name}`, `<div>${E.def.intro}</div><div class="dim">${touchUI ? 'Laufen: Steuerfeld links. Ansehen und benutzen: Knopf rechts. Logbuch und Chat: Knöpfe oben rechts.' : 'Laufen: WASD oder Pfeiltasten. Ansehen und benutzen: E. Logbuch: Q.' + (m==='online' ? ' Chat: Enter.' : '')}</div>`
+    + (m==='online' ? '<div class="dim">Jeder von euch liest in Hinweisen etwas anderes. Sagt euch im Chat, was ihr seht.</div>' : '<div class="dim">Allein liest du alle Hinweise selbst. Online bekommt jeder nur einen Teil.</div>'));
+}
+function eGo(ci,m){ const seed = dbg.seed || ((Math.random()*2147483647)|0) + 1; if(m==='online' && net.role==='host') broadcast({t:'go',game:'esc',ch:ci,seed}); eStart(ci,seed,m); }
+
+/* ----- movement ----- */
+function eSolid(tx,ty){ const M = E.map; if(tx<0 || ty<0 || tx>=M.W || ty>=M.H) return true; const oi = M.at[ty*M.W+tx];
+  if(oi >= 0){ const o = E.objs[oi]; switch(o.k){ case 'door': return !eOpen(o); case 'ward': return eWard(o,eMe()); case 'plate': case 'item': return false; case 'cnt': return eCntOn(o); default: return true; } }
+  return !!M.sol[ty*M.W+tx]; }
+const ECORN = [[-4,-6],[4,-6],[-4,-0.5],[4,-0.5]];
+function eCan(nx,ny,ox,oy){
+  for(const [dx,dy] of ECORN){ const tx = Math.floor((nx+dx)/16), ty = Math.floor((ny+dy)/16); if(!eSolid(tx,ty)) continue;
+    let was = false; for(const [ex,ey] of ECORN) if(Math.floor((ox+ex)/16)===tx && Math.floor((oy+ey)/16)===ty){ was = true; break; }
+    if(!was) return false; }
+  return true;
+}
+function eCanUse(o){ const st = E.st; switch(o.k){ case 'note': return true; case 'door': return !eOpen(o) && o.art!=='bridge'; case 'lever': return !(o.set && st.v[o.i]) && !(o.sync && st.f[o.sync]);
+  case 'pick': return !st.v[o.i] && !st.f[o.p]; case 'seq': case 'dial': case 'check': return !st.f[o.p]; case 'ward': return !eSolo(); case 'item': return !st.v[o.i]; } return false; }
+function eLabel(o){ const st = E.st, S = o.p && E.sec[o.p];
+  switch(o.k){ case 'note': return 'Lesen'; case 'lever': return o.tog ? (o.tog==='red' ? 'Roter Hebel' : 'Blauer Hebel') : 'Hebel'; case 'ward': return 'Bannkreis'; case 'door': return (o.nm || 'Tor') + (o.lock ? ': Schloss' : '');
+    case 'pick': return o.art==='heap' ? 'Graben' : o.art==='rope' ? `Seil ${o.n+1}: ${ROPEC[S.cols[o.n]][0]}` : `Sockel ${o.n+1}: ${ESYM_N[o.alt && o.n===S.pos ? S.alt : S.syms[o.n]]}`;
+    case 'seq': return 'Totem: ' + ESYM_N[S.syms[o.n]]; case 'dial': return `Sockel ${o.n+1}: ${EGEM[st.v[o.i]][0]}`; case 'check': return 'Altar: Prüfen'; case 'item': return 'Nehmen'; } return ''; }
+function eStep(){
+  const me = E.me, M = E.map, st = E.st; E.tick++;
+  if(isAuth()) eHostTick(); else if(!st.done){ st.t++; if(st.cd > 0) st.cd--; }
+  if(state !== 'esc') return;
+  let ix = 0, iy = 0;
+  if(dbg.input){ const q = dbg.input(0) || {}; ix = (q.r ? 1 : 0) - (q.l ? 1 : 0); iy = (q.d ? 1 : 0) - (q.u ? 1 : 0); }
+  else if(!E.dlg){ const k = keys, t = touch[0];
+    ix = (k.KeyD || k.ArrowRight ? 1 : 0) - (k.KeyA || k.ArrowLeft ? 1 : 0) + (t.ax || 0); iy = (k.KeyS || k.ArrowDown ? 1 : 0) - (k.KeyW || k.ArrowUp ? 1 : 0) + (t.ay || 0);
+    try { const gp = navigator.getGamepads ? [...navigator.getGamepads()].filter(Boolean)[0] : null;
+      if(gp){ const ax = gp.axes[0] || 0, ay = gp.axes[1] || 0, b = !!(gp.buttons[0] && gp.buttons[0].pressed); if(Math.abs(ax) > 0.3) ix += ax; if(Math.abs(ay) > 0.3) iy += ay; if(b && !E.gpPrev) eInteract(); E.gpPrev = b; } } catch(e) {} }
+  const len = Math.hypot(ix,iy); if(len > 1){ ix /= len; iy /= len; }
+  if(len > 0.15){ if(Math.abs(ix) > Math.abs(iy)){ me.dx = ix > 0 ? 1 : -1; me.dy = 0; } else { me.dx = 0; me.dy = iy > 0 ? 1 : -1; } }
+  me.mv = len > 0.15 && !E.fall;
+  if(me.mv){ const vx = ix*1.35, vy = iy*1.35;
+    /* blocked while walking straight at a gap: slide a little towards it, so doorways are easy to hit */
+    if(vx){ if(eCan(me.x+vx,me.y,me.x,me.y)) me.x += vx; else if(Math.abs(iy) < 0.3) for(const k of [3,-3,6,-6]) if(eCan(me.x+vx,me.y+k,me.x,me.y) && eCan(me.x,me.y+Math.sign(k),me.x,me.y)){ me.y += Math.sign(k); break; } }
+    if(vy){ if(eCan(me.x,me.y+vy,me.x,me.y)) me.y += vy; else if(Math.abs(ix) < 0.3) for(const k of [3,-3,6,-6]) if(eCan(me.x+k,me.y+vy,me.x,me.y) && eCan(me.x+Math.sign(k),me.y,me.x,me.y)){ me.x += Math.sign(k); break; } }
+    if(Math.abs(ix) > 0.2) me.face = ix > 0 ? 1 : -1; me.walk += 0.14; } else me.walk = 0;
+  if(E.fall > 0){ if(--E.fall === 0){ me.x = E.fallTo[0]; me.y = E.fallTo[1]; } }
+  else { const tx = Math.floor(me.x/16), ty = Math.floor((me.y-3)/16), zi = M.zone[ty*M.W+tx];
+    if(zi >= 0){ const z = E.def.zones[zi]; if(!st.f[z.p] && E.sec[z.p].bad.has(tx+','+ty)){ E.fall = 30; E.fallTo = [z.reset[0]*16+8, z.reset[1]*16+13]; sfx.down(); if(isAuth()) eFell(eMe(),z.p,tx,ty); else send({t:'ef',p:z.p,x:tx,y:ty}); } } }
+  let best = -1, bd = 1e9;
+  for(const o of E.objs){ const dx = Math.abs(o.cx-me.x), dy = Math.abs(o.cy-(me.y-3));
+    if(o.k==='item'){ if(!st.v[o.i] && dx < 9 && dy < 9 && E.reqT < E.tick){ E.reqT = E.tick + 40; eReq(o.i); } continue; }
+    if(!((dx <= 21 && dy <= 9) || (dy <= 21 && dx <= 9))) continue;
+    const sc = dx+dy - ((o.cx-me.x)*me.dx + (o.cy-(me.y-3))*me.dy > 6 ? 16 : 0); if(sc >= bd || !eCanUse(o)) continue; bd = sc; best = o.i; }
+  E.target = best;
+  if(mode==='online' && E.tick % 5 === 0){ const a = [Math.round(me.x), Math.round(me.y), me.face, eAnim(me), save.hat, E.fall ? 1 : 0];
+    if(net.role==='host'){ const list = [[0].concat(a)]; for(const g of E.oth.values()) list.push([g.id, Math.round(g.nx), Math.round(g.ny), g.face, g.anim, g.hat, g.fl]); broadcast({t:'ep',p:list}); }
+    else send({t:'ep',s:a}); }
+  for(const g of E.oth.values()){ const dx = g.nx-g.x, dy = g.ny-g.y; if(Math.abs(dx)+Math.abs(dy) > 60){ g.x = g.nx; g.y = g.ny; } else { g.x += dx*0.3; g.y += dy*0.3; } }
+  for(const t of E.toasts) t.t--; if(E.toasts.length && E.toasts[0].t <= 0) E.toasts = E.toasts.filter(t => t.t > 0);
+  if(E.shake > 0) E.shake *= 0.9;
+}
+
+/* ----- host: plates, timers, exit, and every action a player asks for ----- */
+function eEv(ev,to){
+  if(to === undefined){ eOnEv(ev); if(net.role==='host') broadcast(Object.assign({t:'ev'}, ev)); }
+  else if(to === eMe()) eOnEv(ev);
+  else { const c = net.conns.get(to); try { if(c && c.open) c.send(Object.assign({t:'ev'}, ev)); } catch(e) {} }
+}
+function eOnEv(ev){
+  if(ev.k==='toast') eToast(ev.s, ev.c);
+  else if(ev.k==='sfx'){ if(sfx[ev.n]) sfx[ev.n](); }
+  else if(ev.k==='tp'){ if(ev.id === -1 || ev.id === eMe()){ const j = Math.max(0, eIds().indexOf(eMe())); E.me.x = (+ev.x || 0) + (j%2)*8 - 4; E.me.y = (+ev.y || 0); E.fall = 0; E.shake = 6; } }
+  else if(ev.k==='crack') E.cracks.add((ev.x|0)+','+(ev.y|0));
+  else if(ev.k==='lock') eLockRes(!!ev.ok);
+}
+function eToast(s,c){
+  const max = Math.max(24, Math.floor(VW/5.6)), lines = []; let cur = '';
+  for(const w of String(s).split(' ')){ if(cur && (cur+' '+w).length > max){ lines.push(cur); cur = w; } else cur = cur ? cur+' '+w : w; }
+  if(cur) lines.push(cur);
+  for(const l of lines) E.toasts.push({s:l, c:c || '#fff', t:300}); if(E.toasts.length > 5) E.toasts.splice(0, E.toasts.length-5);
+}
+const eWho = id => eSolo() ? 'Du bist' : `P${id+1} ist`;
+function eFell(id,p,tx,ty){ E.st.pen += EPEN.trap; E.dirty = true; eEv({k:'crack',x:tx|0,y:ty|0}); eEv({k:'toast',s:`${eWho(id)} eingebrochen! +${EPEN.trap} s`,c:'#ff8a7a'}); }
+function eTip(id,p){ const st = E.st; if(!E.def.puz[p] || st.tips[p] || st.done) return; st.tips[p] = 1; st.pen += EPEN.tip; E.dirty = true; eEv({k:'toast',s:`Tipp zu „${E.def.puz[p].n}“ steht jetzt im Logbuch. +${EPEN.tip} s`,c:'#ffd84a'}); if(E.dlg==='log') eLogOpen(); }
+function eHostTick(){
+  const st = E.st, C = E.def; if(st.done) return; st.t++;
+  const P = ePlayers(), solo = eSolo();
+  for(const o of E.objs) if(o.k==='plate'){ let on = solo && st.v[o.i] ? 1 : 0; if(!on) for(const p of P) if(Math.floor(p.x/16)===o.tx && Math.floor((p.y-3)/16)===o.ty){ on = 1; break; }
+    if(on !== st.v[o.i]){ st.v[o.i] = on; E.dirty = true; if(on) eEv({k:'sfx',n:'bonk'}); } }
+  for(const gk in (C.grp || {})){ const G = C.grp[gk]; let all = true, any = false; for(const o of E.objs) if(o.k==='plate' && o.g===gk){ if(st.v[o.i]) any = true; else all = false; }
+    const want = (G.latch && st.f[gk]) || (G.all ? all : any) ? 1 : 0;
+    if(want !== (st.f[gk] || 0)){ st.f[gk] = want; E.dirty = true; if(want && G.msg) eEv({k:'toast',s:G.msg,c:'#9bf07a'}); eEv({k:'sfx',n:want ? 'power' : 'bonk'}); } }
+  const cd = C.cd;
+  if(cd && st.f[cd.after]){
+    if(!st.cdOn){ st.cdOn = 1; st.cd = cd.sec*60; E.dirty = true; eEv({k:'toast',s:'Der Vulkan bricht aus! Alle zum Boot!',c:'#ff8a7a'}); eEv({k:'sfx',n:'hurt'}); }
+    else if(st.cd > 0 && --st.cd === 0){ st.pen += EPEN.late; st.cd = cd.sec*60; st.f[cd.reset] = 0; for(const o of E.objs) if(o.sync===cd.reset) st.v[o.i] = 0; E.dirty = true;
+      eEv({k:'tp',id:-1,x:cd.back[0]*16+8,y:cd.back[1]*16+13}); eEv({k:'toast',s:`Die Lava war schneller! Zurück zur Schatzkammer. +${EPEN.late} s`,c:'#ff8a7a'}); eEv({k:'sfx',n:'hurt'}); } }
+  if(st.t % 10 === 0){ const ids = eIds(); let n = 0; for(const id of ids){ const p = ePos(id); if(p && (E.map.g[Math.floor((p.y-3)/16)] || [])[Math.floor(p.x/16)]==='E') n++; } if(n && n === ids.length) return eWin(); }
+  if(net.role==='host' && (E.dirty || st.t % 60 === 0)) broadcast({t:'es',st});
+  E.dirty = false;
+}
+function eWin(){ const st = E.st; st.done = 1; const t = Math.round(st.t/60), res = {t, pen:st.pen, total:t+st.pen}; if(net.role==='host') broadcast({t:'ewin',res,st}); eShowWin(res); }
+function eReq(oi,v){ if(isAuth()) eAct(eMe(),oi,v); else send({t:'ea',o:oi,v}); }
+function eAct(id,oi,v){
+  const o = E.objs[oi], st = E.st, P = ePos(id); if(!o || !P || st.done || state !== 'esc') return;
+  if(Math.abs(P.x-o.cx) > 46 || Math.abs(P.y-3-o.cy) > 46) return;
+  const S = o.p ? E.sec[o.p] : null, def = o.p ? E.def.puz[o.p] : null;
+  const good = (s,n) => { if(s) eEv({k:'toast',s,c:'#9bf07a'}); eEv({k:'sfx',n:n || 'power'}); };
+  const bad = (s,pen) => { st.pen += pen; eEv({k:'toast',s:`${s} +${pen} s`,c:'#ff8a7a'}); eEv({k:'sfx',n:'hurt'}); };
+  switch(o.k){
+    case 'door':
+      if(eOpen(o)) return;
+      if(o.lock){ const code = E.sec[o.lock].code; if(!Array.isArray(v)) return; const ok = v.length===code.length && code.every((x,i) => (v[i]|0)===x);
+        if(ok){ st.f[o.lock] = 1; good(`${o.nm || 'Das Schloss'}: Das Schloss springt auf!`); } else bad('Falscher Code!', EPEN.lock);
+        eEv({k:'lock',ok:ok ? 1 : 0}, id); }
+      else if(o.item){ const j = st.inv.indexOf(o.item); if(j >= 0){ st.inv.splice(j,1); st.v[oi] = 1; good(`${ENAME[o.item]} passt. ${o.nm || 'Die Tür'} ist offen!`); } else eEv({k:'toast',s:`Verschlossen. Dafür braucht ihr: ${ENAME[o.item]}.`}, id); }
+      break;
+    case 'lever':
+      if(o.set){ if(st.v[oi]) return; st.v[oi] = 1; st.f[o.set] = 1; good(o.msg); }
+      else if(o.tog){ st.f[o.tog] = st.f[o.tog] ? 0 : 1; eEv({k:'sfx',n:'cp'}); }
+      else if(o.sync){ if(st.f[o.sync]) return; st.v[oi] = st.t + 90; let all = true; for(const q of E.objs) if(q.sync===o.sync && !(st.v[q.i] > st.t)) all = false;
+        if(all || eSolo()){ st.f[o.sync] = 1; for(const q of E.objs) if(q.sync===o.sync) st.v[q.i] = 1e9; good(o.msg); }
+        else { eEv({k:'sfx',n:'bonk'}); eEv({k:'toast',s:'Der Hebel springt gleich zurück. Der andere muss im selben Moment gezogen werden!'}, id); } }
+      break;
+    case 'pick':
+      if(st.v[oi] || st.f[o.p]) return;
+      if(o.n === S.pick){ st.v[oi] = 2; st.f[o.p] = 1; if(def.give) st.inv.push(def.give); good(def.ok); }
+      else { st.v[oi] = 1; bad(def.no || 'Falsch!', EPEN.pick); }
+      break;
+    case 'seq': {
+      if(st.f[o.p] || st.v[oi]) return; const k = st.q[o.p] || 0;
+      if(S.order[k] === o.n){ st.v[oi] = 1; st.q[o.p] = k+1; if(k+1 === S.order.length){ st.f[o.p] = 1; good(def.ok); } else eEv({k:'sfx',n:'coin'}); }
+      else { for(const q of E.objs) if(q.k==='seq' && q.p===o.p) st.v[q.i] = 0; st.q[o.p] = 0; bad('Falsche Reihenfolge! Alle Totems erlöschen.', EPEN.seq); }
+      break; }
+    case 'dial': if(st.f[o.p]) return; st.v[oi] = (st.v[oi]+1) % 4; eEv({k:'sfx',n:'coin'}); break;
+    case 'check': { if(st.f[o.p]) return; let ok = true; for(const q of E.objs) if(q.k==='dial' && q.p===o.p && st.v[q.i] !== S.sol[q.n]) ok = false;
+      if(ok){ st.f[o.p] = 1; good(def.ok); } else bad('Der Altar grollt. Das stimmt noch nicht.', EPEN.check); break; }
+    case 'item': if(st.v[oi]) return; st.v[oi] = 1; st.inv.push(o.id); if(o.p) st.f[o.p] = 1; good(o.msg || `${ENAME[o.id]} eingesteckt.`, 'gem'); break;
+    default: return;
+  }
+  E.dirty = true;
+}
+function eInteract(){
+  if(state !== 'esc' || E.dlg || E.fall) return; const o = E.objs[E.target]; if(!o) return;
+  if(o.k==='note') return eRead(o);
+  if(o.k==='ward') return eToast(eWard(o,eMe()) ? 'Ein Bannkreis. Dich lässt er nicht durch, andere aus deiner Crew schon.' : 'Ein Bannkreis. Dich lässt er durch, aber nicht jeden aus deiner Crew.');
+  if(o.k==='door' && o.lock) return eLockOpen(o);
+  if(o.k==='door' && !o.item) return eToast(o.flag==='red' || o.flag==='blue' ? `${o.nm}: Sie hört auf den ${o.flag==='red' ? 'roten' : 'blauen'} Hebel.` : 'Verschlossen. Kein Schloss zu sehen, irgendwo muss es einen Mechanismus geben.');
+  eReq(o.i);
+}
+function eGhost(id,a){ let g = E.oth.get(id); if(!g){ g = {id, x:+a[0] || 0, y:+a[1] || 0}; E.oth.set(id,g); }
+  g.nx = +a[0] || 0; g.ny = +a[1] || 0; g.face = a[2] < 0 ? -1 : 1; g.anim = Math.max(0, Math.min(2, a[3]|0)); g.hat = Math.max(0, Math.min(4, a[4]|0)); g.fl = a[5]|0; }
+function eHostMsg(id,m){
+  if(!E.on) return;
+  switch(m.t){
+    case 'ep': if(Array.isArray(m.s)) eGhost(id,m.s); break;
+    case 'ea': eAct(id, m.o|0, m.v); break;
+    case 'ef': if(E.def.puz[m.p] && !E.st.done) eFell(id, m.p, m.x, m.y); break;
+    case 'eh': eTip(id, String(m.p)); break;
+  }
+}
+function eClientMsg(m){
+  if(!E.on) return;
+  switch(m.t){
+    case 'ep': { if(!Array.isArray(m.p)) break; const seen = new Set(); for(const a of m.p){ if(a[0]===net.myId) continue; seen.add(a[0]); eGhost(a[0], a.slice(1)); } for(const id of [...E.oth.keys()]) if(!seen.has(id)) E.oth.delete(id); break; }
+    case 'es': if(m.st && typeof m.st==='object' && Array.isArray(m.st.v)){ E.st = m.st; if(E.dlg==='log') eLogOpen(); } break;
+    case 'ev': eOnEv(m); break;
+    case 'ewin': if(state==='esc' && m.res){ if(m.st && Array.isArray(m.st.v)) E.st = m.st; eShowWin(m.res); } break;
+  }
+}
+function eDrop(id){ E.oth.delete(id); E.dirty = true; if(state==='esc') eEv({k:'toast',s:`P${id+1} hat die Crew verlassen. Die Hinweise wurden neu verteilt, lest sie noch einmal.`,c:'#ffd84a'}); }
+function eJoined(id){ E.dirty = true; if(state==='esc') eEv({k:'toast',s:`P${id+1} ist an Bord. Die Hinweise wurden neu verteilt, lest sie noch einmal.`,c:'#ffd84a'}); }
+addEventListener('pagehide', () => { try { if(net.peer) net.peer.destroy(); } catch(e) {} });
+setInterval(() => { if(document.hidden && E.on && state==='esc' && net.role==='host') for(let i=0;i<60 && state==='esc';i++) eHostTick(); }, 1000);
+
+/* ----- rendering ----- */
+const ECOL = { key:'#e0a94a', ckey:'#7fe9ff' };
+const eSpr = (key,mk) => cache.get('eo'+key) || (a => sprite('eo'+key,a[0],a[1],a[2]))(mk());
+function eObjDraw(o,L,cx,cy){
+  const st = E.st, x = o.tx*16-cx, y = o.ty*16-cy, base = (o.ty+1)*16, S = o.p && E.sec[o.p];
+  const flat = (key,mk) => { const c = eSpr(key,mk); blit(c, x+(16-c.lw)/2, y+16-c.lh); };
+  const tall = (key,mk) => { const c = eSpr(key,mk); L.push([base-2, () => blit(c, x+(16-c.lw)/2, y+15-c.lh)]); };
+  switch(o.k){
+    case 'note': tall(o.art, () => EOA[o.art]); if(!E.notes.includes(o.p)) L.push([base, () => txt('!', x+8, y-9+Math.sin(E.tick*0.12)*1.5, 9, '#ffd84a', 'center')]); break;
+    case 'lever': { const on = eLeverOn(o), col = o.tog==='red' ? '#ff5a5a' : o.tog==='blue' ? '#4fa8ff' : '#ffc94a'; tall('lv'+(on ? 1 : 0)+col, () => EOA.lever(on,col)); break; }
+    case 'plate': { const dn = !!st.v[o.i]; flat('pl'+(dn ? 1 : 0), () => EOA.plate(dn)); break; }
+    case 'door': { const open = eOpen(o), col = o.flag==='red' ? '#e2483b' : o.flag==='blue' ? '#3f8fe6' : '#6b3f1b';
+      if(o.art==='bridge'){ if(open) flat('br', () => EOA.bridge); }
+      else if(open) tall('go'+col, () => EOA.gateOpen(col));
+      else { const ic = o.lock ? 'lock' : o.item ? 'key' : o.inv ? 'inv' : ''; tall('gc'+col+ic, () => EOA.gate(col,ic)); }
+      break; }
+    case 'ward': if(!eSolo()){ const mine = eWard(o,eMe()), ids = eIds().filter(id => eWard(o,id)); if(!ids.length) break;
+      L.push([base, () => { ctx.globalAlpha = (mine ? 0.32 : 0.16) + 0.08*Math.sin(E.tick*0.09); ctx.fillStyle = PCOL[ids[0] % 4]; ctx.fillRect(snap(x), snap(y-7), 16, 23);
+        for(let i=0;i<4;i++){ ctx.globalAlpha = Math.max(0.25, (mine ? 0.8 : 0.5) + 0.2*Math.sin(E.tick*0.11+i*1.7)); ctx.fillStyle = PCOL[ids[i % ids.length] % 4]; ctx.fillRect(snap(x+1+i*4), snap(y-7+1.5*Math.sin(E.tick*0.07+i*2)), 2, 21); } ctx.globalAlpha = 1; }]); } break;
+    case 'pick': { const v = st.v[o.i];
+      if(o.art==='heap') flat('hp'+v, () => EOA.heap(v));
+      else if(o.art==='rope'){ const ci = S.cols[o.n]; tall('rp'+ci+(v ? 1 : 0), () => EOA.rope(ROPEC[ci][1], !!v)); }
+      else { const si = o.alt && o.n===S.pos ? S.alt : S.syms[o.n]; tall('pd'+si+(v===1 ? 1 : 0), () => EOA.ped(si, v===1)); }
+      break; }
+    case 'seq': { const si = S.syms[o.n], lit = !!st.v[o.i]; tall('tt'+si+(lit ? 1 : 0), () => EOA.totem(si,lit)); break; }
+    case 'dial': { const v = st.v[o.i]; tall('gm'+v, () => EOA.gem(v)); break; }
+    case 'check': tall('al', () => EOA.altar); break;
+    case 'item': if(!st.v[o.i]){ const c = eSpr('ky'+o.col, () => EOA.key(o.col)); L.push([base, () => blit(c, x+1, y-1+Math.sin(E.tick*0.1)*1.5)]); } break;
+    case 'cnt': if(eCntOn(o)) tall('cn'+o.kind, () => EOA.cnt[o.kind]); break;
+  }
+}
+function eRender(){
+  const M = E.map, th = ETH[M.th], me = E.me, st = E.st, W = M.W, H = M.H, tk = E.tick;
+  ctx.setTransform(S,0,0,S,0,0); ctx.imageSmoothingEnabled = false; ctx.lineJoin = 'round'; ctx.lineCap = 'round'; ctx.globalAlpha = 1;
+  const mw = W*16, mh = H*16;
+  let cx = mw <= VW ? (mw-VW)/2 : Math.max(0, Math.min(mw-VW, me.x-VW/2)), cy = mh <= VH ? (mh-VH)/2 : Math.max(0, Math.min(mh-VH, me.y-12-VH/2));
+  const sh = st.cd > 0 && !st.done ? 1.3 : E.shake; if(sh > 0.3){ cx += (Math.random()-0.5)*sh; cy += (Math.random()-0.5)*sh; }
+  cx = snap(cx); cy = snap(cy);
+  ctx.fillStyle = th.void; ctx.fillRect(0,0,VW,VH);
+  const x0 = Math.max(0, Math.floor(cx/16)), x1 = Math.min(W-1, Math.floor((cx+VW)/16)), y0 = Math.max(0, Math.floor(cy/16)), y1 = Math.min(H-1, Math.floor((cy+VH)/16)+2), L = [];
+  const pulse = 0.5 + 0.5*Math.sin(tk*0.08);
+  for(let y=y0;y<=y1;y++) for(let x=x0;x<=x1;x++){ const c = M.g[y][x], px = x*16-cx, py = y*16-cy, v = (x*7 + y*13 + (x*y)%5) % 3;
+    if(c===' ') continue;
+    if(c==='#'){ blit(eWall(M.th, y+1 < H && M.g[y+1][x] !== '#', v), px, py); continue; }
+    if(c==='~'){ blit(eLiq(M.th, ((tk>>4)+x+y*2) & 3), px, py); if(y > 0 && M.g[y-1][x] !== '~' && M.g[y-1][x] !== '#'){ ctx.fillStyle = 'rgba(0,0,0,.28)'; ctx.fillRect(px,py,16,2); } continue; }
+    blit(eFloor(M.th, c===',' ? 1 : c===':' ? 2 : 0, v), px, py);
+    if(c==='T' || c==='o'){ const d = c==='T' ? th.tall : th.small, sp = eDecor(d[0],d[1]); L.push([(y+1)*16-2, () => blit(sp, px+8-sp.lw/2, py+15-sp.lh)]); }
+    else if(c==='E'){ ctx.fillStyle = `rgba(255,216,74,${0.22+0.2*pulse})`; ctx.fillRect(px,py,16,16); ctx.fillStyle = '#ffd84a'; ctx.fillRect(px+7,py+7,2,2); }
+  }
+  if(E.def.boat && M.ex[2]){ const c = eSpr('boat', () => EOA.boat); blit(c, M.ex[0]-cx-c.lw/2, (M.ex[1]+M.ex[3])/2-cy-c.lh/2); }
+  /* things lying on the floor: safe path, holes */
+  for(const z of (E.def.zones || [])){ const Z = E.sec[z.p], done = !!st.f[z.p];
+    if(Z.safe){ const my = eMy(z.p); if(done || my.know){ const list = Z.safeL || (Z.safeL = [...Z.safe].map(k => k.split(',').map(Number)));
+      for(const [x,y] of list){ if(x < x0 || x > x1 || y < y0 || y > y1) continue; if(!done && my.half && ((x-z.x <= 3) !== (my.half===1))) continue;
+        const px = x*16-cx, py = y*16-cy; ctx.fillStyle = done ? `rgba(120,240,140,${0.3+0.15*pulse})` : `rgba(255,216,74,${0.4+0.3*pulse})`; ctx.fillRect(px+2,py+2,12,12); ctx.fillStyle = done ? '#c9ffd0' : '#fff6c9'; ctx.fillRect(px+6,py+6,4,4); } } }
+    if(Z.pits && done) for(const [x,y] of Z.pits) E.cracks.add(x+','+y); }
+  for(const k of E.cracks){ const q = k.split(','), x = +q[0], y = +q[1]; if(x < x0 || x > x1 || y < y0 || y > y1) continue; const px = x*16-cx, py = y*16-cy; el(ctx,px+8,py+8.5,6.4,5.4); ctx.fillStyle = '#1a1220'; ctx.fill(); ctx.strokeStyle = 'rgba(0,0,0,.5)'; ctx.lineWidth = 1; ctx.stroke(); }
+  for(const o of E.objs){ if(o.tx < x0-1 || o.tx > x1+1 || o.ty < y0-1 || o.ty > y1+1) continue; eObjDraw(o,L,cx,cy); }
+  const online = mode==='online';
+  for(const p of ePlayers()){ if(p.x-cx < -30 || p.x-cx > VW+30 || p.y-cy < -10 || p.y-cy > VH+40) continue;
+    L.push([p.y, () => { const ci = p.id%4, hat = p.hat || 0, an = p.anim || 0, c = sprite(`p${ci}_${hat}_${an}`,22,24,g => pirateArt(g,ci,hat,an)), px = snap(p.x-cx), py = snap(p.y-cy);
+      el(ctx,px,py-0.5,5,1.7); ctx.fillStyle = 'rgba(0,0,0,.26)'; ctx.fill();
+      ctx.save(); ctx.translate(px,py); if(p.fl){ const k = p.id===eMe() ? Math.max(0.1, E.fall/30) : 0.5; ctx.translate(0,-8); ctx.rotate(tk*0.4); ctx.scale(k,k); ctx.translate(0,8); }
+      ctx.scale(p.face < 0 ? -1 : 1, 1); ctx.drawImage(c,-c.lw/2,-c.lh*23/24,c.lw,c.lh); ctx.restore();
+      if(online && !p.fl){ poly(ctx,[px-3,py-27,px+3,py-27,px,py-23.4]); ctx.fillStyle = PCOL[ci]; ctx.fill(); ctx.strokeStyle = OL; ctx.lineWidth = 0.7; ctx.stroke(); } }]); }
+  L.sort((a,b) => a[0]-b[0]); for(const q of L) q[1]();
+  /* darkness: only tiles near a pirate are lit */
+  for(const z of (E.def.zones || [])){ if(!z.dark || st.f[z.p]) continue; const P = ePlayers();
+    for(let y=Math.max(y0,z.y);y<=Math.min(y1,z.y+z.h-1);y++) for(let x=Math.max(x0,z.x);x<=Math.min(x1,z.x+z.w-1);x++){ let d = 1e9; for(const p of P){ const q = Math.hypot(p.x/16-(x+0.5),(p.y-3)/16-(y+0.5)); if(q < d) d = q; }
+      const a = d < 2.1 ? 0 : d < 2.9 ? 0.55 : d < 3.6 ? 0.85 : 1; if(a){ ctx.fillStyle = `rgba(8,7,18,${a})`; ctx.fillRect(x*16-cx,y*16-cy,16.05,16.05); } } }
+  if(M.ex[2]){ let n = 0; const ps = ePlayers(); for(const p of ps) if((M.g[Math.floor((p.y-3)/16)] || [])[Math.floor(p.x/16)]==='E') n++; const ex = M.ex[0]-cx, ey = Math.max(27, M.ex[1]-cy-7); if(ex > 20 && ex < VW-20 && M.ex[1]-cy > -40 && ey < VH-10) txt(ps.length > 1 ? `ZIEL ${n}/${ps.length}` : 'ZIEL', ex, ey, 8, '#ffd84a', 'center'); }
+  const o = E.objs[E.target];
+  if(o && !E.dlg && state==='esc'){ const h = o.k==='seq' ? 30 : o.k==='lever' || (o.k==='pick' && o.art==='heap') ? 17 : o.k==='item' ? 18 : 26, px = o.cx-cx, py = (o.ty+1)*16-cy-h, b = Math.sin(tk*0.15)*1.2;
+    txt((touchUI ? '' : 'E · ') + eLabel(o), px, py-9, 7.5, '#fff', 'center'); poly(ctx,[px-3,py-4+b,px+3,py-4+b,px,py-0.6+b]); ctx.fillStyle = '#ffd84a'; ctx.fill(); ctx.strokeStyle = OL; ctx.lineWidth = 0.7; ctx.stroke(); }
+  /* HUD */
+  const mid = VW/2; txt(fmt(Math.floor(st.t/60)), 6, 10, 9, '#fff'); let ix = 38;
+  if(st.pen){ txt('+'+fmt(st.pen), ix, 10.5, 7.5, '#ff8a7a'); ix += 36; }
+  for(const it of st.inv){ blit(eSpr('ky'+ECOL[it], () => EOA.key(ECOL[it])), ix, 3); ix += 16; }
+  if(online) txt(`P${eMe()+1}`, ix+2, 10.5, 8, PCOL[eMe()%4]);
+  let ty = 30;
+  if(st.cd > 0 && !st.done && state==='esc'){ const s = Math.ceil(st.cd/60); txt('LAVA IN '+s, mid, 27, 13, s <= 10 && (tk>>3)%2 ? '#fff' : '#ff5a5a', 'center'); ty = 46; }
+  E.toasts.forEach((t,i) => { ctx.globalAlpha = Math.min(1, t.t/30); txt(t.s, mid, ty+i*11, 8, t.c, 'center'); }); ctx.globalAlpha = 1;
+}
+
+/* ----- dialogs: reading, locks, logbook ----- */
+function eDlg(n){ E.dlg = n; $('eMsg').hidden = n!=='msg'; $('eLock').hidden = n!=='lock'; $('eLog').hidden = n!=='log'; if(n) for(const k in keys) keys[k] = false; }
+function eSay(title,html){ $('eMsgT').textContent = title; $('eMsgB').innerHTML = html; eDlg('msg'); }
+function eNoteHTML(p){
+  const def = E.def.puz[p], my = eMy(p), T = EPZ[def.t], lines = T && T.note ? T.note(E.sec[p],my,def) : [def.txt];
+  let h = (def.pre ? `<div><i>${def.pre}</i></div>` : '') + lines.filter(Boolean).map(l => `<div>${l}</div>`).join('');
+  if(my.solo && def.solo) h += `<div class="dim">${def.solo}</div>`;
+  if(!my.solo && T && T.split) h += '<div class="dim">Den Rest kennt nur deine Crew. Sprecht euch im Chat ab.</div>';
+  return h;
+}
+function eRead(o){ if(!E.notes.includes(o.p)) E.notes.push(o.p); sfx.coin(); eSay(E.def.puz[o.p].n, eNoteHTML(o.p)); }
+function eLogOpen(){
+  const st = E.st, C = E.def;
+  let h = `<div><b>Beutel:</b> ${st.inv.length ? st.inv.map(i => ENAME[i]).join(', ') : 'leer'}</div>`;
+  h += E.notes.length ? E.notes.map(p => `<div class="pg"><b>${C.puz[p].n}</b>${eNoteHTML(p)}</div>`).join('') : '<div class="dim">Noch keine Notizen. Alles, was du liest, landet hier.</div>';
+  h += `<div class="pg"><b>Tipps</b><div class="dim">Ein Tipp kostet ${EPEN.tip} Sekunden${eSolo() ? '' : ' für die ganze Crew'}.</div>` + Object.keys(C.puz).map(p => `<div>${st.f[p] ? '✓ ' : ''}<b>${C.puz[p].n}:</b> ${st.tips[p] ? C.puz[p].tip : `<button type="button" class="btn alt sm" data-tip="${p}">Tipp zeigen</button>`}</div>`).join('') + '</div>';
+  $('eLogB').innerHTML = h;
+  $('eLogB').querySelectorAll('[data-tip]').forEach(b => { b.onclick = () => { if(isAuth()) eTip(eMe(), b.dataset.tip); else send({t:'eh',p:b.dataset.tip}); }; });
+  eDlg('log');
+}
+function eLockOpen(o){
+  const Z = E.sec[o.lock], my = eMy(o.lock), sym = o.set==='sym'; E.lock = {o, code:[], len:Z.code.length, sym, wait:false};
+  $('eLockT').textContent = o.nm || 'Schloss';
+  $('eLockI').innerHTML = Z.runes ? (my.solo || !my.know ? `Über dem Schloss leuchten vier Runen, von links nach rechts:<br>${Z.runes.map(eRu).join(' ')}` : 'Über dem Schloss siehst du nur glatten Stein. <b>Jemand anderes aus deiner Crew sieht hier Runen.</b>')
+    : sym ? 'Vier Zeichen in der richtigen Reihenfolge.' : `${Z.code.length} Ziffern.`;
+  $('eLockM').textContent = '';
+  const K = $('eLockK'); K.innerHTML = ''; K.className = 'keys' + (sym ? '' : ' dig');
+  (sym ? [0,1,2,3,4,5,6,7] : [1,2,3,4,5,6,7,8,9]).forEach(v => { const b = document.createElement('button'); b.type = 'button'; b.className = 'kb';
+    if(sym) b.innerHTML = `<img class="sy" alt="" src="${eImg('s',v)}"><span>${ESYM_N[v]}</span>`; else b.textContent = v;
+    b.onclick = () => eLockKey(v); K.appendChild(b); });
+  eLockDraw(); eDlg('lock');
+}
+function eLockKey(v){ const L = E.lock; if(!L || L.wait) return; if(v === -1) L.code.pop(); else if(L.code.length < L.len) L.code.push(v); $('eLockM').textContent = ''; eLockDraw(); }
+function eLockDraw(){ const L = E.lock;
+  $('eLockS').innerHTML = Array.from({length:L.len}, (_,i) => `<span class="slot">${L.code[i]===undefined ? '' : L.sym ? `<img class="sy" alt="${ESYM_N[L.code[i]]}" src="${eImg('s',L.code[i])}">` : L.code[i]}</span>`).join('');
+  $('eLockOk').disabled = L.code.length < L.len; }
+function eLockSend(){ const L = E.lock; if(!L || L.code.length < L.len || L.wait) return; L.wait = true; eReq(L.o.i, L.code.slice()); setTimeout(() => { if(E.lock === L) L.wait = false; }, 1500); }
+function eLockRes(ok){ const L = E.lock; if(!L) return; L.wait = false; if(ok){ E.lock = null; if(E.dlg==='lock') eDlg(null); } else { L.code = []; eLockDraw(); $('eLockM').textContent = `Falscher Code! +${EPEN.lock} s`; } }
+function eKey(e){
+  /* returns true when the key press belongs to the escape game and nothing else should react to it */
+  if(E.dlg==='lock'){ const d = /^(?:Digit|Numpad)([1-9])$/.exec(e.code);
+    if(d && E.lock && !E.lock.sym) eLockKey(+d[1]); else if(e.code==='Backspace') eLockKey(-1); else if(e.code==='Enter' || e.code==='NumpadEnter') eLockSend(); else if(e.code==='Escape') eDlg(null); else return false;
+    return true; }
+  if(E.dlg){ if(['KeyE','Space','Enter','Escape','KeyQ'].includes(e.code)){ eDlg(null); return true; } return false; }
+  if(e.code==='KeyE' || e.code==='Space'){ eInteract(); return true; }
+  if(e.code==='KeyQ'){ eLogOpen(); return true; }
+  if(e.code==='Enter' && net.role !== 'off'){ chatFocus(); return true; }
+  return false;
+}
+function eShowWin(res){
+  E.res = res; state = 'ewin'; eDlg(null); sfx.win();
+  const C = E.def, stars = res.total <= C.par ? 3 : res.total <= C.par*1.5 ? 2 : 1, old = save.esc.best[E.ch], rec = !old || res.total < old;
+  if(rec) save.esc.best[E.ch] = res.total; save.esc.stars[E.ch] = Math.max(save.esc.stars[E.ch] || 0, stars); persist();
+  $('ewinTitle').textContent = E.ch >= ECH.length-1 ? 'IHR SEID ENTKOMMEN!' : 'KAPITEL GESCHAFFT!';
+  $('ewinText').textContent = `${C.name}: ${fmt(res.t)}` + (res.pen ? ` + ${fmt(res.pen)} Strafzeit = ${fmt(res.total)}` : '') + `  ${'★'.repeat(stars)}${'☆'.repeat(3-stars)}`;
+  $('ewinExtra').textContent = (rec ? 'Neue Bestzeit! ' : '') + (stars < 3 ? `Drei Sterne gibt es unter ${fmt(C.par)}. ` : '') + (E.ch >= ECH.length-1 ? 'Die Insel versinkt hinter euch im Rauch. ' : '') + (!isAuth() ? 'Warte auf den Host …' : '');
+  $('eNextBtn').hidden = !isAuth() || E.ch >= ECH.length-1; $('eAgainBtn').hidden = !isAuth();
+  show('ewinOv');
+}
+
+/* ----- chat (online only) ----- */
+function chatVis(){
+  const on = net.role !== 'off' && ((E.on && (state==='esc' || state==='ewin')) || !$('lobbyOv').hidden), esc = E.on && state==='esc';
+  $('chat').hidden = !on; $('chatBtn').hidden = !on; stage.classList.toggle('net', on); $('logBtn').hidden = !esc; $('eRestart').hidden = !(E.on && isAuth());
+  if(!on) $('chat').classList.remove('open');
+}
+function chatAdd(id,s){
+  const L = $('chatLog'), d = document.createElement('div'), b = document.createElement('b'); b.style.color = PCOL[id%4]; b.textContent = `P${id+1}: `;
+  d.appendChild(b); d.appendChild(document.createTextNode(s)); L.appendChild(d); while(L.children.length > 40) L.removeChild(L.firstChild); L.scrollTop = 1e6;
+  setTimeout(() => d.classList.add('old'), 15000); if(id !== net.myId) tone(880,1175,0.07,'square',0.03);
+}
+function chatSend(s){ s = String(s).replace(/\s+/g,' ').trim().slice(0,140); if(!s || net.role==='off') return; chatAdd(net.myId,s); if(net.role==='host') broadcast({t:'ch',id:0,s}); else send({t:'ch',s}); }
+function chatFocus(){ $('chat').classList.add('open'); $('chatLog').scrollTop = 1e6; $('chatIn').focus(); }
+function chatClose(){ $('chat').classList.remove('open'); $('chatIn').blur(); }
+$('chatIn').addEventListener('keydown', e => { e.stopPropagation(); if(e.key==='Enter'){ chatSend($('chatIn').value); $('chatIn').value = ''; if(!touchUI) chatClose(); } else if(e.key==='Escape') chatClose(); });
+$('chatIn').addEventListener('focus', () => { for(const k in keys) keys[k] = false; });
+$('chatGo').onclick = () => { chatSend($('chatIn').value); $('chatIn').value = ''; };
+$('chatBtn').onclick = () => { if($('chat').classList.contains('open')) chatClose(); else chatFocus(); $('chatBtn').blur(); };
+['Ja','Nein','Warte','Komm her','Hilfe','3','2','1','Jetzt!'].forEach(q => { const b = document.createElement('button'); b.type = 'button'; b.className = 'qc'; b.textContent = q; b.onclick = () => chatSend(q); $('chatQ').appendChild(b); });
+cvs.addEventListener('pointerdown', () => { if($('chat').classList.contains('open')) chatClose(); });
+
+/* ----- touch controls: a stick on the left, one button on the right ----- */
+function eFillPads(){
+  const L = $('padL'), R = $('padR'); L.innerHTML = ''; R.innerHTML = ''; L.classList.remove('duo'); R.classList.remove('duo'); L.dataset.p = R.dataset.p = 0;
+  const s = document.createElement('div'); s.className = 'stick'; s.innerHTML = '<i></i>'; const knob = s.firstChild;
+  const mv = e => { const r = s.getBoundingClientRect(), dx = (e.clientX-r.left-r.width/2)/(r.width/2), dy = (e.clientY-r.top-r.height/2)/(r.height/2), l = Math.hypot(dx,dy), k = l > 1 ? 1/l : 1;
+    touch[0].ax = l < 0.22 ? 0 : dx*k; touch[0].ay = l < 0.22 ? 0 : dy*k; knob.style.transform = `translate(${dx*k*62}%,${dy*k*62}%)`; };
+  const up = () => { s.classList.remove('on'); touch[0].ax = touch[0].ay = 0; knob.style.transform = ''; };
+  s.addEventListener('pointerdown', e => { e.preventDefault(); ensureAudio(); try { s.setPointerCapture(e.pointerId); } catch(_) {} s.classList.add('on'); mv(e); });
+  s.addEventListener('pointermove', e => { if(s.classList.contains('on')) mv(e); });
+  ['pointerup','pointercancel','lostpointercapture'].forEach(ev => s.addEventListener(ev, up)); s.addEventListener('contextmenu', e => e.preventDefault());
+  L.appendChild(s);
+  const b = document.createElement('button'); b.type = 'button'; b.className = 'tb'; b.setAttribute('aria-label','Ansehen und benutzen'); b.innerHTML = '<svg viewBox="0 0 24 24"><path d="M9 2h3v9h1V4h3v8h1V7h3v9c0 3.300-2.200 6-5.500 6H12c-2 0-3.400-.8-4.600-2.200L3 14.500l1.800-1.800L9 15z"/></svg>';
+  b.addEventListener('pointerdown', e => { e.preventDefault(); ensureAudio(); b.classList.add('on'); if(E.dlg==='msg' || E.dlg==='log') eDlg(null); else eInteract(); });
+  ['pointerup','pointercancel','pointerleave'].forEach(ev => b.addEventListener(ev, () => b.classList.remove('on'))); b.addEventListener('contextmenu', e => e.preventDefault());
+  R.appendChild(b);
+}
+
+/* ----- menus ----- */
+function eUpdMenu(){ const C = ECH[E.sel], b = save.esc.best[E.sel], s = save.esc.stars[E.sel] || 0;
+  $('ecName').textContent = `Kapitel ${E.sel+1} · ${C.name}`;
+  $('ecInfo').textContent = (b ? `Bestzeit ${fmt(b)} ${'★'.repeat(s)}${'☆'.repeat(3-s)}` : 'Noch nicht geschafft') + ` · drei Sterne unter ${fmt(C.par)}`; }
+$('ecPrev').onclick = () => { E.sel = (E.sel+ECH.length-1) % ECH.length; eUpdMenu(); };
+$('ecNext').onclick = () => { E.sel = (E.sel+1) % ECH.length; eUpdMenu(); };
+$('e1').onclick = () => eGo(E.sel,'solo');
+$('eOn').onclick = () => openOnline('esc','escOv');
+$('eNextBtn').onclick = () => eGo(Math.min(ECH.length-1, E.ch+1), mode);
+$('eAgainBtn').onclick = () => eGo(E.ch, mode);
+$('eMenuBtn').onclick = quit;
+$('eRestart').onclick = () => { if(!E.on || !isAuth()) return; resume(); eGo(E.ch, mode); };
+$('eMsgOk').onclick = () => eDlg(null);
+$('eLogX').onclick = () => eDlg(null);
+$('eLockX').onclick = () => eDlg(null);
+$('eLockDel').onclick = () => eLockKey(-1);
+$('eLockOk').onclick = eLockSend;
+$('logBtn').onclick = () => { if(E.dlg==='log') eDlg(null); else if(state==='esc' && !E.dlg) eLogOpen(); $('logBtn').blur(); };
+
+/* ----- start page: pick a game ----- */
+const HOME = { jump:'menu', kart:'kartOv', esc:'escOv' };
+let onFrom = 'hubOv';
+function goHome(g){ curGame = g; lobbyGame = g; if(g==='kart') kUpdMenu(); else if(g==='esc') eUpdMenu(); else updMenu(); show(HOME[g]); }
+function openOnline(g,from){ lobbyGame = g; onFrom = from; onMsg(onGithub ? 'Einer erstellt den Raum, die anderen geben den Code ein.' : 'Hinweis: Online klappt nur in der GitHub-Pages-Version, nicht hier in der Vorschau.'); show('onlineOv'); }
+$('gJump').onclick = () => goHome('jump');
+$('gKart').onclick = () => goHome('kart');
+$('gEsc').onclick = () => goHome('esc');
+$('hubOn').onclick = () => openOnline(curGame,'hubOv');
+function hubArt(){
+  const put = (id,c) => { const g = $(id).querySelector('canvas').getContext('2d'); g.imageSmoothingEnabled = false; g.clearRect(0,0,96,64); g.drawImage(c,0,0); };
+  const at = (g,x,y,fn,sx) => { g.save(); g.translate(x,y); if(sx) g.scale(sx,1); fn(g); g.restore(); };
+  put('gJump', pixelize(96,64,g => { g.fillStyle = '#6ec6f5'; g.fillRect(0,0,96,64); g.fillStyle = '#bfeeff'; g.fillRect(0,30,96,10); g.fillStyle = '#2b86d6'; g.fillRect(0,40,96,10); g.fillStyle = '#d6f3ff'; g.fillRect(0,40,96,1);
+    el(g,80,11,6); g.fillStyle = '#fff8cf'; g.fill(); g.fillStyle = '#cf9456'; g.fillRect(0,50,96,14); g.fillStyle = '#f7dd8f'; g.fillRect(0,48,96,5); g.fillStyle = '#8a5a2e'; g.fillRect(0,48,96,0.8);
+    at(g,14,25,q => pirateArt(q,0,0,1)); at(g,64,35.4,q => ART.crab.d(q,0)); at(g,42,10,q => TILE['?'](q)); at(g,24,6,q => TILE.coin(q)); }));
+  put('gEsc', pixelize(96,64,g => { g.fillStyle = '#f1d58a'; g.fillRect(0,0,96,64); const r = mulberry32(5); for(let i=0;i<40;i++){ el(g,r()*96,20+r()*44,0.6+r(),0.5+r()*0.6); g.fillStyle = i%2 ? '#e2bf6a' : '#f9e6ad'; g.fill(); }
+    g.fillStyle = '#b8a58c'; g.fillRect(0,0,96,13); g.fillStyle = '#7d6b58'; g.fillRect(0,13,96,6); g.fillStyle = OL; g.fillRect(0,12.4,96,0.8);
+    g.fillStyle = '#f1d58a'; g.fillRect(39,0,18,19); at(g,40,-4,q => EOA.gate('#6b3f1b','lock')[2](q));
+    at(g,6,40,q => EOA.bottle[2](q)); at(g,70,16,q => EOA.lever(false,'#ffc94a')[2](q)); at(g,60,44,q => EOA.plate(false)[2](q));
+    at(g,20,26,q => pirateArt(q,0,0,0)); at(g,90,32,q => pirateArt(q,1,2,0),-1); at(g,44,36,q => EOA.key('#ffd84a')[2](q)); }));
+  const c = document.createElement('canvas'); c.width = 96; c.height = 64; const main = ctx, L = [];
+  ctx = c.getContext('2d'); ctx.imageSmoothingEnabled = false; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
+  try { ctx.fillStyle = '#3fa9f0'; ctx.fillRect(0,0,96,22); ctx.fillStyle = '#bfeeff'; ctx.fillRect(0,14,96,8); ctx.fillStyle = '#59b08f'; poly(ctx,[0,22,22,12,46,20,70,10,96,22]); ctx.fill();
+    ctx.fillStyle = '#f1d58a'; ctx.fillRect(0,22,96,42); ctx.fillStyle = '#6a6e82'; poly(ctx,[30,22,66,22,96,64,0,64]); ctx.fill(); ctx.fillStyle = '#fff'; for(let i=0;i<4;i++){ const y = 26+i*i*4; ctx.fillRect(47-i*0.4,y,2+i*0.8,3+i*2); }
+    const k = {id:0,x:0,y:0,a:2.6,drift:0,spin:0,hop:0,star:0,boost:0,anchor:0,shield:false,off:false,v:0,dT:0,human:true,ch:0,veh:0};
+    kParts(L,k,(wx,wy,wz) => { const fd = wx+40, sc = 72/fd; return [48+wy*sc, 22+(13-wz)*sc, sc, fd]; },0,true); L.sort((a,b) => b[0]-a[0]); for(const s of L) s[1](); }
+  catch(e) {} finally { ctx = main; }
+  put('gKart', c);
+}
+
 /* ================= Main loop ================= */
-toMenu();
+hubArt();
+toMenu(true);
 last = performance.now();
 function frame(now){
   const dt = Math.min(0.1, (now - last)/1000); last = now;
   if(!dbg.manual){
     if(state === 'play'){ acc += dt; while(acc >= 1/60 && state === 'play'){ step(); acc -= 1/60; } }
     else if(state === 'kart'){ acc += dt; while(acc >= 1/60 && state === 'kart'){ kStep(); acc -= 1/60; } }
+    else if(state === 'esc'){ acc += dt; while(acc >= 1/60 && state === 'esc'){ eStep(); acc -= 1/60; } }
     else if(state === 'menu'){ menuT += dt; tick++;
       camX = (Math.sin(menuT*0.08 - Math.PI/2)*0.5 + 0.5) * Math.max(0, LW*T - VW);
       enemies.forEach(e => e.walk += 0.05); }
     else if(state === 'win') tick++;
   }
   if(state !== 'kart' && kEng) kEngine(0,false);
-  if(kart.on) kRender(); else render();
+  if(kart.on) kRender(); else if(E.on) eRender(); else render();
   if(!$('kartOv').hidden) kPreview();
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);
-if(dbg.on) window.HOP = { kart, kStart, kStep, kAI, kBuild, KTRACKS, KTH, KCHAR, KVEH, gen:genLevel, start:startLevel, step:n => { for(let i=0;i<n;i++) step(); }, solidAt, gen:genLevel, dbg, net, save, authDmg, ART, E_DEF, BOSS,
+if(dbg.on) window.HOP = { E, ECH, EMAPS, EPZ, eStart, eStep, eAct, eReq, eSolid, eCan, eOpen, eWard, eMy, eOwner, eIds, eMe, eInteract, eNoteHTML, eHostTick, eBuild, eLogOpen, eDlg, eLabel, eCanUse, ePlayers, chatSend, getState:() => state, kart, kStart, kStep, kAI, kBuild, KTRACKS, KTH, KCHAR, KVEH, gen:genLevel, start:startLevel, step:n => { for(let i=0;i<n;i++) step(); }, solidAt, gen:genLevel, dbg, net, save, authDmg, ART, E_DEF, BOSS,
   get:() => ({state,players,enemies,items,shots,ghosts,LW,goalX,grid,tick,curLevel,gemMask,arena,VW,S,gemPos}) };
 })();
 </script>
