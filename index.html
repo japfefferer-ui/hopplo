@@ -2164,7 +2164,7 @@ function kStart(ti,cls,m){
             lap:0,idx:i,prog:i-tr.N,rank:j+1,finished:false,finT:0,lane:((j%3)-1)*0.3,laneT:0,skill:human ? 1 : 0.9+((id*37)%10)/100+cls*0.012,rb:1,wrong:0,pre:0,ownT:0,slip:0,lost:0,resc:0,off:false,sk:null,nx:x,ny:y,na:a};
   });
   K.views = K.karts.filter(k => k.ctrl==='local');
-  K.skids = []; K.objs = []; K.pt = []; K.boomed = new Set(); K.boxes = tr.boxes.map(b => ({x:b.x,y:b.y,t:0})); K.tick = 0; K.cd = 230; K.t = 0; K.res = null; K.firstFin = 0; K.hidden.clear(); K.lastLap = 0;
+  K.skids = []; K.objs = []; K.pt = []; K.boomed = new Set(); K.sq = 0; K.lastQ = -1; K.hostRank = null; K.lastKs = performance.now(); K.skipped = 0; K.boxes = tr.boxes.map(b => ({x:b.x,y:b.y,t:0})); K.tick = 0; K.cd = 230; K.t = 0; K.res = null; K.firstFin = 0; K.hidden.clear(); K.lastLap = 0;
   nextId = 1000; state = 'kart'; K.on = true; show(null);
   if(document.activeElement && document.activeElement.blur) document.activeElement.blur();
   last = performance.now(); acc = 0;
@@ -2383,13 +2383,20 @@ function kStep(){
   K.objs = K.objs.filter(o => !o.dead && !K.hidden.has(o.id));
   for(const k of K.karts) kFxKart(k);
   kPartStep();
-  const ord = K.karts.slice().sort((a,b) => (a.finished && b.finished) ? a.finT-b.finT : a.finished ? -1 : b.finished ? 1 : b.prog-a.prog);
+  /* Remote karts are shown where they were a moment ago, so their progress is moved on by the time since their last update */
+  const kNow = performance.now(), kSpp = tr.len / tr.N, kAdv = k => (k.ctrl==='remote' && k.kAt && !k.finished) ? Math.min(0.4, (kNow - k.kAt)/1000) * Math.max(0,k.v) * 60 / kSpp : 0;
+  const ord = K.karts.slice().sort((a,b) => (a.finished && b.finished) ? a.finT-b.finT : a.finished ? -1 : b.finished ? 1 : (b.prog+kAdv(b)) - (a.prog+kAdv(a)));
   ord.forEach((k,i) => { k.rank = i+1; });
+  /* Online the host's order is the one everybody shows, so two players can never both see themselves in front */
+  if(net.role==='client' && K.hostRank && kNow - K.lastKs < 2500) K.hostRank.forEach((id,i) => { const k = K.karts.find(q => q.id===id); if(k) k.rank = i+1; });
   if(K.tick % 30 === 0){ const hp = Math.max(...K.karts.filter(k => k.human).map(k => k.prog));
     for(const k of K.karts) if(k.ctrl==='ai'){ const df = k.prog - hp; k.rb = df > 50 ? 0.94 : df < -60 ? 1.05 : 1; } }
   if(K.tick % 3 === 0){
-    if(net.role==='host') broadcast({t:'ks', k:K.karts.map(kPack), o:K.objs.map(o => [o.id, Math.max(0,KOT.indexOf(o.type)), Math.round(o.x), Math.round(o.y), o.owner, o.age|0]), b:K.boxes.map((b,i) => b.t > 0 ? i : -1).filter(i => i >= 0)});
-    else if(net.role==='client' && K.views[0]) send({t:'kp', s:kPack(K.views[0])});
+    if(net.role==='host'){
+      const m = {t:'ks', q:++K.sq, r:ord.map(k => k.id), k:K.karts.map(kPack), o:K.objs.map(o => [o.id, Math.max(0,KOT.indexOf(o.type)), Math.round(o.x), Math.round(o.y), o.owner, o.age|0]), b:K.boxes.map((b,i) => b.t > 0 ? i : -1).filter(i => i >= 0)};
+      for(const [id,c] of net.conns) if(K.karts.some(k => k.id===id && k.human)) kSendLatest(c,m);
+    }
+    else if(net.role==='client' && K.views[0]) kSendLatest(net.hostConn, {t:'kp', q:++K.sq, s:kPack(K.views[0])});
   }
   const me = K.views[0];
   kEngine(me ? me.v : 0, racing && !K.res);
@@ -2399,17 +2406,27 @@ function kStep(){
 }
 
 /* ----- kart networking ----- */
+/* State updates only matter while they are fresh. If the line is too slow, data piles up in the send buffer and everything arrives later and later;
+   so while the buffer is full the update is skipped (the next one replaces it anyway). */
+function kSendLatest(c,m){
+  try {
+    if(!c || !c.open) return;
+    const dc = c.dataChannel;
+    if(dc && typeof dc.bufferedAmount === 'number' && dc.bufferedAmount > 6000){ kart.skipped++; return; }
+    c.send(m);
+  } catch(e) {}
+}
 const kPack = k => [k.id, Math.round(k.x), Math.round(k.y), +k.a.toFixed(2), +k.v.toFixed(1),
   (k.spin>0?1:0) | (k.boost>0?2:0) | (k.star>0?4:0) | (k.anchor>0?8:0) | (k.shield?16:0) | (k.finished?32:0) | (k.drift<0?64:0) | (k.drift>0?128:0), k.lap, k.idx, k.finT];
 function kUnpack(k,a){
   k.nx = +a[1] || 0; k.ny = +a[2] || 0; k.na = +a[3] || 0; k.v = +a[4] || 0; const f = a[5] | 0;
   k.spin = f&1 ? 5 : 0; k.boost = f&2 ? 5 : 0; k.star = f&4 ? 5 : 0; k.anchor = f&8 ? 5 : 0; k.shield = !!(f&16); k.finished = !!(f&32); k.drift = f&64 ? -1 : f&128 ? 1 : 0;
-  k.lap = a[6] | 0; k.idx = Math.max(0, Math.min(kart.tr.N-1, a[7] | 0)); k.finT = a[8] | 0; k.prog = (k.lap-1)*kart.tr.N + k.idx;
+  k.lap = a[6] | 0; k.idx = Math.max(0, Math.min(kart.tr.N-1, a[7] | 0)); k.finT = a[8] | 0; k.prog = (k.lap-1)*kart.tr.N + k.idx; k.kAt = performance.now();
 }
 function kHostMsg(id,m){
   const K = kart, k = K.karts.find(q => q.id===id); if(!k || k.ctrl!=='remote') return;
   switch(m.t){
-    case 'kp': if(Array.isArray(m.s)){ const was = k.finished; kUnpack(k,m.s); if(k.finished && !was && !K.firstFin) K.firstFin = K.t; } break;
+    case 'kp': if(Array.isArray(m.s)){ if(m.q !== undefined){ if((m.q|0) <= (k.kq ?? -1)) break; k.kq = m.q|0; } const was = k.finished; kUnpack(k,m.s); if(k.finished && !was && !K.firstFin) K.firstFin = K.t; } break;
     case 'ku': if(m.it==='anchor') kAnchor(k); else if(m.it==='ink') kInk(k);
       else if(['peel','nut','peel3','keg','ball'].includes(m.it)) kObjs(m.it,{x:+m.x||0, y:+m.y||0, a:+m.a||0}).forEach(o => { o.owner = id; o.idx = Math.max(0,Math.min(K.tr.N-1,m.idx|0)); kSpawn(o); }); break;
     case 'kx': { const o = K.objs.find(q => q.id===m.id); if(o){ o.dead = true; if(o.type==='keg') kBoom(o); } break; }
@@ -2421,6 +2438,8 @@ function kHostMsg(id,m){
 function kClientMsg(m){
   const K = kart; if(!K.on || !K.tr) return;
   if(m.t==='ks'){
+    if(m.q !== undefined){ if((m.q|0) <= K.lastQ) return; K.lastQ = m.q|0; }
+    K.lastKs = performance.now(); if(Array.isArray(m.r)) K.hostRank = m.r.map(x => x|0);
     for(const a of m.k){ const k = K.karts.find(q => q.id===a[0]); if(k && k.ctrl==='remote') kUnpack(k,a); }
     const map = new Map(K.objs.map(o => [o.id,o]));
     K.objs = m.o.filter(a => !K.hidden.has(a[0])).map(a => { const o = map.get(a[0]) || {id:a[0], type:KOT[a[1]|0] || 'peel', x:a[2], y:a[3], owner:a[4]}; o.nx = a[2]; o.ny = a[3]; o.age = a[5]|0; return o; });
@@ -2669,6 +2688,7 @@ function kView(k,vx,vy,vw,vh){
   const n = K.karts.length;
   txt(String(k.rank), vx+8*u, vy+17*u, 24*u, k.rank===1 ? '#ffd84a' : '#fff'); txt('/' + n, vx+25*u, vy+21*u, 9*u, '#fff');
   txt(`Runde ${Math.max(1,Math.min(KLAPS,k.lap))}/${KLAPS}`, vx+8*u, vy+37*u, 8.5*u, '#fff'); txt(fmtT(k.finished ? k.finT : K.t), vx+8*u, vy+48*u, 7.5*u, '#ffe08a');
+  if(net.role==='client' && !K.res && performance.now() - K.lastKs > 1500) txt('Verbindung wackelt …', vx+8*u, vy+59*u, 7.5*u, '#ffb347');
   const bx = vcx-13*u, by = vy+5*u; rr(ctx,bx,by,26*u,26*u,6*u); ctx.fillStyle = 'rgba(20,18,36,.6)'; ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.4*u; ctx.stroke();
   const it = k.roll > 0 ? KIK[(K.tick>>2) % KIK.length] : k.item; if(it) kIcon(it,vcx,by+13*u,20*u,k.chg || 3);
   if(k.item && k.roll <= 0) txt(KITEM[k.item], vcx, by+34*u, 6.5*u, '#fff', 'center');
@@ -3641,7 +3661,7 @@ function frame(now){
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);
-if(dbg.on) window.HOP = { E, ECH, EMAPS, EPZ, eStart, eStep, eAct, eReq, eSolid, eCan, eOpen, eWard, eMy, eOwner, eIds, eMe, eInteract, eNoteHTML, eHostTick, eBuild, eLogOpen, eDlg, eLabel, eCanUse, ePlayers, chatSend, getState:() => state, kart, kStart, kStep, kAI, kBuild, KTRACKS, kUse, kRoll, kBoom, kInk, kHit, kTileGrid, kThumb, pName, cleanName, escH, showLobby, lobState, kdr, KITEM, KIK, KDR, KTH, KCHAR, KVEH, gen:genLevel, start:startLevel, step:n => { for(let i=0;i<n;i++) step(); }, solidAt, gen:genLevel, dbg, net, save, authDmg, ART, E_DEF, BOSS,
+if(dbg.on) window.HOP = { E, ECH, EMAPS, EPZ, eStart, eStep, eAct, eReq, eSolid, eCan, eOpen, eWard, eMy, eOwner, eIds, eMe, eInteract, eNoteHTML, eHostTick, eBuild, eLogOpen, eDlg, eLabel, eCanUse, ePlayers, chatSend, getState:() => state, kart, kStart, kStep, kAI, kBuild, KTRACKS, kSendLatest, kUse, kRoll, kBoom, kInk, kHit, kTileGrid, kThumb, pName, cleanName, escH, showLobby, lobState, kdr, KITEM, KIK, KDR, KTH, KCHAR, KVEH, gen:genLevel, start:startLevel, step:n => { for(let i=0;i<n;i++) step(); }, solidAt, gen:genLevel, dbg, net, save, authDmg, ART, E_DEF, BOSS,
   get:() => ({state,players,enemies,items,shots,ghosts,LW,goalX,grid,tick,curLevel,gemMask,arena,VW,S,gemPos}) };
 })();
 </script>
