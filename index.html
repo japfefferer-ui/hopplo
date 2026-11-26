@@ -217,6 +217,45 @@ h1,.overlay h2,.btn,.chip,.grid button{text-transform:uppercase}
 .shc.lock canvas{filter:brightness(.55) saturate(.6)}
 .shc.buy small{color:#ffd84a;font-weight:800}
 #shopCoins{color:#ffd84a;font-size:1.2em}
+/* ---- Level-Editor ---- */
+#edTop{position:absolute;z-index:5;left:0;right:0;top:0;display:flex;align-items:center;gap:5px;padding:3px max(6px,env(safe-area-inset-right,0px)) 5px max(6px,env(safe-area-inset-left,0px));background:#14132a;box-shadow:0 3px 0 0 var(--line);box-sizing:border-box}
+#edTop[hidden],#edBot[hidden]{display:none}
+.edB{font-family:var(--font);font-weight:800;font-size:12px;color:var(--fg);background:var(--panel);border:0;outline:2px solid var(--line);outline-offset:-2px;padding:0 9px;height:32px;min-width:34px;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap;text-transform:uppercase;letter-spacing:.03em;flex:none}
+.edB svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2.6;stroke-linecap:round;stroke-linejoin:round}
+.edB svg.f{fill:currentColor;stroke:none}
+.edB:disabled{opacity:.35;cursor:default}
+.edB.gold{background:var(--gold);color:#2a1d05;outline-color:var(--gold-d)}
+#edInfo{flex:1;min-width:0;text-align:center;color:var(--muted);font-size:11px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#edBot{position:absolute;z-index:5;left:0;right:0;bottom:0;background:#14132a;box-shadow:0 -3px 0 0 var(--line);padding:4px max(4px,env(safe-area-inset-right,0px)) max(3px,env(safe-area-inset-bottom,0px)) max(4px,env(safe-area-inset-left,0px));box-sizing:border-box;display:flex;flex-direction:column;gap:4px}
+#edMap{display:block;width:100%;height:14px;image-rendering:pixelated;background:#0b0a16;touch-action:none;cursor:pointer}
+#edPw{display:flex;gap:6px;align-items:stretch}
+#edPin{display:flex;gap:4px;flex:none}
+#edPal{display:flex;gap:4px;flex:1;min-width:0;overflow-x:auto;overflow-y:hidden;touch-action:pan-x;scrollbar-width:none;overscroll-behavior:contain}
+#edPal::-webkit-scrollbar{display:none}
+.edT{flex:none;width:52px;height:52px;font-family:var(--font);color:var(--fg);background:var(--panel);border:0;outline:2px solid var(--line);outline-offset:-2px;padding:3px 0 0;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:1px;font-size:8px;line-height:1.1;font-weight:800;text-transform:uppercase;overflow:hidden;letter-spacing:0}
+.edT canvas{width:28px;height:28px;image-rendering:pixelated;flex:none}
+.edT svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2.2;stroke-linecap:round;stroke-linejoin:round;flex:none}
+.edT span{display:block;max-width:100%;overflow:hidden;white-space:nowrap}
+.edT.sel{outline-color:var(--gold);background:#3a3360;color:var(--gold)}
+.edT.tab{outline-style:dashed}
+#edSetDlg,#edShDlg{z-index:7}
+.edLb{color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.05em;font-size:.85em}
+.edNm{font-family:var(--font);font-weight:800;font-size:16px;width:min(12em,60%);min-width:0;text-align:center;padding:.4em;border:0;border-radius:0;background:var(--fg);color:#17162b}
+.edTa{width:min(100%,560px);box-sizing:border-box;font-family:var(--font);font-size:12px;border:0;border-radius:0;background:var(--fg);color:#17162b;padding:.4em;resize:vertical;word-break:break-all}
+#edSlots{display:grid;gap:5px;width:min(100%,640px)}
+.edSl{display:flex;align-items:center;gap:6px;flex-wrap:wrap;justify-content:space-between;padding:5px 8px;background:var(--panel);outline:2px solid var(--line);outline-offset:-2px;text-align:left}
+.edSl b{color:var(--gold);text-transform:uppercase;letter-spacing:.04em;overflow-wrap:anywhere}
+.edSl small{display:block;color:var(--muted);font-size:.8em;font-weight:400}
+.edSl .row{gap:2px;flex:none;justify-content:flex-end}
+.edSl .btn{margin:2px 3px 8px}
+#edCodeBox{width:min(100%,560px)}
+.chip.sel{outline:3px solid var(--gold);color:var(--gold)}
+button.chip{border:0;font-family:var(--font);color:var(--fg);cursor:pointer;font-size:inherit}
+@container (max-height:430px){ #edOv h2,#edOv #edSub{display:none} #edOv{gap:4px;padding-top:42px} #edSetDlg h2,#edShDlg h2{display:none} .edSl .btn{margin:1px 2px 6px} }
+.stage.ed .top{display:none}
+.stage.ed #toasts{top:46px}
+.dlg .sol{margin:.3em 0 .2em;padding:.4em .6em;border-left:3px solid #ffd84a;background:rgba(255,216,74,.1);border-radius:0 .4em .4em 0}
+@media (max-height:420px){#edfInfo{display:none}}
 </style>
 
 <div class="wrap">
@@ -236,6 +275,34 @@ h1,.overlay h2,.btn,.chip,.grid button{text-transform:uppercase}
     <div id="rcBan" hidden role="status"><span id="rcTxt">Verbindung weg …</span><button class="btn alt sm" id="rcLeave" type="button">Verlassen</button></div>
     <div class="pad" id="padL" hidden></div>
     <div class="pad" id="padR" hidden></div>
+    <div id="edTop" hidden>
+      <button class="edB" id="edDone" type="button" aria-label="Fertig, zurück zur Liste"><svg viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>Fertig</button>
+      <button class="edB" id="edUndo" type="button" aria-label="Rückgängig"><svg viewBox="0 0 24 24"><path d="M9 5L4 10l5 5"/><path d="M4 10h9a6 6 0 0 1 0 12h-2"/></svg></button>
+      <span id="edInfo"></span>
+      <button class="edB gold" id="edTest" type="button"><svg class="f" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg>Testen</button>
+      <button class="edB" id="edShare" type="button">Teilen</button>
+      <button class="edB" id="edSetB" type="button" aria-label="Einstellungen"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 2.5v3M12 18.500v3M2.500 12h3M18.500 12h3M5.300 5.300l2.100 2.100M16.600 16.600l2.100 2.100M5.300 18.700l2.100-2.100M16.600 7.400l2.100-2.100"/></svg></button>
+    </div>
+    <div id="edBot" hidden>
+      <canvas id="edMap" width="300" height="14" aria-label="Übersicht über das ganze Level"></canvas>
+      <div id="edPw"><div id="edPin"></div><div id="edPal"></div></div>
+    </div>
+    <div class="overlay" id="edSetDlg" hidden>
+      <h2 class="sm">LEVEL-EINSTELLUNGEN</h2>
+      <div class="row"><label for="edNm" class="edLb">Name</label><input class="edNm" id="edNm" maxlength="16" placeholder="Mein Level" autocomplete="off" spellcheck="false" aria-label="Name des Levels"></div>
+      <div class="row" id="edWorlds"></div>
+      <div class="row" id="edDiffs"></div>
+      <div class="row"><button class="btn alt sm" id="edWm" type="button">−10</button><span class="chip" id="edWl">80 Felder</span><button class="btn alt sm" id="edWp" type="button">+10</button></div>
+      <div class="row"><button class="btn alt sm" id="edGr" type="button">Raster: an</button><button class="btn alt sm" id="edClr" type="button">Alles leeren</button></div>
+      <button class="btn sm" id="edSetOk" type="button">Fertig</button>
+    </div>
+    <div class="overlay" id="edShDlg" hidden>
+      <h2 class="sm">LEVEL TEILEN</h2>
+      <p class="dim" id="edShInfo"></p>
+      <textarea class="edTa" id="edShTa" rows="4" readonly spellcheck="false" aria-label="Level-Code"></textarea>
+      <div class="row"><button class="btn sm" id="edShCopy" type="button">Code kopieren</button><button class="btn sm" id="edShLink" type="button">Link kopieren</button><button class="btn sm" id="edShNat" type="button" hidden>Teilen …</button></div>
+      <button class="btn alt sm" id="edShX" type="button">Schließen</button>
+    </div>
 
     <div class="overlay" id="hubOv">
       <h2>HOPPLO</h2>
@@ -243,7 +310,7 @@ h1,.overlay h2,.btn,.chip,.grid button{text-transform:uppercase}
       <div class="cards">
         <button class="card" id="gJump" type="button"><canvas width="96" height="64" aria-hidden="true"></canvas><div><b>Abenteuer</b><span>Jump'n'Run · 50 Level · Bosse</span></div></button>
         <button class="card" id="gKart" type="button"><canvas width="96" height="64" aria-hidden="true"></canvas><div><b>Affenrennen</b><span>Kart-Rennen · 12 Strecken · Cups</span></div></button>
-        <button class="card" id="gEsc" type="button"><canvas width="96" height="64" aria-hidden="true"></canvas><div><b>Escape-Insel</b><span>Rätsel-Koop · 5 Kapitel · Chat</span></div></button>
+        <button class="card" id="gEsc" type="button"><canvas width="96" height="64" aria-hidden="true"></canvas><div><b>Escape-Insel</b><span>Rätsel-Koop · 8 Kapitel · Chat</span></div></button>
       </div>
       <div class="row">
         <span class="nameRow"><label for="nameIn">Dein Name</label><input class="nameIn" id="nameIn" maxlength="12" placeholder="Dein Name" autocomplete="nickname" autocapitalize="words" spellcheck="false" aria-label="Dein Name"></span>
@@ -279,7 +346,7 @@ h1,.overlay h2,.btn,.chip,.grid button{text-transform:uppercase}
         <span id="gemTotal">◆ 0/150</span>
       </div>
       <p class="dim" id="lvBest"></p>
-      <div class="row"><button class="btn alt sm" id="dayBtn" type="button">Tageslevel</button><button class="btn alt sm" id="dayBtn2" type="button">zu zweit</button></div>
+      <div class="row"><button class="btn alt sm" id="dayBtn" type="button">Tageslevel</button><button class="btn alt sm" id="dayBtn2" type="button">zu zweit</button><button class="btn alt sm" id="edBtn" type="button">Level-Editor</button></div>
       <p class="dim" id="dayInfo"></p>
       <div class="row">
         <button class="btn" id="b1" type="button">1 Spieler</button>
@@ -289,7 +356,24 @@ h1,.overlay h2,.btn,.chip,.grid button{text-transform:uppercase}
       </div>
     </div>
 
-    <div class="overlay" id="levelsOv" hidden>
+        <div class="overlay" id="edOv" hidden>
+      <h2 class="sm">EIGENE LEVEL</h2>
+      <p class="dim" id="edSub">Bau ein Level, schaff es einmal selbst, dann kannst du den Code an deine Crew schicken.</p>
+      <div id="edSlots"></div>
+      <div class="row"><button class="btn alt sm" id="edPl" type="button">1 Spieler</button><button class="btn alt sm" id="edPaste" type="button">Code einfügen</button><button class="btn alt sm" id="edBack0" type="button">Zurück</button></div>
+      <div id="edCodeBox" hidden><textarea class="edTa" id="edCodeTa" rows="3" spellcheck="false" autocomplete="off" aria-label="Level-Code"></textarea><div class="row"><button class="btn sm" id="edCodeGo" type="button">Laden</button><button class="btn alt sm" id="edCodeX" type="button">Schließen</button></div></div>
+      <p class="dim" id="edMsg"></p>
+    </div>
+
+    <div class="overlay" id="edInvOv" hidden>
+      <h2 class="sm">LEVEL VON DEINER CREW</h2>
+      <p id="edInvInfo"></p>
+      <div class="row"><button class="btn" id="edInvPlay" type="button">Spielen</button><button class="btn" id="edInvDuo" type="button">zu zweit</button></div>
+      <div class="row"><button class="btn alt sm" id="edInvSave" type="button">In Eigene Level speichern</button><button class="btn alt sm" id="edInvX" type="button">Schließen</button></div>
+      <p class="dim" id="edInvMsg"></p>
+    </div>
+
+<div class="overlay" id="levelsOv" hidden>
       <h2 class="sm">LEVEL WÄHLEN</h2>
       <div class="grid" id="grid"></div>
       <div class="row"><button class="btn alt sm" id="lvBack" type="button">Zurück</button><button class="btn alt sm" id="unlockBtn" type="button">Alle freischalten</button></div>
@@ -302,10 +386,11 @@ h1,.overlay h2,.btn,.chip,.grid button{text-transform:uppercase}
         <div><b>Truhen:</b> Von unten anspringen. Bombe: Kanonenkugeln schießen. Feder: Doppelsprung. Herz: ein Treffer frei. Goldschädel: kurz unbesiegbar.</div>
         <div><b>Gut zu wissen:</b> Mit Power-up kostet ein Treffer nur das Power-up. Fahnen sind Checkpoints. Fässer mit Trommel schleudern dich hoch. Mehrere Gegner am Stück plattspringen gibt Bonus-Münzen, 50 Münzen geben ein Herz.</div>
         <div><b>Affenrennen:</b> Gas geht von allein. Lenken mit <kbd>A</kbd> <kbd>D</kbd> oder den Pfeiltasten, driften mit <kbd>Leertaste</kbd>, Item mit <kbd>E</kbd> oder <kbd>Enter</kbd>, bremsen mit <kbd>S</kbd>. Lang driften gibt einen Turbo, dicht hinter einem anderen Affen fährst du im Windschatten schneller. Mit <kbd>R</kbd> setzt du dich zurück auf die Strecke. Fahrer und Wagen wählst du im Rennmenü: leichte Wagen kommen schneller in Fahrt, schwere sind am Ende schneller und schubsen stärker. Zu zweit driftet Spieler 1 mit der linken Umschalttaste und nutzt Items mit <kbd>W</kbd>, Spieler 2 nimmt die rechte Umschalttaste und <kbd>↑</kbd>. Wie steil du driftest, stellst du im Rennmenü ein (Sanft, Flach, Mittel, Steil). Am Handy lenkst du links und hast rechts die Knöpfe für Drift und Item. <b>Items:</b> Bananenschale, Bananen-Trio, Kokosnuss (sucht sich ein Ziel), Kokos-Trio (drei Nüsse nacheinander), Kanonenkugel (fliegt geradeaus), Kanonensalve (drei Kugeln im Fächer), Heckkanone (schießt nach hinten), Pulverfass (explodiert, wenn jemand drüberfährt), Falsche Kiste (sieht aus wie eine Item-Box), Papagei (fliegt zum Führenden), Hurrikan (wirbelt über die Strecke), Flaute (bremst alle in deiner Nähe), Tintenwolke (blendet alle vor dir), Enterhaken (zieht dich zum Vordermann), Rückenwind, Sturm-Trio (3 kurze Turbos), Goldbanane, Fass-Schild und Anker. Online siehst du alle Strecken schon in der Lobby, alle dürfen abstimmen, der Host entscheidet.</div>
-        <div><b>Escape-Insel:</b> Laufen mit <kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> oder den Pfeiltasten, ansehen und benutzen mit <kbd>E</kbd>, Logbuch mit <kbd>Q</kbd>, Chat mit <kbd>Enter</kbd>. Am Handy gibt es links ein Steuerfeld und rechts einen Knopf. Online liest jeder in Hinweisen etwas anderes, und manche Bannkreise lassen nur einen Teil der Crew durch. Ihr kommt nur weiter, wenn ihr euch im Chat sagt, was ihr seht. Falsche Versuche und Tipps kosten Zeit.</div>
+        <div><b>Escape-Insel:</b> Laufen mit <kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd> oder den Pfeiltasten, ansehen und benutzen mit <kbd>E</kbd>, Logbuch mit <kbd>Q</kbd>, Chat mit <kbd>Enter</kbd>. Am Handy gibt es links ein Steuerfeld und rechts einen Knopf. Online liest jeder in Hinweisen etwas anderes, und manche Bannkreise lassen nur einen Teil der Crew durch. Ihr kommt nur weiter, wenn ihr euch im Chat sagt, was ihr seht. Falsche Versuche und Tipps kosten Zeit. Es gibt zwei Inseln mit zusammen acht Kapiteln und drei Schwierigkeitsstufen (Leicht, Normal, Schwer). Wer gar nicht weiterkommt, kann im Logbuch die Lösung aufdecken, das kostet mehr Zeit als ein Tipp und geht auf Schwer nicht.</div>
         <div><b>Emotes:</b> Tasten <kbd>1</kbd> bis <kbd>6</kbd> oder das Smiley oben rechts zeigen eine Sprechblase über deinem Affen oder Piraten. Online sehen alle sie.</div>
         <div><b>Profil:</b> Statistik, Abzeichen und dein Spielstand-Code für ein anderes Gerät. Am Handy gibt es dort Vibration, Neigungssteuerung und den App-Modus.</div>
         <div><b>Edelsteine:</b> In jedem Level liegen 3. Damit schaltest du neue Hüte frei. Jedes zehnte Level endet mit einem Boss. Davor steht eine dunkle Waffenkiste mit Bombe drauf: Sie gibt dir die Kanone, so oft du willst.</div>
+        <div><b>Level-Editor:</b> Im Abenteuer-Menü baust du eigene Level (6 Plätze). Baustein unten wählen und übers Level ziehen, mit zwei Fingern oder der Hand verschiebst du die Ansicht. Erst wenn du dein Level selbst geschafft hast, kannst du es teilen: als Code oder Link. Freunde fügen ihn unter „Eigene Level“ ein, und online startet der Host es für alle.</div>
       </div>
       <button class="btn alt sm" data-back type="button">Zurück</button>
     </div>
@@ -336,7 +421,7 @@ h1,.overlay h2,.btn,.chip,.grid button{text-transform:uppercase}
       <p id="lobbyInfo"></p>
       <div class="row"><button class="btn alt sm" id="shareBtn" type="button">Einladungslink teilen</button></div>
       <div class="chips" id="chips"></div>
-      <div class="row"><button class="btn alt sm" id="gameBtn" type="button">Spiel: Abenteuer</button><button class="btn alt sm" id="trkBtn" type="button">Level 1</button><button class="btn alt sm" id="tmpBtn" type="button">Tempo: Flott</button><button class="btn alt sm" id="lvrBtn" type="button" hidden>Strecke: Normal</button><button class="btn alt sm" id="lwxBtn" type="button" hidden>Wetter: Klar</button></div>
+      <div class="row"><button class="btn alt sm" id="gameBtn" type="button">Spiel: Abenteuer</button><button class="btn alt sm" id="trkBtn" type="button">Level 1</button><button class="btn alt sm" id="custBtn" type="button" hidden>Eigene Level</button><button class="btn alt sm" id="tmpBtn" type="button">Tempo: Flott</button><button class="btn alt sm" id="lvrBtn" type="button" hidden>Strecke: Normal</button><button class="btn alt sm" id="lwxBtn" type="button" hidden>Wetter: Klar</button><button class="btn alt sm" id="dfBtn" type="button" hidden>Schwierigkeit: Normal</button></div>
       <div id="lobKart" hidden>
         <div class="tgrid" id="lobGrid"></div>
         <button class="btn alt sm" id="lobRnd" type="button">Zufällige Strecke</button>
@@ -411,6 +496,8 @@ h1,.overlay h2,.btn,.chip,.grid button{text-transform:uppercase}
       <p>Gestrandet auf der verfluchten Insel. Findet Schlüssel, Hinweise und Schalter und entkommt gemeinsam. Online liest jeder nur einen Teil der Hinweise: Ohne Absprache im Chat kommt ihr nicht weiter.</p>
       <div class="row"><button class="btn alt sm" id="ecPrev" type="button" aria-label="Vorheriges Kapitel">‹</button><b id="ecName" style="min-width:15em;color:#fff">Kapitel 1</b><button class="btn alt sm" id="ecNext" type="button" aria-label="Nächstes Kapitel">›</button></div>
       <p class="dim" id="ecInfo"></p>
+      <div class="row"><button class="btn alt sm" id="edfBtn" type="button">Schwierigkeit: Normal</button></div>
+      <p class="dim" id="edfInfo"></p>
       <div class="row"><button class="btn" id="eOn" type="button">Online (2–4)</button><button class="btn" id="e1" type="button">Allein</button><button class="btn alt" data-back type="button">Zurück</button></div>
     </div>
 
@@ -498,6 +585,7 @@ if(!save.cups || typeof save.cups !== 'object') save.cups = {};
 if(!save.esc || typeof save.esc !== 'object') save.esc = {};
 if(!save.esc.best || typeof save.esc.best !== 'object') save.esc.best = {};
 if(!save.esc.stars || typeof save.esc.stars !== 'object') save.esc.stars = {};
+if(![0,1,2].includes(save.esc.df)) save.esc.df = 1;
 if(!Array.isArray(save.ksel) || save.ksel.length !== 2 || !save.ksel.every(a => Array.isArray(a) && a.length === 2)) save.ksel = [[0,0],[1,1]];
 const persist = () => { try { localStorage.setItem('hopplo.save', JSON.stringify(save)); } catch(e) {} };
 const bits = m => (m&1) + ((m>>1)&1) + ((m>>2)&1);
@@ -506,9 +594,12 @@ const HATS = [['Kopftuch',0],['Dreispitz',8],['Strohhut',20],['Kapitänshut',45]
 
 /* ================= Canvas sizing ================= */
 function resize(){
-  const r = stage.getBoundingClientRect(); if(r.width < 20 || r.height < 20) return;
+  const r0 = stage.getBoundingClientRect(); if(r0.width < 20 || r0.height < 20) return;
+  const ei = stage.classList.contains('ed') ? [$('edTop').offsetHeight, $('edBot').offsetHeight] : [0, 0];
+  const r = {width:r0.width, height:Math.max(80, r0.height - ei[0] - ei[1])};
+  cvs.style.marginTop = ei[0] + 'px';
   const dpr = window.devicePixelRatio || 1;
-  const a = Math.max(1.5, Math.min(2.3, r.width / r.height));
+  const a = Math.max(1.5, Math.min(ei[0] ? 4 : 2.3, r.width / r.height));
   const ch = Math.min(r.height, r.width / a), cw = ch * a;
   /* pixel look: render small, then show every game pixel as n x n screen pixels */
   const n = Math.max(1, Math.round(ch*dpr/336));
@@ -867,7 +958,7 @@ const W_EN = [
  {g:[['beetle',0,3],['fslime',0,3],['golem',3,2],['skel',6,1]], a:[['phoenix',1,2],['wisp',5,1]], c:[['stal',4,1]], p:['lava',0], tur:3}
 ];
 const worldOf = n => Math.min(4, Math.floor((n-1)/10));
-const lvlName = n => (LSRC && LSRC.kind === 'daily' && n === LSRC.n) ? 'Tageslevel ' + dmy(LSRC.date) : `Level ${n} · ${THEMES[worldOf(n)].name}`;
+const lvlName = n => (LSRC && LSRC.kind === 'custom') ? '„' + LSRC.name + '“' : (LSRC && LSRC.kind === 'daily' && n === LSRC.n) ? 'Tageslevel ' + dmy(LSRC.date) : `Level ${n} · ${THEMES[worldOf(n)].name}`;
 
 /* ================= Level generator ================= */
 function genLevel(n, seed){
@@ -1569,7 +1660,7 @@ function hostMsg(id,m){
     case 'g': authWin(id); break;
     case 'kc': (net.ksel = net.ksel || {})[id] = [Math.abs(m.ch|0) % KCHAR.length, Math.abs(m.veh|0) % KVEH.length]; (net.kcos = net.kcos || {})[id] = kcosClean(m.hat, m.pt); broadcast(lobState()); if(!$('lobbyOv').hidden) showLobby(); break;
     case 'nm': (net.names = net.names || {})[id] = cleanName(m.n); broadcast(lobState()); if(!$('lobbyOv').hidden) showLobby(); break;
-    case 'kt': { const ti = m.ti|0; if(ti >= 0 && ti < KTRACKS.length && lobbyGame==='kart'){ net.votes[id] = ti; broadcast(lobState()); if(!$('lobbyOv').hidden) showLobby(); } break; }
+    case 'kt': { const ti = m.ti|0; if(ti >= 0 && ti < (lobbyGame==='battle' ? BTA.length : KTRACKS.length) && (lobbyGame==='kart' || lobbyGame==='battle')){ net.votes[id] = ti; broadcast(lobState()); if(!$('lobbyOv').hidden) showLobby(); } break; }
     case 'ch': if(typeof m.s==='string'){ const s = m.s.replace(/\s+/g,' ').trim().slice(0,140); if(s){ chatAdd(id,s); broadcast({t:'ch',id,s}, id); } } break;
     case 'po': { const r = performance.now() - (+m.n || 0); if(r >= 0 && r < 20000) net.ping[id] = net.ping[id] == null ? r : net.ping[id]*0.6 + r*0.4; break; }
     case 'em': emoFromClient(id, m); break;
@@ -1582,8 +1673,8 @@ function clientMsg(m){
     case 'wel':
       net.role = 'client'; net.myId = m.id; net.ids = m.ids; net.lob = m.lob || null; net.names = (m.lob && m.lob.names) || {}; net.votes = (m.lob && m.lob.votes) || {}; const rcLv = curLevel; curLevel = m.level; send(kcMsg()); send({t:'nm',n:save.name}); net.lastRx = performance.now();
       if(rcResume(m, rcLv)) break;
-      if(m.esc && typeof m.esc==='object' && m.esc.st && Array.isArray(m.esc.st.v)) eStart(Math.max(0,Math.min(ECH.length-1,m.esc.ch|0)), m.esc.seed|0, 'online', m.esc.st);
-      else if(m.playing){ startLevel(m.level,'online'); gemMask = m.gm | 0;
+      if(m.esc && typeof m.esc==='object' && m.esc.st && Array.isArray(m.esc.st.v)) eStart(Math.max(0,Math.min(ECH.length-1,m.esc.ch|0)), m.esc.seed|0, 'online', m.esc.st, m.esc.df);
+      else if(m.playing && edClientGo(m)){ startLevel(m.level,'online'); gemMask = m.gm | 0;
         for(const k in m.tiles){ const [x,y] = k.split(',').map(Number); if(grid[y] && x < LW) grid[y][x] = m.tiles[k]; }
         if(m.won){ state = 'win'; showWin(0); } }
       else showLobby();
@@ -1592,7 +1683,7 @@ function clientMsg(m){
     case 'end': leaveNet('Der Host hat den Raum verlassen.'); break;
     case 'lob': net.ids = m.ids; net.lob = m; net.names = m.names && typeof m.names==='object' ? m.names : {}; net.votes = m.votes && typeof m.votes==='object' ? m.votes : {}; if(!$('lobbyOv').hidden) showLobby(); break;
     case 'ch': if(typeof m.s==='string') chatAdd(Math.max(0,Math.min(3,m.id|0)), m.s.slice(0,140)); break;
-    case 'go': if(m.game==='esc') eStart(Math.max(0,Math.min(ECH.length-1,m.ch|0)), m.seed|0, 'online'); else if(m.game==='kart'){ if(Array.isArray(m.ids)) net.ids = m.ids; kart.osel = m.sel && typeof m.sel==='object' ? m.sel : null; kart.ocos = m.cos && typeof m.cos==='object' ? m.cos : null; kart.vr = Math.max(0,Math.min(3,m.vr|0)); kart.wx = Math.max(0,Math.min(2,m.wx|0)); kart.rid = m.rid|0; kart.cup = null; kart.cls = Math.max(0,Math.min(2,m.cls|0)); kStart(Math.max(0,Math.min(KTRACKS.length-1,m.track|0)),kart.cls,'online'); } else startLevel(m.level,'online'); break;
+    case 'go': if(m.game==='esc') eStart(Math.max(0,Math.min(ECH.length-1,m.ch|0)), m.seed|0, 'online', undefined, m.df); else if(m.game==='kart'){ if(Array.isArray(m.ids)) net.ids = m.ids; kart.osel = m.sel && typeof m.sel==='object' ? m.sel : null; kart.ocos = m.cos && typeof m.cos==='object' ? m.cos : null; kart.vr = Math.max(0,Math.min(3,m.vr|0)); kart.wx = Math.max(0,Math.min(2,m.wx|0)); kart.rid = m.rid|0; kart.cup = null; kart.cls = Math.max(0,Math.min(2,m.cls|0)); kart.btNext = !!(m.bt|0); kStart(Math.max(0,Math.min((m.bt|0) ? BTA.length-1 : KTRACKS.length-1,m.track|0)),kart.cls,'online'); } else { if(edClientGo(m)) startLevel(m.level,'online'); else toast('Das Level konnte nicht geladen werden.', 3600); } break;
     case 's': if(state==='play') applySnap(m); break;
     case 'tile': if(state==='play' || state==='win') applyTile(m); break;
     case 'win': if(state==='play'){ state = 'win'; sfx.win(); finishLevel(); showWin(m.by); } break;
@@ -1680,7 +1771,7 @@ async function hostRoom(){
       net.ids = [0, ...net.conns.keys()].sort();
       let kin = null, kres = null;
       if(rejoin && kart.on && kart.tr && (meta.rid | 0) === (kart.rid | 0) && kart.karts.some(q => q.id === id)){ kUndrop(id); kin = {rid:kart.rid}; if(kart.res) kres = kart.lastRes || null; }
-      conn.send({t:'wel', id, ids:net.ids, playing: state==='play' || state==='win', won: state==='win', level:curLevel, tiles:tileLog, gm:gemMask, lob:lobState(), esc: E.on && state==='esc' ? {ch:E.ch, seed:E.seed, st:E.st} : null, rejoin, kart:kin, kres});
+      conn.send({t:'wel', id, ids:net.ids, playing: state==='play' || state==='win', won: state==='win', level:curLevel, cl:edCl(), tiles:tileLog, gm:gemMask, lob:lobState(), esc: E.on && state==='esc' ? {ch:E.ch, seed:E.seed, st:E.st, df:E.df} : null, rejoin, kart:kin, kres});
       if(rejoin) toast(pName(id) + ' ist wieder da.');
       broadcast(lobState(), id); if(E.on) eJoined(id);
       if(!$('lobbyOv').hidden) showLobby();
@@ -1733,24 +1824,24 @@ function lobState(){
   const names = {}, sel = {}, cos = {}, ns = net.names || {}, ks = net.ksel || {}, kc = net.kcos || {};
   for(const i in (net.lost || {})) names[i] = net.lost[i].name;
   net.ids.forEach(i => { names[i] = i === net.myId ? save.name : (ns[i] || ''); sel[i] = i === 0 ? save.ksel[0] : (ks[i] || [i,i]); cos[i] = i === 0 ? kCos(0) : (kc[i] || [-1,-1]); });
-  return {t:'lob', ids:net.ids, game:lobbyGame, track:kart.sel < KTRACKS.length ? kart.sel : 0, cls:kart.cls, level:selLevel, ech:E.sel, names, votes:net.votes || {}, sel, cos, vr:kart.vr|0, wx:kart.wx|0};
+  return {t:'lob', ids:net.ids, game:lobbyGame, track:lobbyGame==='battle' ? (kart.bsel | 0) : (kart.sel < KTRACKS.length ? kart.sel : 0), cls:kart.cls, level:selLevel, cn:(lobbyGame === 'jump' && lobCust) ? lobCust.name : '', ech:E.sel, edf:save.esc.df, names, votes:net.votes || {}, sel, cos, vr:kart.vr|0, wx:kart.wx|0};
 }
 function showLobby(){
   state = 'menu'; show('lobbyOv');
   $('roomCode').textContent = net.code;
   const host = net.role === 'host';
-  const lb = host ? lobState() : (net.lob || {}), gm = host ? lobbyGame : (lb.game || lobbyGame), kartLob = gm === 'kart';
-  const ec = Math.max(0, Math.min(ECH.length-1, lb.ech|0)), kt = Math.max(0, Math.min(KTRACKS.length-1, lb.track|0));
-  const what = lb.game==='esc' ? `Escape-Insel · Kapitel ${ec+1} · ${ECH[ec].name}` : lb.game==='kart' ? `Affenrennen · ${KTRACKS[kt].name}${(lb.vr|0) ? ' (' + KVR[Math.max(0,Math.min(3,lb.vr|0))] + ')' : ''}${(lb.wx|0) ? ' · ' + KWX[Math.max(0,Math.min(2,lb.wx|0))] : ''} · Tempo ${KCLS[Math.max(0,Math.min(2,lb.cls|0))][0]}` : lb.level ? `Abenteuer · ${lvlName(lb.level)}` : '';
-  $('lobbyInfo').textContent = host ? (kartLob ? 'Gib den Code weiter. Die Crew stimmt über die Strecke ab, du entscheidest.' : 'Gib den Code an deine Crew, dann drück Start.') : kartLob ? 'Tipp auf eine Strecke, um abzustimmen. Der Host startet.' + (((lb.vr|0) || (lb.wx|0)) ? ' Gefahren wird: ' + [(lb.vr|0) ? KVR[Math.max(0,Math.min(3,lb.vr|0))] : '', (lb.wx|0) ? KWX[Math.max(0,Math.min(2,lb.wx|0))] : ''].filter(Boolean).join(' · ') + '.' : '') : (what ? what + '. ' : '') + 'Der Host startet das Spiel.';
+  const lb = host ? lobState() : (net.lob || {}), gm = host ? lobbyGame : (lb.game || lobbyGame), btLob = gm === 'battle', kartLob = gm === 'kart' || btLob;
+  const ec = Math.max(0, Math.min(ECH.length-1, lb.ech|0)), kt = Math.max(0, Math.min((btLob ? BTA.length : KTRACKS.length)-1, lb.track|0));
+  const what = lb.game==='esc' ? `Escape-Insel · Kapitel ${ec+1} · ${ECH[ec].name}${lb.edf === 0 || lb.edf === 2 ? ' · ' + EDIFF[lb.edf].n : ''}` : lb.game==='battle' ? `Battle · ${BTA[kt].name} · Tempo ${KCLS[Math.max(0,Math.min(2,lb.cls|0))][0]}` : lb.game==='kart' ? `Affenrennen · ${KTRACKS[kt].name}${(lb.vr|0) ? ' (' + KVR[Math.max(0,Math.min(3,lb.vr|0))] + ')' : ''}${(lb.wx|0) ? ' · ' + KWX[Math.max(0,Math.min(2,lb.wx|0))] : ''} · Tempo ${KCLS[Math.max(0,Math.min(2,lb.cls|0))][0]}` : lb.cn ? `Abenteuer · Eigenes Level „${edName(lb.cn)}“` : lb.level ? `Abenteuer · ${lvlName(lb.level)}` : '';
+  $('lobbyInfo').textContent = host ? (kartLob ? 'Gib den Code weiter. Die Crew stimmt über ' + (btLob ? 'die Arena' : 'die Strecke') + ' ab, du entscheidest.' : 'Gib den Code an deine Crew, dann drück Start.') : kartLob ? 'Tipp auf ' + (btLob ? 'eine Arena' : 'eine Strecke') + ', um abzustimmen. Der Host startet.' + (((lb.vr|0) || (lb.wx|0)) ? ' Gefahren wird: ' + [(lb.vr|0) ? KVR[Math.max(0,Math.min(3,lb.vr|0))] : '', (lb.wx|0) ? KWX[Math.max(0,Math.min(2,lb.wx|0))] : ''].filter(Boolean).join(' · ') + '.' : '') : (what ? what + '. ' : '') + 'Der Host startet das Spiel.';
   $('startBtn').hidden = !host; $('gameBtn').hidden = !host; $('trkBtn').hidden = !host || kartLob; $('tmpBtn').hidden = !host || !kartLob;
-  $('lvrBtn').hidden = $('lwxBtn').hidden = !host || !kartLob; $('lvrBtn').textContent = 'Strecke: ' + KVR[kart.vr|0]; $('lwxBtn').textContent = 'Wetter: ' + KWX[kart.wx|0];
-  $('gameBtn').textContent = 'Spiel: ' + (lobbyGame==='esc' ? 'Escape-Insel' : lobbyGame==='kart' ? 'Affenrennen' : 'Abenteuer');
-  $('trkBtn').textContent = lobbyGame==='esc' ? `Kapitel ${E.sel+1}: ${ECH[E.sel].name}` : lvlName(selLevel);
+  $('lvrBtn').hidden = !host || !kartLob || btLob; $('lwxBtn').hidden = !host || !kartLob; $('lvrBtn').textContent = 'Strecke: ' + KVR[kart.vr|0]; $('lwxBtn').textContent = 'Wetter: ' + KWX[kart.wx|0];
+  $('gameBtn').textContent = 'Spiel: ' + (lobbyGame==='esc' ? 'Escape-Insel' : lobbyGame==='kart' ? 'Affenrennen' : lobbyGame==='battle' ? 'Battle' : 'Abenteuer');
+  $('trkBtn').textContent = lobbyGame==='esc' ? `Kapitel ${E.sel+1}: ${ECH[E.sel].name}` : (lobbyGame === 'jump' && lobCust) ? 'Eigenes: ' + lobCust.name : lvlName(selLevel);
   $('tmpBtn').textContent = 'Tempo: ' + KCLS[kart.cls][0];
-  $('lobKart').hidden = !kartLob;
+  $('lobKart').hidden = !kartLob; $('custBtn').hidden = !host || lobbyGame !== 'jump'; $('dfBtn').hidden = !host || lobbyGame !== 'esc'; $('dfBtn').textContent = 'Schwierigkeit: ' + EDIFF[save.esc.df].n;
   if(kartLob){
-    kTileGrid($('lobGrid'), kt, lb.votes || {}, ti => { if(host){ kart.sel = ti; showLobby(); } else { net.votes[net.myId] = ti; if(net.lob){ net.lob.votes = net.lob.votes || {}; net.lob.votes[net.myId] = ti; } send({t:'kt', ti}); showLobby(); } }, false, false);
+    kTileGrid($('lobGrid'), kt, lb.votes || {}, ti => { if(host){ if(btLob) kart.bsel = ti; else kart.sel = ti; showLobby(); } else { net.votes[net.myId] = ti; if(net.lob){ net.lob.votes = net.lob.votes || {}; net.lob.votes[net.myId] = ti; } send({t:'kt', ti}); showLobby(); } }, false, false, btLob);
     $('lobRnd').hidden = !host; lobPickUpd();
   }
   if(host) broadcast(lb);
@@ -1785,15 +1876,15 @@ function showWin(by){
   rows.sort((a,b) => a[0]-b[0]);
   $('stats').innerHTML = '<span></span><span>Münzen</span><span>Stürze</span>' + rows.map(r => `<b style="color:${PCOL[r[0]%4]}">${escH(pName(r[0]))}</b><span>${r[1]}</span><span>${r[2]}</span>`).join('');
   $('winExtra').textContent = (runMsg ? runMsg + ' ' : '') + (newHat ? `Neuer Hut freigeschaltet: ${newHat}! ` : '') + (!isAuth() ? 'Warte auf den Host …' : '');
-  $('nextBtn').hidden = fin || !isAuth() || !!LSRC; $('againBtn').hidden = !isAuth();
+  $('nextBtn').hidden = fin || !isAuth() || !!LSRC; $('againBtn').hidden = !isAuth(); $('menuBtn2').textContent = LSRC && LSRC.ed ? 'Zum Editor' : 'Menü';
   show('winOv');
 }
 function goLevel(n){
   if(!LSRC) selLevel = n;
-  if(net.role==='host') broadcast({t:'go', level:n});
+  if(net.role==='host') broadcast({t:'go', level:n, cl:edCl()});
   startLevel(n, mode);
 }
-const OVS = ['hubOv','menu','levelsOv','helpOv','infoOv','onlineOv','lobbyOv','pauseOv','winOv','kartOv','kresOv','escOv','ewinOv','tracksOv','profOv','shopOv'];
+const OVS = ['hubOv','menu','levelsOv','helpOv','infoOv','onlineOv','lobbyOv','pauseOv','winOv','kartOv','kresOv','escOv','ewinOv','tracksOv','profOv','shopOv','edOv','edInvOv'];
 function show(id){
   OVS.forEach(o => { $(o).hidden = o !== id; });
   $('pauseBtn').hidden = !inGame();
@@ -1803,7 +1894,7 @@ function pause(){
   if(!inGame()) return;
   const on = mode === 'online';
   $('pauseTitle').textContent = on ? 'MENÜ' : 'PAUSE';
-  $('menuBtn1').textContent = on ? 'Verlassen' : 'Menü';
+  $('menuBtn1').textContent = on ? 'Verlassen' : (LSRC && LSRC.ed ? 'Zum Editor' : 'Menü');
   if(!on){ pausedFrom = state; state = 'pause'; }
   $('pauseOv').hidden = false; updatePads(); chatVis();
 }
@@ -1823,10 +1914,12 @@ function updMenu(){
   updDay();
 }
 function toMenu(hub){
+  const edb = LSRC && LSRC.back; if(edReturn()) return;
   state = 'menu'; mode = 'solo'; LSRC = null; players = []; ghosts.clear(); kart.on = false; E.on = false; eDlg(null);
   selLevel = Math.max(1, Math.min(save.max, selLevel));
   loadLevel(selLevel); enemies.forEach(e => e.active = true);
   $('menuMsg').hidden = true; updMenu(); if(hub) show('hubOv'); else goHome(curGame);
+  if(edb === 'list' && !hub) edList();
 }
 function quit(){ if(net.role !== 'off') leaveNet(); else toMenu(); }
 function buildGrid(){
@@ -1855,7 +1948,7 @@ $('onBack').onclick = () => { clearTimeout(netTimer); closeNet(); show(onFrom); 
 $('hostBtn').onclick = hostRoom;
 $('joinBtn').onclick = joinRoom;
 $('codeIn').addEventListener('keydown', e => { if(e.key === 'Enter') joinRoom(); });
-$('startBtn').onclick = () => { if(net.role!=='host') return; if(lobbyGame==='esc') eGo(E.sel,'online'); else if(lobbyGame==='kart') kOnline(kart.sel < KTRACKS.length ? kart.sel : 0); else { broadcast({t:'go', level:selLevel}); startLevel(selLevel,'online'); } };
+$('startBtn').onclick = () => { if(net.role!=='host') return; if(lobbyGame==='esc') eGo(E.sel,'online',save.esc.df); else if(lobbyGame==='kart') kOnline(kart.sel < KTRACKS.length ? kart.sel : 0); else if(lobbyGame==='battle') kOnline(kart.bsel|0); else if(lobCust) edStartOnline(lobCust); else { broadcast({t:'go', level:selLevel}); startLevel(selLevel,'online'); } };
 $('leaveBtn').onclick = () => leaveNet();
 $('nextBtn').onclick = () => goLevel(Math.min(MAXLVL, curLevel+1));
 $('againBtn').onclick = () => goLevel(curLevel);
@@ -2022,7 +2115,7 @@ function drawHUD(){
   });
   const mid = VW/2;
   for(let i=0;i<3;i++){ const on = gemMask & (1<<i); ctx.globalAlpha = on ? 1 : 0.35; blit(tileSpr('gem'), mid-30+i*15, 2, {alpha:on ? 1 : 0.35}); } ctx.globalAlpha = 1;
-  txt(`${worldOf(curLevel)+1}-${((curLevel-1)%10)+1}`, mid+24, 10.5, 8, '#fff');
+  txt(LSRC && LSRC.kind === 'custom' ? 'EIGEN' : `${worldOf(curLevel)+1}-${((curLevel-1)%10)+1}`, mid+24, 10.5, 8, '#fff');
   if(state === 'play' || state === 'win') drawTimer();
   const boss = enemies.find(e => e.type==='boss' && e.alive);
   if(boss && bossNear){ const B = BOSS[boss.skin], w = 110;
@@ -2030,8 +2123,8 @@ function drawHUD(){
     rr(ctx,mid-w/2,31,w,6,3); ctx.fillStyle = 'rgba(20,18,36,.75)'; ctx.fill();
     rr(ctx,mid-w/2+1,32,Math.max(4,(w-2)*Math.max(0,boss.hp)/B.hp),4,2); ctx.fillStyle = '#ff5a5a'; ctx.fill(); }
   if(banner > 0){ ctx.globalAlpha = Math.min(1, banner/30);
-    txt(`Welt ${worldOf(curLevel)+1} · ${theme.name}`, mid, 70, 15, '#ffd84a', 'center');
-    txt(curLevel%10===0 ? `Level ${curLevel} · Boss: ${BOSS[worldOf(curLevel)].name}` : `Level ${curLevel}`, mid, 88, 9, '#fff', 'center'); ctx.globalAlpha = 1; }
+    txt(LSRC && LSRC.kind === 'custom' ? LSRC.name : `Welt ${worldOf(curLevel)+1} · ${theme.name}`, mid, 70, 15, '#ffd84a', 'center');
+    txt(LSRC && LSRC.kind === 'custom' ? `Eigenes Level · ${theme.name}` : curLevel%10===0 ? `Level ${curLevel} · Boss: ${BOSS[worldOf(curLevel)].name}` : `Level ${curLevel}`, mid, 88, 9, '#fff', 'center'); ctx.globalAlpha = 1; }
 }
 function render(){
   ctx.setTransform(S,0,0,S,0,0); ctx.imageSmoothingEnabled = false;
@@ -2068,7 +2161,7 @@ function render(){
     ctx.fillStyle = theme.edge; ctx.fill();
   }
   ctx.restore();
-  if(state !== 'menu') drawHUD();
+  if(state !== 'menu' && state !== 'edit') drawHUD();
 }
 
 /* ================= Affenrennen: kart racing with monkeys in little ship karts ================= */
@@ -2155,7 +2248,7 @@ const KTRACKS = [
  {name:'Kraterblume', th:4, w:96, p:[[31.1,17],[30.9,20.1],[24.36,21.25],[25.81,27.88],[22.02,30.07],[17,25.5],[11.98,30.07],[8.19,27.88],[9.64,21.25],[3.17,19.19],[3.17,14.81],[9.64,12.75],[8.19,6.12],[11.98,3.93],[17,8.5],[22.02,3.93],[25.81,6.12],[24.36,12.75],[30.9,13.9]]}
 ];
 const KCUPS = [['Bananen-Cup',[0,1,2]],['Kokos-Cup',[3,4,5]],['Totenkopf-Cup',[6,7,8]],['Vulkan-Cup',[9,10,11]]];
-const kart = { on:false, selP:0, osel:null, sel:0, cls:1, ti:0, tr:null, karts:[], views:[], objs:[], boxes:[], skids:[], tick:0, cd:0, t:0, top:3.2, cup:null, res:null, firstFin:0, hidden:new Map(), pt:[], boomed:new Set(), mat:null, built:null, buf:new Float32Array(48) };
+const kart = { on:false, selP:0, osel:null, sel:0, cls:1, ti:0, tr:null, karts:[], views:[], objs:[], boxes:[], skids:[], tick:0, cd:0, t:0, top:3.2, cup:null, res:null, firstFin:0, hidden:new Map(), pt:[], boomed:new Set(), mat:null, built:null, buf:new Float32Array(256), btm:false, bsel:0, bt:false, btNext:false, msg:null, spec:false, btEnd:0 };
 let lobbyGame = 'jump', pausedFrom = 'play', kEng = null;
 const angd = (a,b) => { let d = (a-b) % 6.2832; if(d > 3.1416) d -= 6.2832; if(d < -3.1416) d += 6.2832; return d; };
 const fmtT = f => { const s = f/60; return Math.floor(s/60) + ':' + String(Math.floor(s%60)).padStart(2,'0') + '.' + String(Math.floor(s*100)%100).padStart(2,'0'); };
@@ -2269,10 +2362,10 @@ function kBuild(ti,vr){
 /* ----- race setup ----- */
 function kStart(ti,cls,m){
   ensureAudio();
-  const K = kart; E.on = false; curGame = 'kart'; mode = m; K.ti = ti; K.cls = cls; K.top = KCLS[cls][1]; K.tt = !!K.ttNext && m==='solo'; K.ttNext = false; K.wxe = K.tt ? 0 : (K.wx | 0);
-  const tr = K.tr = kBuild(ti, K.vr|0);
+  const K = kart; E.on = false; curGame = 'kart'; mode = m; K.ti = ti; K.cls = cls; K.top = KCLS[cls][1]; K.tt = !!K.ttNext && m==='solo'; K.ttNext = false; K.bt = !!K.btNext; K.btNext = false; if(K.bt) K.tt = false; K.wxe = K.tt ? 0 : (K.wx | 0);
+  const tr = K.tr = K.bt ? kBuildArena(ti) : kBuild(ti, K.vr|0);
   const humans = m==='online' ? net.ids.slice() : m==='duo' ? [0,1] : [0], ais = [];
-  for(let i=0;i<8 && ais.length < (K.tt ? 0 : 8-humans.length);i++) if(!humans.includes(i)) ais.push(i);
+  for(let i=0;i<8 && ais.length < (K.tt ? 0 : K.bt ? Math.max(0, BT_KARTS-humans.length) : 8-humans.length);i++) if(!humans.includes(i)) ais.push(i);
   K.karts = ais.concat(humans).map((id,j) => {
     const i = (((tr.N-6-j*3) % tr.N) + tr.N) % tr.N, lat = (j%2 ? 1 : -1)*tr.w*0.2, a = tr.sa[i], human = humans.includes(id);
     const ctrl = human ? ((m!=='online' || id===net.myId) ? 'local' : 'remote') : (isAuth() ? 'ai' : 'remote');
@@ -2282,6 +2375,7 @@ function kStart(ti,cls,m){
             lap:0,idx:i,prog:i-tr.N,rank:j+1,finished:false,finT:0,lane:((j%3)-1)*0.3,laneT:0,skill:human ? 1 : 0.9+((id*37)%10)/100+cls*0.012,rb:1,wrong:0,pre:0,ownT:0,slip:0,lost:0,resc:0,off:false,sk:null,nx:x,ny:y,na:a};
   });
   K.views = K.karts.filter(k => k.ctrl==='local');
+  if(K.bt) kBtInit();
   K.gr = null; K.ghost = null; if(K.tt){ const p0 = K.karts[0]; K.gr = {x:[p0.x], y:[p0.y], a:[p0.a]}; K.ghost = ghInit(); }
   K.skids = []; K.objs = []; K.pt = []; K.stat = {}; K.statDone = false; K.boomed = new Set(); K.sq = 0; K.lastQ = -1; K.hostRank = null; K.lastKs = performance.now(); K.skipped = 0; K.boxes = K.tt ? [] : tr.boxes.map(b => ({x:b.x,y:b.y,t:0})); K.tick = 0; K.cd = 230; K.t = 0; K.res = null; K.lastRes = null; K.firstFin = 0; K.hidden.clear(); K.lastLap = 0;
   nextId = 1000; state = 'kart'; K.on = true; show(null);
@@ -2303,6 +2397,7 @@ function kInput(slot){
   return {st:Math.max(-1,Math.min(1,st)), brake, drift:!!drift, use:!!use, reset};
 }
 function kAI(k){
+  if(kart.bt) return kBtAI(k);
   const K = kart, tr = K.tr, N = tr.N, i = (k.idx + 6 + Math.round(k.v*3)) % N;
   if(K.tick % 180 === (k.id*23) % 180) k.laneT = (Math.random()-0.5)*0.64;
   k.lane += (k.laneT - k.lane)*0.02;
@@ -2323,9 +2418,10 @@ function kAIUse(k){
   return true;
 }
 function kHit(k){
-  if(k.star > 0 || k.imm > 0) return false;
+  if(k.star > 0 || k.imm > 0 || k.out) return false;
   if(k.shield){ k.shield = false; k.imm = 40; return false; }
   k.spin = 70; k.drift = 0; k.boost = 0; k.imm = 130; k.hook = 0; kBurst(k.x,k.y,5,8,['#ffe14a','#ffffff','#ff9a3d'],1.7,24,1.5);
+  if(kart.bt) kBtHit(k);
   if(k.ctrl==='local' && k.human){ sfx.hurt(); k.fl = 8; k.shk = 14; }
   return true;
 }
@@ -2360,7 +2456,7 @@ function kInk(from){
 function kInked(k){ if(k.star > 0) return; k.ink = 300; if(k.ctrl==='local' && k.human) sfx.splat(); }
 function kHookTarget(k){
   let best = null, bd = 1e9; const c = Math.cos(k.a), s = Math.sin(k.a);
-  for(const t of kart.karts){ if(t === k) continue; const dx = t.x-k.x, dy = t.y-k.y, f = dx*c + dy*s, d = Math.hypot(dx,dy);
+  for(const t of kart.karts){ if(t === k || t.out) continue; const dx = t.x-k.x, dy = t.y-k.y, f = dx*c + dy*s, d = Math.hypot(dx,dy);
     if(f > 25 && d < 420 && f > d*0.72 && d < bd){ bd = d; best = t; } }
   return best;
 }
@@ -2465,6 +2561,7 @@ function kPhys(k,inp){
   k.md += angd(k.a - kDv(k)*kdr().sl, k.md)*0.3*tr.grip*(K.wxe===1 ? 0.8 : 1);
   k.x += Math.cos(k.md)*k.v; k.y += Math.sin(k.md)*k.v;
   if(k.x < tr.bx+20 || k.x > tr.bx+tr.bw-20 || k.y < tr.by+20 || k.y > tr.by+tr.bh-20){ k.x = Math.max(tr.bx+20,Math.min(tr.bx+tr.bw-20,k.x)); k.y = Math.max(tr.by+20,Math.min(tr.by+tr.bh-20,k.y)); k.v *= 0.9; }
+  if(tr.arena) kArCol(k);
   const skid = k.drift || k.spin > 0 || (inp.brake && k.v > 1.5);
   if(!skid) k.sk = null;
   else if(K.tick % 2 === 0){ const c = Math.cos(k.a), s2 = Math.sin(k.a), ax = k.x-c*5, ay = k.y-s2*5, cur = [ax-s2*5.6, ay+c*5.6, ax+s2*5.6, ay-c*5.6];
@@ -2481,6 +2578,7 @@ function kProg(k){
   if(k.lost > 100) kRescue(k);
 }
 function kRescue(k){
+  if(kart.bt) return;
   const tr = kart.tr, i = k.idx; k.x = tr.sx[i]; k.y = tr.sy[i]; k.a = k.md = k.ca = tr.sa[i]; k.v = 0; k.w = 0; k.drift = 0; k.spin = 0; k.imm = 70; k.lost = 0; k.resc = 80; k.sk = null;
 }
 function kEngine(v,on){
@@ -2500,25 +2598,27 @@ function kStep(){
   if(racing && !K.res) K.t++;
   if(K.cd===40) tone(880,880,0.5,'square',0.06); else if(K.cd===220 || K.cd===160 || K.cd===100) tone(440,440,0.18,'square',0.05);
   for(const k of K.karts){
+    if(k.out) continue;
     if(k.ctrl==='remote'){ k.x += (k.nx-k.x)*0.35; k.y += (k.ny-k.y)*0.35; k.a += angd(k.na,k.a)*0.35; k.md = k.a; continue; }
     const inp = (k.ctrl==='ai' || k.finished) ? kAI(k) : kInput(k.slot);
     if(!racing){ k.pre = inp.drift ? k.pre+1 : 0; k.dPrev = inp.drift; k.uPrev = inp.use; continue; }
     if(K.cd===40 && k.human && k.pre > 0 && k.pre <= 20){ k.boost = 58; sfx.spring(); }
-    kPhys(k,inp); kProg(k); if(k.cn) kCoins(k); if(K.tt && k.human) kTT(k);
+    kPhys(k,inp); if(!K.bt) kProg(k); if(k.cn) kCoins(k); if(K.tt && k.human) kTT(k);
     if(inp.reset && !k.rPrev) kRescue(k); k.rPrev = inp.reset;
     if(!k.finished && k.lap > KLAPS){ k.finished = true; k.finT = K.t;
       if(k.human){ if(!K.firstFin) K.firstFin = K.t; sfx.win(); kConfetti(k); if(net.role==='client') send({t:'kf',time:K.t}); } }
     if(k.human) k.ca += angd(k.a - kDv(k)*kdr().cam, k.ca)*0.12;
   }
-  for(const k of K.karts){ if(k.ctrl==='remote') continue;
-    for(const o of K.karts){ if(o===k) continue; const dx = k.x-o.x, dy = k.y-o.y, d = Math.hypot(dx,dy);
+  for(const k of K.karts){ if(k.ctrl==='remote' || k.out) continue;
+    for(const o of K.karts){ if(o===k || o.out) continue; const dx = k.x-o.x, dy = k.y-o.y, d = Math.hypot(dx,dy);
       if(d < 13 && d > 0.01){ if(K.tick - (k.spk || 0) > 12 && K.tick - (o.spk || 0) > 12){ k.spk = o.spk = K.tick; kBurst((k.x+o.x)/2,(k.y+o.y)/2,5,5,['#fff6b0','#ffe14a','#ffffff'],1.3,14,1.1); } const ow = (KVEH[o.veh] || KVEH[0]).wt, p = (13-d)*(o.ctrl==='remote' ? 1 : ow/(ow + (KVEH[k.veh] || KVEH[0]).wt)); k.x += dx/d*p; k.y += dy/d*p;
         if(o.star > 0 && !(k.star > 0)) kHit(k); else if(k.star > 0 && !(o.star > 0) && o.ctrl==='remote') kBump(o); } } }
   K.boxes.forEach((b,bi) => { if(b.t > 0){ b.t--; return; }
-    for(const k of K.karts){ if(k.ctrl==='remote' || k.item || k.roll > 0) continue;
+    for(const k of K.karts){ if(k.ctrl==='remote' || k.out || k.item || k.roll > 0) continue;
       if(Math.abs(k.x-b.x) < 11 && Math.abs(k.y-b.y) < 11){ b.t = 200; k.roll = 70; kBurst(b.x,b.y,5,10,['#ffe14a','#fff6b0','#ffb23a'],1.6,26,1.5); if(net.role==='client') send({t:'kb',i:bi}); break; } } });
   if(isAuth()){
     for(const o of K.objs){ o.age++;
+      if(K.bt && kBtObj(o)) continue;
       if(o.type==='ball'){ o.x += Math.cos(o.a)*9; o.y += Math.sin(o.a)*9; if(o.age > 110) o.dead = true; continue; }
       if(o.type==='keg'){ if(o.age > 420){ o.dead = true; kBoom(o); } continue; }
       if(o.type==='fake'){ if(o.age > 1800) o.dead = true; continue; }
@@ -2535,17 +2635,18 @@ function kStep(){
       o.a += angd(ta,o.a)*0.2; o.x += Math.cos(o.a)*5.6; o.y += Math.sin(o.a)*5.6; if(o.age > 260) o.dead = true; }
   } else for(const o of K.objs){ o.x += (o.nx-o.x)*0.5; o.y += (o.ny-o.y)*0.5; }
   for(const o of K.objs){ if(o.dead || K.hidden.has(o.id)) continue; const R2 = o.type==='keg' ? 150 : o.type==='ball' ? 120 : o.type==='twist' ? 520 : o.type==='bird' ? 110 : 90, mine = o.type==='bird' || o.type==='twist';
-    for(const k of K.karts){ if(k.ctrl==='remote' || (o.owner===k.id && (mine || K.tick < k.ownT))) continue;
+    for(const k of K.karts){ if(k.ctrl==='remote' || k.out || (o.owner===k.id && (mine || K.tick < k.ownT))) continue;
       if((k.x-o.x)*(k.x-o.x) + (k.y-o.y)*(k.y-o.y) < R2){
         if(o.type==='twist'){ if(kHit(k) && o.owner !== k.id) kCredit(o.owner); continue; }   /* the hurricane keeps going and can catch several karts */
         if(o.type==='keg') kBoom(o); else if(kHit(k) && o.owner !== k.id) kCredit(o.owner); if(isAuth()) o.dead = true; else { K.hidden.set(o.id,1); send({t:'kx',id:o.id}); } break; } } }
   K.objs = K.objs.filter(o => !o.dead && !K.hidden.has(o.id));
   for(const k of K.karts) kFxKart(k), kLapStat(k);
+  if(K.bt) kBtScan();
   if(K.ghost) ghStep();
   kPartStep();
   /* Remote karts are shown where they were a moment ago, so their progress is moved on by the time since their last update */
   const kNow = performance.now(), kSpp = tr.len / tr.N, kAdv = k => (k.ctrl==='remote' && k.kAt && !k.finished) ? Math.min(0.4, (kNow - k.kAt)/1000) * Math.max(0,k.v) * 60 / kSpp : 0;
-  const ord = K.karts.slice().sort((a,b) => (a.finished && b.finished) ? a.finT-b.finT : a.finished ? -1 : b.finished ? 1 : (b.prog+kAdv(b)) - (a.prog+kAdv(a)));
+  const ord = K.bt ? kBtOrd() : K.karts.slice().sort((a,b) => (a.finished && b.finished) ? a.finT-b.finT : a.finished ? -1 : b.finished ? 1 : (b.prog+kAdv(b)) - (a.prog+kAdv(a)));
   ord.forEach((k,i) => { k.rank = i+1; });
   /* Online the host's order is the one everybody shows, so two players can never both see themselves in front */
   if(net.role==='client' && K.hostRank && kNow - K.lastKs < 2500) K.hostRank.forEach((id,i) => { const k = K.karts.find(q => q.id===id); if(k) k.rank = i+1; });
@@ -2559,9 +2660,10 @@ function kStep(){
     else if(net.role==='client' && K.views[0]) kSendLatest(net.hostConn, {t:'kp', q:++K.sq, s:kPack(K.views[0])});
   }
   const me = K.views[0];
-  kEngine(me ? me.v : 0, racing && !K.res);
+  kEngine(me ? me.v : 0, racing && !K.res && !(me && me.out));
   if(me && me.lap === KLAPS && K.lastLap !== K.ti+1 && !me.finished){ K.lastLap = K.ti+1; K.lastLapT = K.tick; tone(660,990,0.3,'square',0.05); }
-  if(isAuth() && !K.res){ const hs = K.karts.filter(k => k.human);
+  if(K.bt){ if(isAuth() && !K.res && K.cd <= 40 && kBtDone()) kBtEnd(); }
+  else if(isAuth() && !K.res){ const hs = K.karts.filter(k => k.human);
     if(hs.every(k => k.finished) || (K.firstFin && K.t - K.firstFin > 1500)) kEnd(ord); }
 }
 
@@ -2577,11 +2679,12 @@ function kSendLatest(c,m){
   } catch(e) {}
 }
 const kPack = k => [k.id, Math.round(k.x), Math.round(k.y), +k.a.toFixed(2), +k.v.toFixed(1),
-  (k.spin>0?1:0) | (k.boost>0?2:0) | (k.star>0?4:0) | (k.anchor>0?8:0) | (k.shield?16:0) | (k.finished?32:0) | (k.drift<0?64:0) | (k.drift>0?128:0) | (k.calm>0?256:0), k.lap, k.idx, k.finT];
+  (k.spin>0?1:0) | (k.boost>0?2:0) | (k.star>0?4:0) | (k.anchor>0?8:0) | (k.shield?16:0) | (k.finished?32:0) | (k.drift<0?64:0) | (k.drift>0?128:0) | (k.calm>0?256:0), k.lap, k.idx, k.finT, (k.lives | 0) | (k.out ? 8 : 0)];
 function kUnpack(k,a){
   k.nx = +a[1] || 0; k.ny = +a[2] || 0; k.na = +a[3] || 0; k.v = +a[4] || 0; const f = a[5] | 0;
   k.spin = f&1 ? 5 : 0; k.boost = f&2 ? 5 : 0; k.star = f&4 ? 5 : 0; k.anchor = f&8 ? 5 : 0; k.shield = !!(f&16); k.finished = !!(f&32); k.drift = f&64 ? -1 : f&128 ? 1 : 0; k.calm = f&256 ? 5 : 0;
   k.lap = a[6] | 0; k.idx = Math.max(0, Math.min(kart.tr.N-1, a[7] | 0)); k.finT = a[8] | 0; k.prog = (k.lap-1)*kart.tr.N + k.idx; k.kAt = performance.now();
+  if(kart.bt && !k.out){ const q = a[9] | 0; k.lives = q & 7; if(q & 8) k.out = true; }
 }
 function kHostMsg(id,m){
   const K = kart, k = K.karts.find(q => q.id===id); if(!k || k.ctrl!=='remote') return;
@@ -2625,6 +2728,7 @@ function kEnd(ord){
 }
 function kTable(rows,cols){ const elm = $('kresTab'); elm.style.gridTemplateColumns = `repeat(${cols},auto)`; elm.innerHTML = rows.join(''); }
 function kShowRes(res,tot,stats){
+  if(kart.bt){ kShowBt(res,tot,stats); return; }
   const K = kart; K.res = res; state = 'kres'; kEngine(0,false);
   const cup = K.cup, mine = K.views.filter(k => k.human).map(k => k.id);
   if(cup) res.forEach((r,i) => { cup.pts[r[0]] = (cup.pts[r[0]] || 0) + KPTS[i]; });
@@ -2828,7 +2932,7 @@ function kUpdSel(){
 function kView(k,vx,vy,vw,vh){
   const K = kart, tr = K.tr, th = KTH[tr.th], u = vh/192, H = 20, hy = vy + Math.round(vh*0.34), vcx = vx + vw/2, F = vh*(1 - 0.085*(k.fz || 0)), N = tr.N;
   { const sh = k.shk > 0 ? k.shk/14*3.4*u : 0; if(sh) ctx.translate((Math.random()-0.5)*2*sh, (Math.random()-0.5)*2*sh); }
-  const ca = k.ca, fx = Math.cos(ca), fy = Math.sin(ca), rx = -fy, ry = fx, Cx = k.x - fx*46, Cy = k.y - fy*46;
+  const ca = k.ca, fx = Math.cos(ca), fy = Math.sin(ca), rx = -fy, ry = fx, CQ = tr.arena ? kArCam(tr.arena, k.x - fx*46, k.y - fy*46) : null, Cx = CQ ? CQ[0] : k.x - fx*46, Cy = CQ ? CQ[1] : k.y - fy*46;
   let g; ctx.drawImage(dsky('k'+tr.th,th.sky[0],th.sky[1],vw,hy-vy+1),vx,vy);
   if(th.sun){ const sx = vcx + Math.tan(Math.max(-1.4,Math.min(1.4,angd(-1.1,ca))))*F; if(sx > vx-60*u && sx < vx+vw+60*u){ { const gg = ctx.createRadialGradient(sx,vy+22*u,3*u,sx,vy+22*u,78*u); gg.addColorStop(0,'rgba(255,244,214,.5)'); gg.addColorStop(1,'rgba(255,244,214,0)'); ctx.fillStyle = gg; ctx.fillRect(sx-78*u,vy,156*u,hy-vy); }
     el(ctx,sx,vy+22*u,28*u); ctx.globalAlpha = 0.3; ctx.fillStyle = th.sun; ctx.fill(); ctx.globalAlpha = 1; el(ctx,sx,vy+22*u,11*u); ctx.fill(); } }
@@ -2869,12 +2973,13 @@ function kView(k,vx,vy,vw,vh){
     for(let q=0;q<12;q++){ const an = q*0.5236, ex = Math.cos(an)*f.rx, ey = Math.sin(an)*f.ry; cam(q, f.x+c0*ex-s0*ey, f.y+s0*ex+c0*ey); }
     emit(12); ctx.fillStyle = f.c; ctx.fill(); }
   for(let i=0;i<N;i++){ const dx = tr.sx[i]-Cx, dy = tr.sy[i]-Cy; if(dx*dx+dy*dy > 1.4e6){ vis[i] = 0; continue; } cl[i] = dx*rx+dy*ry; cf[i] = dx*fx+dy*fy; vis[i] = cf[i] > -100 ? 1 : 0; }
-  const seg = (i,o1,o2) => { const j = i+1 === N ? 0 : i+1; if(!vis[i] || !vis[j]) return;
+  const seg = (i,o1,o2) => { if(tr.arena) return; const j = i+1 === N ? 0 : i+1; if(!vis[i] || !vis[j]) return;
     const a = tr.nx[i]*rx+tr.ny[i]*ry, b = tr.nx[i]*fx+tr.ny[i]*fy, c = tr.nx[j]*rx+tr.ny[j]*ry, d = tr.nx[j]*fx+tr.ny[j]*fy;
     B[0] = cl[i]+o1*a; B[1] = cf[i]+o1*b; B[2] = cl[j]+o1*c; B[3] = cf[j]+o1*d; B[4] = cl[j]+o2*c; B[5] = cf[j]+o2*d; B[6] = cl[i]+o2*a; B[7] = cf[i]+o2*b;
     if(B[1] < NEAR && B[3] < NEAR && B[5] < NEAR && B[7] < NEAR) return; emit(4); };
-  const strip = (o1,o2,col,mod,rem) => { ctx.beginPath(); for(let i=0;i<N;i++){ if(mod && (((i/mod)|0)&1) !== rem) continue; seg(i,o1,o2); } ctx.fillStyle = col; ctx.fill(); };
+  const strip = (o1,o2,col,mod,rem) => { if(tr.arena) return; ctx.beginPath(); for(let i=0;i<N;i++){ if(mod && (((i/mod)|0)&1) !== rem) continue; seg(i,o1,o2); } ctx.fillStyle = col; ctx.fill(); };
   const hw = tr.w/2;
+  if(tr.arena) kArFloor(tr.arena,th,K,emit,cam,B,Cx,Cy);
   strip(-(hw+20),hw+20,th.shoulder);
   strip(-(hw+6),hw+6,th.curb[0],2,0); strip(-(hw+6),hw+6,th.curb[1],2,1);
   strip(-hw,hw,th.road);
@@ -2897,6 +3002,7 @@ function kView(k,vx,vy,vw,vh){
   /* upright things, far to near */
   const proj = (wx,wy,wz) => { const dx = wx-Cx, dy = wy-Cy, fd = dx*fx + dy*fy; if(fd < 3) return null; const sc = F/fd; return [vcx + (dx*rx+dy*ry)*sc, hy + (H-wz)*sc, sc, fd]; };
   const L = [], FOGD = K.wxe===2 ? 340 : 800;
+  if(tr.arena) kArObjs(L,tr.arena,th,proj,{Cx,Cy,fx,fy,rx,ry,vcx,hy,F,H,vx,vw});
   for(const o of tr.sc){ const p = proj(o.x,o.y,0); if(!p || p[3] > (K.wxe===2 ? FOGD*1.15 : 1000) || p[0] < vx-vw*0.3 || p[0] > vx+vw*1.3) continue;
     L.push([p[3], () => { const c = kSpr(o.k), w = c.lw*o.s*p[2], h = c.lh*o.s*p[2];
       if(p[3] < 420 && K.views.length < 2){ ctx.globalAlpha = 0.2; el(ctx,p[0]+w*0.06,p[1],w*0.32,Math.max(1,w*0.06)); ctx.fillStyle = '#000'; ctx.fill(); ctx.globalAlpha = 1; }
@@ -2916,12 +3022,12 @@ function kView(k,vx,vy,vw,vh){
       else if(ty==='twist') kTwister(p[0],p[1],p[2],o);
       else kIcon('peel',p[0],p[1]-2*p[2],8*p[2]); }]); }
   const a0 = tr.arch[0], a1 = tr.arch[1], pa = proj(a0[0],a0[1],0), pb = proj(a1[0],a1[1],0);
-  if(pa && pb && pa[3] < 1000 && pb[3] < 1000){
+  if(!tr.arena && pa && pb && pa[3] < 1000 && pb[3] < 1000){
     for(const p of [pa,pb]) L.push([p[3], () => { rr(ctx,p[0]-1.6*p[2],p[1]-28*p[2],3.2*p[2],28*p[2],p[2]); fs(ctx,'#8f93a8',OL,Math.max(1,p[2]*0.4)); }]);
     L.push([(pa[3]+pb[3])/2, () => { const X = t => pa[0]+(pb[0]-pa[0])*t, Z = t => pa[2]+(pb[2]-pa[2])*t, Y = (t,z) => (pa[1]+(pb[1]-pa[1])*t) - z*Z(t);
       for(let i=0;i<10;i++) for(let r=0;r<2;r++){ const t0 = i/10, t1 = (i+1)/10; poly(ctx,[X(t0),Y(t0,21+r*3.5),X(t1),Y(t1,21+r*3.5),X(t1),Y(t1,24.5+r*3.5),X(t0),Y(t0,24.5+r*3.5)]); ctx.fillStyle = (i+r)%2 ? '#1d1b2e' : '#ffffff'; ctx.fill(); } }]);
   }
-  for(const o of K.karts){ const n0 = L.length; kParts(L,o,proj,ca,o===k); if(K.wxe===2 && o !== k) kFade(L,n0,FOGD); }
+  for(const o of K.karts){ if(o.out) continue; const n0 = L.length; kParts(L,o,proj,ca,o===k); if(K.wxe===2 && o !== k) kFade(L,n0,FOGD); }
   if(K.ghost) kGhostDraw(L,proj,ca);
   for(const q of K.pt){ const p = proj(q.x,q.y,q.z); if(!p || p[3] > 650 || p[3] < 24) continue;
     L.push([p[3]-0.5, () => { const a = q.life/q.max, r = Math.min(11*u,Math.max(0.7,q.r*p[2]*(q.grow ? 1.9-a : 0.6+0.4*a))); ctx.globalAlpha = Math.min(1,a*(q.grow ? 1.1 : 1.8))*Math.min(1,(p[3]-24)/40); el(ctx,p[0],p[1],r); ctx.fillStyle = q.c; ctx.fill(); ctx.globalAlpha = 1; }]); }
@@ -2930,9 +3036,9 @@ function kView(k,vx,vy,vw,vh){
   L.sort((a,b) => b[0]-a[0]); for(const s of L) s[1]();
   if(K.wxe===1) kRain(vx,vy,vw,vh,u,K.views.length < 2);
   if(th.amb && th.amb!=='stars' && K.views.length < 2) kAmb(th.amb,vx,vy,vw,vh,u);
-  if(k.ink > 0){ const fade = Math.min(1,k.ink/70), grow = Math.min(1,(300-k.ink)/16); ctx.globalAlpha = 0.93*fade; ctx.fillStyle = '#231a4a';
+  if(k.ink > 0 && !K.spec){ const fade = Math.min(1,k.ink/70), grow = Math.min(1,(300-k.ink)/16); ctx.globalAlpha = 0.93*fade; ctx.fillStyle = '#231a4a';
     for(let i=0;i<9;i++){ const bx3 = vx + vw*(0.08+((i*37)%83)/100), by3 = vy + vh*(0.14+((i*53)%71)/100*0.8), r = (0.1+((i*29)%13)/100)*vh*grow; el(ctx,bx3,by3,r,r*0.82); ctx.fill(); el(ctx,bx3-r*0.3,by3-r*0.3,r*0.28,r*0.2); ctx.fillStyle = '#4a3a8a'; ctx.fill(); ctx.fillStyle = '#231a4a'; } ctx.globalAlpha = 1; }
-  if(k.fl > 0){ ctx.globalAlpha = k.fl/8*0.45; ctx.fillStyle = '#fff'; ctx.fillRect(vx,vy,vw,vh); ctx.globalAlpha = 1; }
+  if(k.fl > 0 && !K.spec){ ctx.globalAlpha = k.fl/8*0.45; ctx.fillStyle = '#fff'; ctx.fillRect(vx,vy,vw,vh); ctx.globalAlpha = 1; }
   if(k.boost > 0 || k.slip > 40){ ctx.strokeStyle = k.boost > 0 ? 'rgba(255,255,255,.5)' : 'rgba(255,255,255,.25)'; ctx.lineWidth = 1.2*u;
     for(let i=0;i<10;i++){ const an = Math.random()*6.28, r0 = vh*(0.36+Math.random()*0.2); ctx.beginPath(); ctx.moveTo(vcx+Math.cos(an)*r0*1.6, vy+vh*0.6+Math.sin(an)*r0); ctx.lineTo(vcx+Math.cos(an)*r0*2.1, vy+vh*0.6+Math.sin(an)*r0*1.3); ctx.stroke(); } }
   kVig(vx,vy,vw,vh);
@@ -2941,10 +3047,10 @@ function kView(k,vx,vy,vw,vh){
   if(k.lap !== k.lapP){ if(k.lapP && k.lap > k.lapP && k.lap <= KLAPS){ k.lapMsg = K.tick; k.lapTime = K.t - (k.lapT0 || 0); } k.lapT0 = K.t; k.lapP = k.lap; }
   if(k.rank !== k.rkP){ if(k.rkP && K.tick - (k.rkT || -99) > 30){ k.rkT = K.tick; k.rkD = k.rank < k.rkP ? 1 : -1; } k.rkP = k.rank; }
   if(k.item !== k.hudI){ k.hudI = k.item; k.hudT = K.tick; }
-  if(K.tt) txt('ZEITFAHREN', vx+8*u, vy+15*u, 8.5*u, '#7fe9ff'); else { const ra = k.rkT !== undefined ? K.tick - k.rkT : 99, pop = ra < 22 ? 1 + 0.55*(1 - ra/22) : 1, rcol = ra < 22 ? (k.rkD > 0 ? '#7dff8a' : '#ff8a7a') : (k.rank===1 ? '#ffd84a' : '#fff');
+  if(K.bt) kBtHud(k,vx,vy,vw,vh,u); else if(K.tt) txt('ZEITFAHREN', vx+8*u, vy+15*u, 8.5*u, '#7fe9ff'); else { const ra = k.rkT !== undefined ? K.tick - k.rkT : 99, pop = ra < 22 ? 1 + 0.55*(1 - ra/22) : 1, rcol = ra < 22 ? (k.rkD > 0 ? '#7dff8a' : '#ff8a7a') : (k.rank===1 ? '#ffd84a' : '#fff');
     txt(String(k.rank), vx+8*u, vy+(17+(pop-1)*9)*u, 24*u*pop, rcol); }
-  if(!K.tt) txt('/' + n, vx+25*u, vy+21*u, 9*u, '#fff');
-  txt(`Runde ${Math.max(1,Math.min(KLAPS,k.lap))}/${KLAPS}`, vx+8*u, vy+37*u, 8.5*u, '#fff'); txt(fmtT(k.finished ? k.finT : K.t), vx+8*u, vy+48*u, 7.5*u, '#ffe08a');
+  if(!K.bt){ if(!K.tt) txt('/' + n, vx+25*u, vy+21*u, 9*u, '#fff');
+  txt(`Runde ${Math.max(1,Math.min(KLAPS,k.lap))}/${KLAPS}`, vx+8*u, vy+37*u, 8.5*u, '#fff'); txt(fmtT(k.finished ? k.finT : K.t), vx+8*u, vy+48*u, 7.5*u, '#ffe08a'); }
   if(net.role==='client' && !K.res && performance.now() - K.lastKs > 1500) txt('Verbindung wackelt …', vx+8*u, vy+59*u, 7.5*u, '#ffb347');
   else if(net.role !== 'off' && !K.res){ const pl = pingLabel(); if(pl) txt(pl, vx+8*u, vy+59*u, 6.5*u, pingCol(pingNum())); }
   kHudExtra(k,vx,vy,vw,vh,u);
@@ -2952,9 +3058,10 @@ function kView(k,vx,vy,vw,vh){
   const it = k.roll > 0 ? KIK[(K.tick>>2) % KIK.length] : k.item; if(it) kIcon(it,vcx,by+13*u,20*u*(k.roll > 0 ? 1 : 1 + 0.3*Math.max(0,1-(K.tick-(k.hudT || 0))/14)),k.chg || 3);
   if(k.item && k.roll <= 0) txt(KITEM[k.item], vcx, by+34*u, 6.5*u, '#fff', 'center');
   const mm = 46*u, sc2 = mm/Math.max(tr.x1-tr.x0, tr.y1-tr.y0), mx = vx+vw-7*u-(tr.x1-tr.x0)*sc2, my = vy+28*u, MX = x => mx+(x-tr.x0)*sc2, MY = y => my+(y-tr.y0)*sc2;
-  for(let p=0;p<2;p++){ ctx.beginPath(); for(let i=0;i<N;i+=5) ctx.lineTo(MX(tr.sx[i]),MY(tr.sy[i])); ctx.closePath(); ctx.strokeStyle = p ? '#fff' : 'rgba(20,18,36,.7)'; ctx.lineWidth = (p ? 1.8 : 4)*u; ctx.stroke(); }
-  for(const o of K.karts){ if(o===k) continue; el(ctx,MX(o.x),MY(o.y),1.8*u); ctx.fillStyle = KCOL[o.id]; ctx.fill(); }
+  for(let p=0;p<2;p++){ ctx.beginPath(); if(tr.arena){ const bp = tr.arena.bp; for(let i=0;i<bp.length;i+=2) ctx.lineTo(MX(bp[i][0]),MY(bp[i][1])); } else for(let i=0;i<N;i+=5) ctx.lineTo(MX(tr.sx[i]),MY(tr.sy[i])); ctx.closePath(); ctx.strokeStyle = p ? '#fff' : 'rgba(20,18,36,.7)'; ctx.lineWidth = (p ? 1.8 : 4)*u; ctx.stroke(); }
+  for(const o of K.karts){ if(o===k || o.out) continue; el(ctx,MX(o.x),MY(o.y),1.8*u); ctx.fillStyle = KCOL[o.id]; ctx.fill(); }
   el(ctx,MX(k.x),MY(k.y),2.8*u); fs(ctx,KCOL[k.id],'#fff',1.1*u);
+  if(K.bt){ kBtBoard(k,vx,vy,vw,vh,u,my+(tr.y1-tr.y0)*sc2+9*u); kBtMsg(k,vx,vy,vw,vh,u); }
   txt(Math.round(Math.abs(k.v)*40) + ' km/h', vcx, vy+vh-11*u, 9*u, '#fff', 'center');
   if(k.drift){ const bw = 36*u, bh = 3.6*u, bx2 = vcx-bw/2, by2 = vy+vh-35*u, fr = Math.min(1,k.dT/100);
     ctx.fillStyle = 'rgba(20,18,36,.75)'; ctx.fillRect(bx2-u,by2-u,bw+2*u,bh+2*u); ctx.fillStyle = k.dT > 100 ? '#ff9a3d' : k.dT > 45 ? '#7fd0ff' : '#e8e6f4'; ctx.fillRect(bx2,by2,bw*fr,bh);
@@ -2981,11 +3088,12 @@ function kRender(){
   const vs = K.views.length ? K.views : K.karts.slice(0,1), two = vs.length > 1, side = W/Hh > 1.25;
   vs.slice(0,2).forEach((k,i) => {
     const vw = two && side ? Math.floor(W/2) : W, vh = two && !side ? Math.floor(Hh/2) : Hh, vx = two && side ? i*(W-vw) : 0, vy = two && !side ? i*(Hh-vh) : 0;
-    ctx.save(); ctx.beginPath(); ctx.rect(vx,vy,vw,vh); ctx.clip(); kView(k,vx,vy,vw,vh); ctx.restore();
+    K.spec = !!(K.bt && k.out); ctx.save(); ctx.beginPath(); ctx.rect(vx,vy,vw,vh); ctx.clip(); kView(K.spec ? kBtSpec(k) : k,vx,vy,vw,vh); ctx.restore();
   });
   if(two){ ctx.fillStyle = '#12111f'; if(side) ctx.fillRect((W>>1)-1,0,2,Hh); else ctx.fillRect(0,(Hh>>1)-1,W,2); }
 }
 function kMap(){
+  if(kart.btm){ kMapBt(); return; }
   const c = $('ktMap'), g = c.getContext('2d'), s = kart.sel, list = s < KTRACKS.length ? [s] : KCUPS[s-KTRACKS.length][1], cw = c.width/list.length;
   g.clearRect(0,0,c.width,c.height); g.lineJoin = 'round';
   list.forEach((ti,q) => { const tr = kBuild(ti), sc = Math.min((cw-26)/(tr.x1-tr.x0), (c.height-26)/(tr.y1-tr.y0)), ox = q*cw + (cw-(tr.x1-tr.x0)*sc)/2, oy = (c.height-(tr.y1-tr.y0)*sc)/2;
@@ -3025,20 +3133,20 @@ function kCupThumb(ci){
   kThumbs.set(key,c); return c;
 }
 /* box: the grid element; cur: highlighted entry; votes: {playerId: trackIndex}; pick(i): click handler; withCups: also list the 4 cups; best: show a star for tracks with a best time */
-function kTileGrid(box,cur,votes,pick,withCups,best){
-  const n = KTRACKS.length + (withCups ? KCUPS.length : 0); box._pick = pick;
+function kTileGrid(box,cur,votes,pick,withCups,best,isBt){
+  const n = isBt ? BTA.length : KTRACKS.length + (withCups ? KCUPS.length : 0); box._pick = pick;
   if(box.children.length !== n){
     box.innerHTML = '';
     for(let i=0;i<n;i++){
-      const cup = i >= KTRACKS.length, b = document.createElement('button'), cv = document.createElement('canvas'), sp = document.createElement('span'), vt = document.createElement('div'), bt = document.createElement('div');
-      b.type = 'button'; b.className = 'tt'; cv.width = 96; cv.height = 64; cv.getContext('2d').drawImage(cup ? kCupThumb(i-KTRACKS.length) : kThumb(i),0,0);
-      sp.textContent = cup ? KCUPS[i-KTRACKS.length][0] : KTRACKS[i].name; vt.className = 'vt'; bt.className = 'bt'; b.setAttribute('aria-label', sp.textContent);
+      const cup = !isBt && i >= KTRACKS.length, b = document.createElement('button'), cv = document.createElement('canvas'), sp = document.createElement('span'), vt = document.createElement('div'), bt = document.createElement('div');
+      b.type = 'button'; b.className = 'tt'; cv.width = 96; cv.height = 64; cv.getContext('2d').drawImage(isBt ? btThumb(i) : cup ? kCupThumb(i-KTRACKS.length) : kThumb(i),0,0);
+      sp.textContent = isBt ? BTA[i].name : cup ? KCUPS[i-KTRACKS.length][0] : KTRACKS[i].name; vt.className = 'vt'; bt.className = 'bt'; b.setAttribute('aria-label', sp.textContent);
       b.append(cv,sp,vt,bt); b.onclick = () => box._pick(i); box.appendChild(b);
     }
   }
   for(let i=0;i<n;i++){ const b = box.children[i]; b.classList.toggle('sel', i === cur);
-    b.querySelector('.vt').innerHTML = Object.keys(votes).filter(id => (votes[id]|0) === i && i < KTRACKS.length).map(id => `<i style="background:${PCOL[(id|0)%4]}"></i>`).join('');
-    b.querySelector('.bt').textContent = best ? (i < KTRACKS.length ? (save.kt[i] ? '★' : '') : (save.cups[i-KTRACKS.length] ? '★' : '')) : ''; }
+    b.querySelector('.vt').innerHTML = Object.keys(votes).filter(id => (votes[id]|0) === i && (isBt || i < KTRACKS.length)).map(id => `<i style="background:${PCOL[(id|0)%4]}"></i>`).join('');
+    b.querySelector('.bt').textContent = best && !isBt ? (i < KTRACKS.length ? (save.kt[i] ? '★' : '') : (save.cups[i-KTRACKS.length] ? '★' : '')) : ''; }
 }
 /* driver and vehicle choice inside the online lobby */
 function lobPickUpd(){ const s = save.ksel[0]; $('lchName').textContent = KCHAR[s[0]].n; $('lvhName').textContent = KVEH[s[1]].n; }
@@ -3047,6 +3155,7 @@ function lobCyc(which,n,d){ const s = save.ksel[0]; s[which] = which === 0 ? kNe
 
 /* ----- kart menu wiring ----- */
 function kUpdMenu(){
+  if(kart.btm){ kUpdMenuBt(); return; }
   const s = kart.sel;
   if(s < KTRACKS.length){ $('ktName').textContent = KTRACKS[s].name; const b = kart.ttm ? ((save.tt[ttKey(s)] || {}).t | 0) : save.kt[kBestKey(s)]; const tr = kBuild(s); $('ktInfo').textContent = `${KTH[tr.th].n} · ${(tr.len*0.000185).toFixed(1).replace('.',',')} km pro Runde · ${KLAPS} Runden` + (b ? ` · ${kart.ttm ? 'Zeitfahren-' : ''}Bestzeit ${fmtT(b)}` : ''); }
   else { const ci = s-KTRACKS.length, c = KCUPS[ci], r = save.cups[ci]; $('ktName').textContent = c[0]; $('ktInfo').textContent = '3 Rennen: ' + c[1].map(i => KTRACKS[i].name).join(', ') + (r ? ` · Bester Platz: ${r}.` : ''); }
@@ -3054,12 +3163,13 @@ function kUpdMenu(){
   kMap(); kUpdSel();
 }
 function kGo(m){
+  if(kart.btm){ kart.cup = null; kart.btNext = true; kStart(kart.bsel,kart.cls,m); return; }
   const s = kart.sel; kart.ttNext = kart.ttm && m==='solo';
   if(s < KTRACKS.length){ kart.cup = null; kStart(s,kart.cls,m); }
   else { const ci = s-KTRACKS.length; kart.cup = {ci, race:0, pts:{}, final:false}; kStart(KCUPS[ci][1][0],kart.cls,m); }
 }
 function kOnline(ti){ net.votes = {}; const sel = {}, cos = {}; net.ids.forEach(id => { sel[id] = id===0 ? save.ksel[0] : ((net.ksel && net.ksel[id]) || [id,id]); cos[id] = id===0 ? kCos(0) : ((net.kcos && net.kcos[id]) || [-1,-1]); });
-  kart.cup = null; kart.osel = sel; kart.ocos = cos; kart.rid = 1 + ((Math.random()*1e9)|0); broadcast({t:'go',game:'kart',track:ti,cls:kart.cls,ids:net.ids,sel,cos,vr:kart.vr|0,wx:kart.wx|0,rid:kart.rid}); kStart(ti,kart.cls,'online'); }
+  const bt = lobbyGame==='battle' ? 1 : 0; kart.cup = null; kart.osel = sel; kart.ocos = cos; kart.rid = 1 + ((Math.random()*1e9)|0); broadcast({t:'go',game:'kart',track:ti,cls:kart.cls,ids:net.ids,sel,cos,vr:kart.vr|0,wx:kart.wx|0,rid:kart.rid,bt}); kart.btNext = !!bt; kStart(ti,kart.cls,'online'); }
 $('ktPrev').onclick = () => kSelStep(-1);
 $('ktNext').onclick = () => kSelStep(1);
 $('kcBtn').onclick = () => { kart.cls = (kart.cls+1) % 3; kUpdMenu(); if(!$('lobbyOv').hidden) showLobby(); };
@@ -3069,23 +3179,23 @@ $('vhPrev').onclick = () => kCyc(1,KVEH.length,-1); $('vhNext').onclick = () => 
 $('kpBtn').onclick = () => { kart.selP = 1 - kart.selP; kUpdSel(); };
 $('k1').onclick = () => kGo('solo');
 $('k2').onclick = () => kGo('duo');
-$('gameBtn').onclick = () => { lobbyGame = lobbyGame==='jump' ? 'kart' : lobbyGame==='kart' ? 'esc' : 'jump'; showLobby(); };
-$('trkBtn').onclick = () => { if(lobbyGame==='esc') E.sel = (E.sel+1) % ECH.length; else if(lobbyGame==='kart') kart.sel = ((kart.sel < KTRACKS.length ? kart.sel : -1) + 1) % KTRACKS.length; else selLevel = selLevel % save.max + 1; showLobby(); };
+$('gameBtn').onclick = () => { lobbyGame = lobbyGame==='jump' ? 'kart' : lobbyGame==='kart' ? 'battle' : lobbyGame==='battle' ? 'esc' : 'jump'; showLobby(); };
+$('trkBtn').onclick = () => { if(lobbyGame==='esc') E.sel = (E.sel+1) % ECH.length; else if(lobbyGame==='kart') kart.sel = ((kart.sel < KTRACKS.length ? kart.sel : -1) + 1) % KTRACKS.length; else { lobCust = null; selLevel = selLevel % save.max + 1; } showLobby(); };
 $('tmpBtn').onclick = () => { kart.cls = (kart.cls+1) % 3; showLobby(); };
-$('kOn').onclick = () => openOnline('kart','kartOv');
+$('kOn').onclick = () => openOnline(kart.btm ? 'battle' : 'kart','kartOv');
 $('kdBtn').onclick = () => { save.kdrift = (save.kdrift+1) % KDR.length; persist(); kUpdMenu(); };
-$('ktAll').onclick = () => { kTileGrid($('allGrid'), kart.sel, {}, ti => { kart.sel = ti; kUpdMenu(); show('kartOv'); }, !kart.ttm, true); show('tracksOv'); };
+$('ktAll').onclick = () => { if(kart.btm) kTileGrid($('allGrid'), kart.bsel, {}, ti => { kart.bsel = ti; kUpdMenu(); show('kartOv'); }, false, false, true); else kTileGrid($('allGrid'), kart.sel, {}, ti => { kart.sel = ti; kUpdMenu(); show('kartOv'); }, !kart.ttm, true); show('tracksOv'); };
 $('tracksBack').onclick = () => show('kartOv');
-$('lobRnd').onclick = () => { if(net.role!=='host') return; kart.sel = (Math.random()*KTRACKS.length)|0; showLobby(); };
+$('lobRnd').onclick = () => { if(net.role!=='host') return; if(lobbyGame==='battle') kart.bsel = (Math.random()*BTA.length)|0; else kart.sel = (Math.random()*KTRACKS.length)|0; showLobby(); };
 $('lchPrev').onclick = () => lobCyc(0,KCHAR.length,-1); $('lchNext').onclick = () => lobCyc(0,KCHAR.length,1);
 $('lvhPrev').onclick = () => lobCyc(1,KVEH.length,-1); $('lvhNext').onclick = () => lobCyc(1,KVEH.length,1);
 $('kLob').onclick = () => { if(net.role!=='host') return; kart.on = false; kEngine(0,false); broadcast({t:'klob'}); showLobby(); };
 $('kNext').onclick = () => {
   const K = kart;
   if(K.cup){ if(K.cup.race < 2){ K.cup.race++; kStart(KCUPS[K.cup.ci][1][K.cup.race],K.cls,mode); } else kShowCup(); }
-  else if(net.role==='host') kOnline((K.ti+1) % KTRACKS.length);
+  else if(net.role==='host') kOnline((K.ti+1) % (K.bt ? BTA.length : KTRACKS.length));
 };
-$('kAgain').onclick = () => { if(net.role==='host') kOnline(kart.ti); else { kart.ttNext = kart.tt; kStart(kart.ti,kart.cls,mode); } };
+$('kAgain').onclick = () => { if(net.role==='host') kOnline(kart.ti); else { kart.ttNext = kart.tt; kart.btNext = kart.bt; kStart(kart.ti,kart.cls,mode); } };
 $('kMenu').onclick = quit;
 
 
@@ -3224,7 +3334,7 @@ const EMAPS = [
 ]
 ];
 /* ================= Escape-Insel: co-op puzzle game seen from above ================= */
-const E = { on:false, sel:0, ch:0, seed:1, def:null, map:null, objs:[], sec:{}, st:null, me:{x:0,y:0,face:1,walk:0,mv:false}, oth:new Map(), tick:0, dlg:null, notes:[], cracks:new Set(),
+const E = { on:false, df:1, sel:0, ch:0, seed:1, def:null, map:null, objs:[], sec:{}, st:null, me:{x:0,y:0,face:1,walk:0,mv:false}, oth:new Map(), tick:0, dlg:null, notes:[], cracks:new Set(),
   toasts:[], target:-1, dirty:false, lock:null, shake:0, res:null, fall:0, fallTo:null, reqT:0, gpPrev:false };
 const EPEN = { lock:10, pick:15, seq:10, check:20, trap:5, tip:30, late:30 };
 const ESYM_N = ['Anker','Schädel','Fisch','Stern','Mond','Sonne','Krone','Welle'];
@@ -3352,9 +3462,9 @@ const EPZ = {
     note:(S,my) => { const L = [`Der Schlüssel liegt in der <b>${ROWN[S.pick/3|0]} Reihe</b>.`,`Der Schlüssel liegt in der <b>${COLN[S.pick%3]} Spalte</b>.`,`Er liegt nicht in der ${ROWN[S.nr]} Reihe.`,`Er liegt nicht in der ${COLN[S.nc]} Spalte.`]; return my.roles.map(i => L[i]); } },
   path:{ sec:(r,ri,c) => { const z = c.z, mid = z.h>>1, safe = new Set(), bad = new Set(), add = (x,y) => safe.add((z.x+x)+','+(z.y+y)); let row = mid;
       for(let x=0;x<z.w;x++){ add(x,row); let to = x===z.w-1 ? mid : Math.max(0, Math.min(z.h-1, row + [-2,-1,0,1,2][ri(5)])); if(x%2===0 && x < z.w-1 && to===row) to = row > 0 && (row===z.h-1 || ri(2)) ? row-1 : row+1; for(let y=Math.min(row,to);y<=Math.max(row,to);y++) add(x,y); row = to; }
-      for(let y=0;y<z.h;y++) for(let x=0;x<z.w;x++){ const k = (z.x+x)+','+(z.y+y); if(!safe.has(k)) bad.add(k); } return {safe, bad}; },
-    note:(S,my) => my.solo ? ['Die leuchtenden Platten sind sicher, alle anderen brechen ein. Am Ende des Feldes wartet ein Hebel.']
-      : my.know ? ['<b>Du siehst leuchtende Platten</b> auf dem Feld: Das ist der sichere Weg.' + (my.half ? ` Du siehst aber nur die ${my.half===1 ? 'westliche' : 'östliche'} Hälfte, den Rest sieht jemand anderes.` : ''), 'Der Bannkreis lässt dich nicht aufs Feld. Stell dich südlich an den Graben und lotse die anderen im Chat hinüber.']
+      for(let y=0;y<z.h;y++) for(let x=0;x<z.w;x++){ const k = (z.x+x)+','+(z.y+y); if(!safe.has(k)) bad.add(k); } return {safe, bad, from:[z.x,z.y+mid], to:[z.x+z.w-1,z.y+mid]}; },
+    note:(S,my,def) => my.solo ? ['Die leuchtenden Platten sind sicher, alle anderen brechen ein. Am Ende des Feldes wartet ein Hebel.']
+      : my.know ? ['<b>Du siehst leuchtende Platten</b> auf dem Feld: Das ist der sichere Weg.' + (my.half ? ` Du siehst aber nur die ${my.half===1 ? 'westliche' : 'östliche'} Hälfte, den Rest sieht jemand anderes.` : ''), 'Der Bannkreis lässt dich nicht aufs Feld. ' + ((def && def.edge) || 'Stell dich südlich an den Graben') + ' und lotse die anderen im Chat hinüber.']
       : ['Für dich sehen alle Platten gleich aus. Wer falsch tritt, bricht ein und landet wieder am Anfang.','<b>Jemand aus deiner Crew sieht den sicheren Weg leuchten.</b> Lass dich im Chat lotsen. Am Ende des Feldes wartet ein Hebel.'] },
   order:{ split:1, sec:r => ({order:eShuf(r,[0,1,2,3,4]), syms:eShuf(r,[0,1,2,3,4,5,6,7]).slice(0,5)}),
     note:(S,my) => { const POS = [[0,4],[1],[2],[3]], out = []; for(const r of my.roles) for(const k of POS[r]) out.push([k,`Als <b>${k+1}.</b> berührt ihr: ${eSy(S.syms[S.order[k]])}`]); return out.sort((a,b) => a[0]-b[0]).map(a => a[1]); } },
@@ -3399,6 +3509,68 @@ const EPZ = {
       for(const [,s] of cl){ if(clues.length >= 4) break; if(!clues.includes(s)) clues.push(s); }
       return {sol, clues, left:cand.length, init:sol.map(q => (q+1+ri(3))%4)}; },
     note:(S,my) => S.clues.filter((c,j) => my.roles.includes(j%4)).concat(['Die Sockel zählt ihr von links nach rechts, 1 bis 4. Stellt die Steine ein und drückt dann den Altar.']) }
+};
+
+/* ----- difficulty: scales penalties, the storm/lava countdown and the star times ----- */
+const EDIFF = [
+  {n:'Leicht', pen:0.5, cd:1.5, par:1.3, sol:1, d:'Halbe Strafzeiten, mehr Zeit beim Countdown, Sterne leichter zu holen.'},
+  {n:'Normal', pen:1, cd:1, par:1, sol:1, d:'So ist das Spiel gedacht.'},
+  {n:'Schwer', pen:1.5, cd:0.75, par:0.85, sol:0, d:'Höhere Strafzeiten, weniger Zeit beim Countdown, keine Lösungen im Logbuch.'}
+];
+EPEN.sol = 90;
+const eP = k => Math.max(1, Math.round(EPEN[k] * EDIFF[E.df].pen));
+const eResKey = (ci,df) => df === 1 ? String(ci) : ci + (df === 0 ? 'l' : 'h');
+const ePar = (C,df) => Math.round(C.par * EDIFF[df].par / 5) * 5;
+const eCdTicks = cd => Math.round(cd.sec * EDIFF[E.df].cd) * 60;
+const escChap = () => { const s = new Set(); for(const k in save.esc.best){ const c = parseInt(k); if(Number.isFinite(c) && c >= 0 && c < ECH.length) s.add(c); } return s; };
+const escDone = () => escChap().size;
+const escStars = () => { const m = {}; for(const k in save.esc.stars){ const c = parseInt(k); if(Number.isFinite(c)) m[c] = Math.max(m[c] || 0, save.esc.stars[k] | 0); } return Object.values(m).reduce((a,b) => a+b, 0); };
+const escHard = () => Object.keys(save.esc.best).some(k => /h$/.test(k));
+
+/* ----- directions in words: used by the fog puzzle and by the solution texts ----- */
+const EDIR = { N:['↑','Norden'], E:['→','Osten'], S:['↓','Süden'], W:['←','Westen'] };
+const eRunsOf = steps => { const out = []; for(const d of steps){ if(out.length && out[out.length-1][0] === d) out[out.length-1][1]++; else out.push([d,1]); } return out; };
+const eRunTxt = runs => runs.map(([d,n]) => `<span class="nb">${n}× ${EDIR[d][0]} ${EDIR[d][1]}</span>`).join(' ');
+const eStepsOf = cells => { const st = []; for(let i=1;i<cells.length;i++){ const dx = cells[i][0]-cells[i-1][0], dy = cells[i][1]-cells[i-1][1]; st.push(dx > 0 ? 'E' : dx < 0 ? 'W' : dy > 0 ? 'S' : 'N'); } return st; };
+function eBfsCells(ok,from,to){
+  const key = (x,y) => x+','+y, prev = new Map([[key(from[0],from[1]), null]]), q = [from];
+  for(let i=0;i<q.length;i++){ const [x,y] = q[i];
+    if(x === to[0] && y === to[1]){ const out = []; let k = key(x,y); while(k){ out.push(k.split(',').map(Number)); k = prev.get(k); } return out.reverse(); }
+    for(const [dx,dy] of [[0,-1],[1,0],[-1,0],[0,1]]){ const nx = x+dx, ny = y+dy, nk = key(nx,ny); if(prev.has(nk) || !ok(nx,ny)) continue; prev.set(nk, key(x,y)); q.push([nx,ny]); } }
+  return null;
+}
+
+/* ----- the solution texts (second help level, costs more time than a tip) ----- */
+EPZ.code.sol = S => 'Gebt am Schloss diese Zeichen ein, in dieser Reihenfolge: ' + S.code.map(eSy).join(' ');
+EPZ.dig.sol = S => `Der Schlüssel liegt im Haufen in der <b>${ROWN[S.pick/3|0]} Reihe</b> und der <b>${COLN[S.pick%3]} Spalte</b>.`;
+EPZ.order.sol = S => 'Berührt die Totems in dieser Reihenfolge: ' + S.order.map(n => eSy(S.syms[n])).join(' ');
+EPZ.runes.sol = S => 'Gebt am Runentor diese Ziffern ein, von links nach rechts: <b>' + S.code.join(' ') + '</b>';
+EPZ.twin.sol = S => `Der besondere Sockel ist der in der <b>${S.pos < 3 ? 'oberen' : 'unteren'} Reihe</b>, <b>${['links','in der Mitte','rechts'][S.pos%3]}</b>. Er zeigt in den beiden Kammern ein anderes Zeichen. Berührt ihn.`;
+EPZ.ropes.sol = S => `Kappt das <b>${S.pick+1}. Seil</b> von links gezählt. Es ist <b>${ROPEC[S.cols[S.pick]][0]}</b>.`;
+EPZ.count.sol = S => 'Die vier Ziffern des Codes: <b>' + S.code.join(' ') + '</b>';
+EPZ.gems.sol = S => 'Stellt die Sockel von links nach rechts so ein: ' + S.sol.map((g,i) => `<span class="nb">${i+1}: <b>${EGEM[g][0]}</b></span>`).join(' ') + '. Drückt danach den Altar.';
+EPZ.path.sol = S => { const p = eBfsCells((x,y) => S.safe.has(x+','+y), S.from, S.to); return p ? 'Vom Westrand des Feldes aus: ' + eRunTxt(eRunsOf(eStepsOf(p))) : ''; };
+EPZ.maze.sol = S => { const h = S.t.length, p = eBfsCells((x,y) => (S.t[y] || [])[x] === '.', [S.ex, h-1], [S.key[0]-S.zx, S.key[1]-S.zy]); return p ? 'Vom Eingang aus, jeder Schritt ist ein Feld: ' + eRunTxt(eRunsOf(eStepsOf(p))) + '. Der Kristallschlüssel liegt am Ende.' : ''; };
+
+/* ----- new puzzle: the fog path. Everybody sees an equal field of mud, the way across is only written down, split in four parts ----- */
+EPZ.fog = { split:1,
+  sec:(r,ri,c) => { const z = c.z, W = z.w, H = z.h; let best = null;
+    for(let tries=0; tries<80; tries++){
+      let x = 1 + ri(W-2); const sx = x, steps = [], cells = [[x,H-1]];
+      for(let row=H-1; row>=0; row--){
+        let tx = x; if(ri(4) > 0){ tx = ri(W); if(Math.abs(tx-x) < 2) tx = x; }
+        if(tx-x > 4) tx = x+4; if(x-tx > 4) tx = x-4;
+        while(x !== tx){ const d = tx > x ? 'E' : 'W'; x += tx > x ? 1 : -1; cells.push([x,row]); steps.push(d); }
+        if(row > 0){ cells.push([x,row-1]); steps.push('N'); } }
+      const runs = eRunsOf(steps), cand = {sx, ex:x, steps, runs, cells};
+      if(runs.length >= 7 && steps.length >= 16 && steps.length <= 28){ best = cand; break; }
+      if(!best || runs.length > best.runs.length) best = cand; }
+    const ok = new Set(best.cells.map(q => (z.x+q[0])+','+(z.y+q[1]))), bad = new Set(), n = best.runs.length;
+    for(let y=0;y<H;y++) for(let x=0;x<W;x++){ const k = (z.x+x)+','+(z.y+y); if(!ok.has(k)) bad.add(k); }
+    const seg = [0,1,2,3].map(i => eRunTxt(best.runs.slice(Math.round(i*n/4), Math.round((i+1)*n/4))));
+    return {fog:1, sx:best.sx, ex:best.ex, runs:best.runs, seg, ok, bad, w:W, h:H}; },
+  note:(S,my) => my.roles.map(i => `<b>Abschnitt ${i+1} von 4:</b> ${S.seg[i]}`).concat(['Der Weg beginnt auf dem gelb markierten Feld am Südrand des Moors. Jeder Schritt führt genau ein Feld weit. Wer danebentritt, versinkt und landet wieder am Anfang.']),
+  sol:S => 'Der ganze Weg, vom gelben Startfeld aus: ' + eRunTxt(S.runs)
 };
 
 /* ----- chapters ----- */
@@ -3448,6 +3620,136 @@ const ECH = [
      p15:{t:'pub',n:'Die Flucht',txt:'Zwei Hebel, einer im Westen und einer im Osten der Halle. Zieht sie im selben Augenblick, dann öffnet sich das Tor zum Steg.',solo:'Allein reicht ein Hebel.',tip:'Sobald der Altar die Lösung annimmt, bricht der Vulkan aus. Lauft durch das Tor im Osten, zieht die beiden Hebel in der Halle gleichzeitig und rennt zum Boot.'} } }
 ];
 
+/* ----- second island: three more chapters, new looks, one new puzzle type ----- */
+ETH.push(
+ {n:'Gletscher', void:'#9fc4e0', fl:[['#e9f2f8','#cfe0ec','#ffffff','speck'],['#b9dcf0','#8fc3e3','#e2f4ff','slab'],['#c3d2de','#97aabb','#e6eef5','slab']], wall:['#6f9cc0','#8dbbdc','#3c6688','rock'], liq:['#1f4f8f','#173b70','#5b93d6'], tall:['pine',0.7], small:['snowman',0.6]},
+ {n:'Moor', void:'#16241c', fl:[['#4a5a3a','#3a4a2d','#657a4e','grass'],['#5d4f38','#44381f','#7a6a4c','speck'],['#6b6a58','#4f4e3e','#8c8b76','slab']], wall:['#2f3d2c','#3a4b36','#1c271b','rock'], liq:['#35553f','#243d2d','#6f9a74'], tall:['tree',0.7], small:['bush',0.7]},
+ {n:'Leuchtturm', void:'#0f2748', fl:[['#cfc6b0','#b3a98f','#e6dfcc','slab'],['#a8743f','#6f4623','#c08a50','plank'],['#8d98ab','#6b778c','#aab4c4','slab']], wall:['#b9b4a6','#d6d1c3','#7d786a','brick'], liq:['#1d4f93','#153a70','#63a0e8'], tall:['lamp',0.8], small:['buoy',0.8]}
+);
+EMAPS.push(
+[
+'##############################################',
+'##############################EEEE############',
+'##############################EEEE############',
+'###############################F##############',
+'#............#:::::::::::#...................#',
+'#..T.....m...#:::::::::::#...L......T...o....#',
+'#............w:::::::::::....................#',
+'#.....o......#:::::::::::#................T..#',
+'#..........T.#:::::::::::#........o..........#',
+'######G#######################H###############',
+'#............................................#',
+'#..T........................T................#',
+'#...................a.............o......T...#',
+'#.........o..................................#',
+'#.............T.........o............p.......#',
+'#............................................#',
+'#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~B~~~~~~#',
+'#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~B~~~~~~#',
+'#............................................#',
+'#...........T............T........c..p.......#',
+'#...S.S..............o....................T..#',
+'#...S.S......................................#',
+'#.................T...........T..o...........#',
+'#........o...............................o...#',
+'##############################################'
+],
+[
+'##############################################',
+'####EEEE######################################',
+'####EEEE######################################',
+'#####R########################################',
+'#.............................T..............#',
+'#...........T......................o.........#',
+'#..T.....................................b...#',
+'#...............o.....T......................#',
+'#....................................T.......#',
+'##########################################D###',
+'#...........................o................#',
+'#.......T.............T...............T......#',
+'#..m..........t....t....t....t....t.........T#',
+'#.....o......................................#',
+'########################################G#####',
+'#......T.........................L...........#',
+'#............o......T.................o...T..#',
+'#~~~~~~~~~~~~~~~~~,,,,,,,,,~~~~~~~~~~~~~~~~~~#',
+'#~~~~~~~~~~~~~~~~~,,,,,,,,,~~~~~~~~~~~~~~~~~~#',
+'#~~~~~~~~~~~~~~~~~,,,,,,,,,~~~~~~~~~~~~~~~~~~#',
+'#~~~~~~~~~~~~~~~~~,,,,,,,,,~~~~~~~~~~~~~~~~~~#',
+'#~~~~~~~~~~~~~~~~~,,,,,,,,,~~~~~~~~~~~~~~~~~~#',
+'#~~~~~~~~~~~~~~~~~,,,,,,,,,~~~~~~~~~~~~~~~~~~#',
+'#~~~~~~~~~~~~~~~~~,,,,,,,,,~~~~~~~~~~~~~~~~~~#',
+'#................T..................T........#',
+'#...T.....S.S.................a.........o....#',
+'#.........S.S...........o.................T..#',
+'##############################################'
+],
+[
+'################################################',
+'#####################################EEEE#######',
+'#####################################EEEE#######',
+'######################################F#########',
+'#..............................................#',
+'#.........T...o.......e.......o................#',
+'#...x.......................................x..#',
+'#...............T.................T............#',
+'#...........................T..................#',
+'############################################D###',
+'#..............................................#',
+'#.......T.................................T....#',
+'#...n.......g.....g.....g.....g.......h........#',
+'#..............................................#',
+'#.........o...........T.................o.....T#',
+'#..............................................#',
+'####A###########################################',
+'#.........######################################',
+'#..T......#.r.r.r.r.r###########################',
+'#....a....#..........###########################',
+'#.......T.w..........###########################',
+'#.........#........o.###########################',
+'#..S.S....#.....o....###########################',
+'#..S.S....######################################',
+'#......o..######################################',
+'################################################'
+]
+);
+ECH.push(
+ { name:'Der Gletscher', th:5, par:420,
+   intro:'Im Nebel ist euer Boot auf Grund gelaufen. Vor euch liegt eine zweite Insel, still und eiskalt. Zwischen eurem Landeplatz und dem Gletscher fließt ein breiter Strom, auf dem kein Boot mehr fahren kann.',
+   leg:{ c:{k:'note',p:'p16',art:'sign'}, p:{k:'plate',g:'p16'}, B:{k:'door',flag:'p16',art:'bridge',fl:'~'},
+     a:{k:'note',p:'p17',art:'book'}, G:{k:'door',lock:'p17',set:'sym',nm:'Eistor'},
+     m:{k:'note',p:'p18',art:'sign'}, w:{k:'ward',p:'p18'}, L:{k:'lever',set:'p18',msg:'Das Eis trägt wieder. Das Gipfeltor und die Eistür öffnen sich!'}, F:{k:'door',flag:'p18',nm:'Gipfeltor'}, H:{k:'door',flag:'p18',nm:'Eistür'} },
+   grp:{ p16:{} },
+   zones:[{p:'p18',x:14,y:4,w:11,h:5,reset:[12,6]}],
+   puz:{ p16:{t:'pub',n:'Die Eisbrücke',txt:'Zwei Eisplatten, eine hier am Südufer und eine drüben am Nordufer. Solange jemand auf einer von ihnen steht, fährt eine Brücke aus Eis über den Strom.',solo:'Allein bleibt die Platte unten, sobald du einmal draufstehst.',tip:'Einer stellt sich auf die Platte am Südufer. Der andere geht über die Brücke und stellt sich drüben auf die zweite Platte. Dann kann der Erste nachkommen.'},
+     p17:{t:'code',n:'Das Eistor',pre:'Ein Expeditionsbuch, vom Frost aufgequollen. Die Seiten kleben aneinander, jeder kann nur einzelne Zeilen entziffern.',tip:'Im Lager nördlich des Stroms liegt ein Expeditionsbuch. Jeder liest darin andere Zeichen. Tragt alle vier in der richtigen Reihenfolge zusammen und gebt sie am Eistor ganz im Westen ein.'},
+     p18:{t:'path',n:'Das dünne Eis',edge:'Bleib am Westrand des Eisfelds stehen',tip:'Nur ein Teil der Crew sieht die tragfähigen Platten leuchten, darf das Eisfeld aber nicht betreten. Diese Person bleibt am Westrand und lotst die anderen Schritt für Schritt hinüber. Am Ostufer ist ein Hebel. Er öffnet auch die Eistür im Süden, durch die der Lotse nachkommt.'} } },
+ { name:'Das Moor', th:6, par:540,
+   intro:'Hinter dem Gletscher beginnt ein Moor. Dichter Nebel hängt über dem schwarzen Wasser, und nur wer den richtigen Weg kennt, kommt trockenen Fußes durch. Irgendwo dahinter liegt eine versunkene Ruine.',
+   leg:{ a:{k:'note',p:'p19',art:'book'}, L:{k:'lever',set:'p19',msg:'Die Irrlichter erlöschen. Der Weg durchs Moor ist jetzt für alle sicher, und das Tor zur Ruine springt auf!'}, G:{k:'door',flag:'p19',nm:'Tor zur Ruine'},
+     m:{k:'note',p:'p20',art:'tablet'}, t:{k:'seq',p:'p20'}, D:{k:'door',flag:'p20',nm:'Inneres Tor'},
+     b:{k:'note',p:'p21',art:'tablet'}, R:{k:'door',lock:'p21',set:'dig',nm:'Runentor'} },
+   zones:[{p:'p19',x:18,y:17,w:9,h:7,reset:[22,24]}],
+   puz:{ p19:{t:'fog',n:'Der Nebelpfad',pre:'Das Tagebuch eines Moorführers. Er hat den Weg Schritt für Schritt aufgeschrieben, aber jeder von euch kann nur einen Abschnitt lesen.',tip:'Im Tagebuch am Startpunkt steht der Weg durchs Moor, aber jeder liest nur einen Abschnitt. Sagt euch die Abschnitte im Chat und setzt sie in der richtigen Reihenfolge zusammen. Dann geht ihr den Weg Feld für Feld, vom gelben Startfeld aus. Am Nordufer wartet ein Hebel.'},
+     p20:{t:'order',n:'Die Moortotems',pre:'Eine Wandmalerei, halb vom Moos überwuchert. Jeder erkennt nur einen Teil davon.',ok:'Die Totems glühen auf. Das innere Tor öffnet sich!',tip:'Das Wandbild ganz im Westen der Halle verrät die Reihenfolge, aber jedem nur einen Teil. Berührt die fünf Totems genau in dieser Reihenfolge. Ein Fehler löscht alle wieder.'},
+     p21:{t:'runes',n:'Das Runentor',pre:'Eine Steintafel voller Runen.',tip:'Am Runentor ganz im Nordwesten sehen manche vier leuchtende Runen. Andere können auf der Steintafel im Nordosten ablesen, welche Rune für welche Ziffer steht. Beschreibt euch die Runen gegenseitig.'} } },
+ { name:'Der Leuchtturm', th:7, par:600, boat:1,
+   intro:'Auf der Klippe steht ein alter Leuchtturm. Wenn ihr sein Feuer anzündet, sieht euch ein Schiff und holt euch ab. Aber der Leuchtturmwärter hat sich gut abgesichert, und über dem Meer zieht schon ein Sturm auf.',
+   leg:{ a:{k:'note',p:'p22',art:'book'}, w:{k:'ward',p:'p22'}, r:{k:'pick',p:'p22',art:'rope'}, A:{k:'door',flag:'p22',nm:'Falltür'},
+     n:{k:'note',p:'p23',art:'tablet'}, g:{k:'dial',p:'p23'}, h:{k:'check',p:'p23'}, D:{k:'door',flag:'p23',nm:'Wendeltreppe'},
+     e:{k:'note',p:'p24',art:'sign'}, x:{k:'lever',sync:'p24',msg:'Das Feuer brennt! Das Tor zum Steg ist offen. Lauft!'}, F:{k:'door',flag:'p24',nm:'Tor zum Steg'} },
+   cd:{after:'p23',sec:40,back:[44,8],reset:'p24',msg:'Der Sturm bricht los! Zündet das Feuer, bevor der Turm wackelt!',late:'Der Sturm war schneller! Zurück zur Treppe.',hud:'STURM IN'},
+   puz:{ p22:{t:'ropes',n:'Die Alarmseile',pre:'Die Dienstvorschrift des Leuchtturmwärters.',ok:'Das Seil gibt nach, und die Falltür zur Laterne springt auf!',no:'Der Alarm schrillt! Das war das falsche Seil.',tip:'Im Glockenraum hängen fünf farbige Seile. Nur eines darf gekappt werden, bei allen anderen schlägt der Alarm an. Welches, steht in der Dienstvorschrift in der Wärterstube. Wer sie lesen kann, kommt nicht in den Glockenraum, also beschreibt euch die Seile von links nach rechts.'},
+     p23:{t:'gems',n:'Die vier Linsen',pre:'Eine Inschrift am Rand der Laterne. Jeder liest darin andere Zeilen.',ok:'Die Linsen rasten ein. Das Tor zur Wendeltreppe öffnet sich!',tip:'Jeder liest in der Inschrift andere Hinweise. Tragt alle zusammen und überlegt, welche Linse auf welchen Sockel gehört. Stellt die Steine ein und drückt dann den Altar. Sobald die Linsen sitzen, bricht der Sturm los.'},
+     p24:{t:'pub',n:'Das Leuchtfeuer',txt:'Zwei Hebel, einer im Westen und einer im Osten der Plattform. Zieht sie im selben Augenblick, dann entzündet sich das Feuer und das Tor zum Steg öffnet sich.',solo:'Allein reicht ein Hebel.',tip:'Sobald die Linsen sitzen, bricht der Sturm los. Lauft zu den beiden Hebeln, zählt im Chat 3, 2, 1 und zieht gleichzeitig. Dann nichts wie raus zum Steg!'} } }
+);
+ECH[4].fin = 'ERSTE INSEL GESCHAFFT!';
+ECH[4].out = 'Die Insel versinkt hinter euch im Rauch. Doch auf dem offenen Meer schluckt euch dichter Nebel.';
+ECH[7].fin = 'IHR SEID ENTKOMMEN!';
+ECH[7].out = 'Das Feuer brennt, ein Schiff dreht bei und nimmt euch an Bord. Die Nebelinsel bleibt hinter euch zurück.';
+ECH.forEach((c,i) => { c.isl = i < 5 ? 0 : 1; });
+const EISL = ['Die verfluchte Insel','Die Nebelinsel'];
+
 /* ----- who knows what: every puzzle deals its hints to four roles, roles are spread over the players in the room ----- */
 const eIds = () => mode==='online' ? net.ids : [0];
 const eMe = () => mode==='online' ? net.myId : 0;
@@ -3482,8 +3784,8 @@ function eBuild(ci,seed){
   const st = {t:0,pen:0,f:{},v:objs.map(o => o.k==='dial' ? sec[o.p].init[o.n] : 0),q:{},inv:[],tips:{},cd:0,cdOn:0,done:0};
   return {M,objs,sec,st};
 }
-function eStart(ci,seed,m,st0){
-  ensureAudio(); kart.on = false; mode = m; curGame = 'esc';
+function eStart(ci,seed,m,st0,df){
+  ensureAudio(); kart.on = false; mode = m; curGame = 'esc'; E.df = df === 0 || df === 2 ? df : 1;
   const B = eBuild(ci,seed); E.on = true; E.ch = ci; E.sel = ci; E.seed = seed; E.def = ECH[ci]; E.map = B.M; E.objs = B.objs; E.sec = B.sec; E.st = st0 || B.st;
   E.oth.clear(); E.notes = []; E.cracks.clear(); E.toasts = []; E.target = -1; E.tick = 0; E.dirty = true; E.shake = 0; E.res = null; E.fall = 0; E.lock = null; E.reqT = 0;
   const sp = B.M.spawn[Math.max(0, eIds().indexOf(eMe())) % B.M.spawn.length];
@@ -3491,10 +3793,10 @@ function eStart(ci,seed,m,st0){
   state = 'esc'; show(null); eDlg(null);
   if(document.activeElement && document.activeElement.blur) document.activeElement.blur();
   last = performance.now(); acc = 0;
-  if(!st0) eSay(`Kapitel ${ci+1} · ${E.def.name}`, `<div>${E.def.intro}</div><div class="dim">${touchUI ? 'Laufen: Steuerfeld links. Ansehen und benutzen: Knopf rechts. Logbuch und Chat: Knöpfe oben rechts.' : 'Laufen: WASD oder Pfeiltasten. Ansehen und benutzen: E. Logbuch: Q.' + (m==='online' ? ' Chat: Enter.' : '')}</div>`
+  if(!st0) eSay(`Kapitel ${ci+1} · ${E.def.name}`, `<div>${E.def.intro}</div>${E.df !== 1 ? `<div class="dim">Schwierigkeit: ${EDIFF[E.df].n}. ${EDIFF[E.df].d}</div>` : ''}<div class="dim">${touchUI ? 'Laufen: Steuerfeld links. Ansehen und benutzen: Knopf rechts. Logbuch und Chat: Knöpfe oben rechts.' : 'Laufen: WASD oder Pfeiltasten. Ansehen und benutzen: E. Logbuch: Q.' + (m==='online' ? ' Chat: Enter.' : '')}</div>`
     + (m==='online' ? '<div class="dim">Jeder von euch liest in Hinweisen etwas anderes. Sagt euch im Chat, was ihr seht.</div>' : '<div class="dim">Allein liest du alle Hinweise selbst. Online bekommt jeder nur einen Teil.</div>'));
 }
-function eGo(ci,m){ const seed = dbg.seed || ((Math.random()*2147483647)|0) + 1; if(m==='online' && net.role==='host') broadcast({t:'go',game:'esc',ch:ci,seed}); eStart(ci,seed,m); }
+function eGo(ci,m,df){ df = df === 0 || df === 1 || df === 2 ? df : save.esc.df; const seed = dbg.seed || ((Math.random()*2147483647)|0) + 1; if(m==='online' && net.role==='host') broadcast({t:'go',game:'esc',ch:ci,seed,df}); eStart(ci,seed,m,undefined,df); }
 
 /* ----- movement ----- */
 function eSolid(tx,ty){ const M = E.map; if(tx<0 || ty<0 || tx>=M.W || ty>=M.H) return true; const oi = M.at[ty*M.W+tx];
@@ -3568,8 +3870,11 @@ function eToast(s,c){
   for(const l of lines) E.toasts.push({s:l, c:c || '#fff', t:300}); if(E.toasts.length > 5) E.toasts.splice(0, E.toasts.length-5);
 }
 const eWho = id => eSolo() ? 'Du bist' : `${pName(id)} ist`;
-function eFell(id,p,tx,ty){ E.st.pen += EPEN.trap; E.dirty = true; eEv({k:'crack',x:tx|0,y:ty|0}); eEv({k:'toast',s:`${eWho(id)} eingebrochen! +${EPEN.trap} s`,c:'#ff8a7a'}); }
-function eTip(id,p){ const st = E.st; if(!E.def.puz[p] || st.tips[p] || st.done) return; st.tips[p] = 1; st.pen += EPEN.tip; E.dirty = true; eEv({k:'toast',s:`Tipp zu „${E.def.puz[p].n}“ steht jetzt im Logbuch. +${EPEN.tip} s`,c:'#ffd84a'}); if(E.dlg==='log') eLogOpen(); }
+function eFell(id,p,tx,ty){ const c = eP('trap'); E.st.pen += c; E.dirty = true; eEv({k:'crack',x:tx|0,y:ty|0}); eEv({k:'toast',s:`${eWho(id)} ${E.def.puz[p] && E.def.puz[p].t==='fog' ? 'versunken' : 'eingebrochen'}! +${c} s`,c:'#ff8a7a'}); }
+function eTip(id,p,l){ const st = E.st, d = E.def.puz[p]; l = l === 2 ? 2 : 1; if(!d || st.done) return; const T = EPZ[d.t], cur = st.tips[p] || 0;
+  if(cur >= l || (l === 2 && (!(T && T.sol) || !EDIFF[E.df].sol || st.f[p]))) return;
+  const cost = Math.max(1, eP(l === 2 ? 'sol' : 'tip') - (cur ? eP('tip') : 0)); st.tips[p] = l; st.pen += cost; E.dirty = true;
+  eEv({k:'toast',s:`${l === 2 ? 'Lösung' : 'Tipp'} zu „${d.n}“ steht jetzt im Logbuch. +${cost} s`,c:'#ffd84a'}); if(E.dlg==='log') eLogOpen(); }
 function eHostTick(){
   const st = E.st, C = E.def; if(st.done) return; st.t++;
   const P = ePlayers(), solo = eSolo();
@@ -3580,9 +3885,9 @@ function eHostTick(){
     if(want !== (st.f[gk] || 0)){ st.f[gk] = want; E.dirty = true; if(want && G.msg) eEv({k:'toast',s:G.msg,c:'#9bf07a'}); eEv({k:'sfx',n:want ? 'power' : 'bonk'}); } }
   const cd = C.cd;
   if(cd && st.f[cd.after]){
-    if(!st.cdOn){ st.cdOn = 1; st.cd = cd.sec*60; E.dirty = true; eEv({k:'toast',s:'Der Vulkan bricht aus! Alle zum Boot!',c:'#ff8a7a'}); eEv({k:'sfx',n:'hurt'}); }
-    else if(st.cd > 0 && --st.cd === 0){ st.pen += EPEN.late; st.cd = cd.sec*60; st.f[cd.reset] = 0; for(const o of E.objs) if(o.sync===cd.reset) st.v[o.i] = 0; E.dirty = true;
-      eEv({k:'tp',id:-1,x:cd.back[0]*16+8,y:cd.back[1]*16+13}); eEv({k:'toast',s:`Die Lava war schneller! Zurück zur Schatzkammer. +${EPEN.late} s`,c:'#ff8a7a'}); eEv({k:'sfx',n:'hurt'}); } }
+    if(!st.cdOn){ st.cdOn = 1; st.cd = eCdTicks(cd); E.dirty = true; eEv({k:'toast',s:cd.msg || 'Der Vulkan bricht aus! Alle zum Boot!',c:'#ff8a7a'}); eEv({k:'sfx',n:'hurt'}); }
+    else if(st.cd > 0 && --st.cd === 0){ st.pen += eP('late'); st.cd = eCdTicks(cd); st.f[cd.reset] = 0; for(const o of E.objs) if(o.sync===cd.reset) st.v[o.i] = 0; E.dirty = true;
+      eEv({k:'tp',id:-1,x:cd.back[0]*16+8,y:cd.back[1]*16+13}); eEv({k:'toast',s:`${cd.late || 'Die Lava war schneller! Zurück zur Schatzkammer.'} +${eP('late')} s`,c:'#ff8a7a'}); eEv({k:'sfx',n:'hurt'}); } }
   if(st.t % 10 === 0){ const ids = eIds(); let n = 0; for(const id of ids){ const p = ePos(id); if(p && (E.map.g[Math.floor((p.y-3)/16)] || [])[Math.floor(p.x/16)]==='E') n++; } if(n && n === ids.length) return eWin(); }
   if(net.role==='host' && (E.dirty || st.t % 60 === 0)) broadcast({t:'es',st});
   E.dirty = false;
@@ -3599,7 +3904,7 @@ function eAct(id,oi,v){
     case 'door':
       if(eOpen(o)) return;
       if(o.lock){ const code = E.sec[o.lock].code; if(!Array.isArray(v)) return; const ok = v.length===code.length && code.every((x,i) => (v[i]|0)===x);
-        if(ok){ st.f[o.lock] = 1; good(`${o.nm || 'Das Schloss'}: Das Schloss springt auf!`); } else bad('Falscher Code!', EPEN.lock);
+        if(ok){ st.f[o.lock] = 1; good(`${o.nm || 'Das Schloss'}: Das Schloss springt auf!`); } else bad('Falscher Code!', eP('lock'));
         eEv({k:'lock',ok:ok ? 1 : 0}, id); }
       else if(o.item){ const j = st.inv.indexOf(o.item); if(j >= 0){ st.inv.splice(j,1); st.v[oi] = 1; good(`${ENAME[o.item]} passt. ${o.nm || 'Die Tür'} ist offen!`); } else eEv({k:'toast',s:`Verschlossen. Dafür braucht ihr: ${ENAME[o.item]}.`}, id); }
       break;
@@ -3613,16 +3918,16 @@ function eAct(id,oi,v){
     case 'pick':
       if(st.v[oi] || st.f[o.p]) return;
       if(o.n === S.pick){ st.v[oi] = 2; st.f[o.p] = 1; if(def.give) st.inv.push(def.give); good(def.ok); }
-      else { st.v[oi] = 1; bad(def.no || 'Falsch!', EPEN.pick); }
+      else { st.v[oi] = 1; bad(def.no || 'Falsch!', eP('pick')); }
       break;
     case 'seq': {
       if(st.f[o.p] || st.v[oi]) return; const k = st.q[o.p] || 0;
       if(S.order[k] === o.n){ st.v[oi] = 1; st.q[o.p] = k+1; if(k+1 === S.order.length){ st.f[o.p] = 1; good(def.ok); } else eEv({k:'sfx',n:'coin'}); }
-      else { for(const q of E.objs) if(q.k==='seq' && q.p===o.p) st.v[q.i] = 0; st.q[o.p] = 0; bad('Falsche Reihenfolge! Alle Totems erlöschen.', EPEN.seq); }
+      else { for(const q of E.objs) if(q.k==='seq' && q.p===o.p) st.v[q.i] = 0; st.q[o.p] = 0; bad('Falsche Reihenfolge! Alle Totems erlöschen.', eP('seq')); }
       break; }
     case 'dial': if(st.f[o.p]) return; st.v[oi] = (st.v[oi]+1) % 4; eEv({k:'sfx',n:'coin'}); break;
     case 'check': { if(st.f[o.p]) return; let ok = true; for(const q of E.objs) if(q.k==='dial' && q.p===o.p && st.v[q.i] !== S.sol[q.n]) ok = false;
-      if(ok){ st.f[o.p] = 1; good(def.ok); } else bad('Der Altar grollt. Das stimmt noch nicht.', EPEN.check); break; }
+      if(ok){ st.f[o.p] = 1; good(def.ok); } else bad('Der Altar grollt. Das stimmt noch nicht.', eP('check')); break; }
     case 'item': if(st.v[oi]) return; st.v[oi] = 1; st.inv.push(o.id); if(o.p) st.f[o.p] = 1; good(o.msg || `${ENAME[o.id]} eingesteckt.`, 'gem'); break;
     default: return;
   }
@@ -3644,7 +3949,7 @@ function eHostMsg(id,m){
     case 'ep': if(Array.isArray(m.s)) eGhost(id,m.s); break;
     case 'ea': eAct(id, m.o|0, m.v); break;
     case 'ef': if(E.def.puz[m.p] && !E.st.done) eFell(id, m.p, m.x, m.y); break;
-    case 'eh': eTip(id, String(m.p)); break;
+    case 'eh': eTip(id, String(m.p), m.l|0); break;
   }
 }
 function eClientMsg(m){
@@ -3716,7 +4021,9 @@ function eRender(){
     if(Z.safe){ const my = eMy(z.p); if(done || my.know){ const list = Z.safeL || (Z.safeL = [...Z.safe].map(k => k.split(',').map(Number)));
       for(const [x,y] of list){ if(x < x0 || x > x1 || y < y0 || y > y1) continue; if(!done && my.half && ((x-z.x <= 3) !== (my.half===1))) continue;
         const px = x*16-cx, py = y*16-cy; ctx.fillStyle = done ? `rgba(120,240,140,${0.3+0.15*pulse})` : `rgba(255,216,74,${0.4+0.3*pulse})`; ctx.fillRect(px+2,py+2,12,12); ctx.fillStyle = done ? '#c9ffd0' : '#fff6c9'; ctx.fillRect(px+6,py+6,4,4); } } }
-    if(Z.pits && done) for(const [x,y] of Z.pits) E.cracks.add(x+','+y); }
+    if(Z.pits && done) for(const [x,y] of Z.pits) E.cracks.add(x+','+y);
+    if(Z.fog && !done){ for(let y=Math.max(y0,z.y);y<=Math.min(y1,z.y+z.h-1);y++) for(let x=Math.max(x0,z.x);x<=Math.min(x1,z.x+z.w-1);x++){ ctx.fillStyle = (x+y)&1 ? 'rgba(255,255,255,.1)' : 'rgba(0,0,0,.12)'; ctx.fillRect(x*16-cx,y*16-cy,16,16); }
+      const sx = (z.x+Z.sx)*16-cx, sy = (z.y+z.h-1)*16-cy; if(sx > -16 && sx < VW && sy > -16 && sy < VH){ ctx.fillStyle = `rgba(255,216,74,${0.4+0.3*pulse})`; ctx.fillRect(sx+1,sy+1,14,14); poly(ctx,[sx+8,sy+3,sx+13,sy+11,sx+3,sy+11]); ctx.fillStyle = '#fff6c9'; ctx.fill(); } } }
   for(const k of E.cracks){ const q = k.split(','), x = +q[0], y = +q[1]; if(x < x0 || x > x1 || y < y0 || y > y1) continue; const px = x*16-cx, py = y*16-cy; el(ctx,px+8,py+8.5,6.4,5.4); ctx.fillStyle = '#1a1220'; ctx.fill(); ctx.strokeStyle = 'rgba(0,0,0,.5)'; ctx.lineWidth = 1; ctx.stroke(); }
   for(const o of E.objs){ if(o.tx < x0-1 || o.tx > x1+1 || o.ty < y0-1 || o.ty > y1+1) continue; eObjDraw(o,L,cx,cy); }
   const online = mode==='online';
@@ -3741,7 +4048,7 @@ function eRender(){
   for(const it of st.inv){ blit(eSpr('ky'+ECOL[it], () => EOA.key(ECOL[it])), ix, 3); ix += 16; }
   if(online) txt(pName(eMe()), ix+2, 10.5, 8, PCOL[eMe()%4]);
   let ty = 30;
-  if(st.cd > 0 && !st.done && state==='esc'){ const s = Math.ceil(st.cd/60); txt('LAVA IN '+s, mid, 27, 13, s <= 10 && (tk>>3)%2 ? '#fff' : '#ff5a5a', 'center'); ty = 46; }
+  if(st.cd > 0 && !st.done && state==='esc'){ const s = Math.ceil(st.cd/60); txt(((E.def.cd && E.def.cd.hud) || 'LAVA IN')+' '+s, mid, 27, 13, s <= 10 && (tk>>3)%2 ? '#fff' : '#ff5a5a', 'center'); ty = 46; }
   E.toasts.forEach((t,i) => { ctx.globalAlpha = Math.min(1, t.t/30); txt(t.s, mid, ty+i*11, 8, t.c, 'center'); }); ctx.globalAlpha = 1;
 }
 
@@ -3760,9 +4067,13 @@ function eLogOpen(){
   const st = E.st, C = E.def;
   let h = `<div><b>Beutel:</b> ${st.inv.length ? st.inv.map(i => ENAME[i]).join(', ') : 'leer'}</div>`;
   h += E.notes.length ? E.notes.map(p => `<div class="pg"><b>${C.puz[p].n}</b>${eNoteHTML(p)}</div>`).join('') : '<div class="dim">Noch keine Notizen. Alles, was du liest, landet hier.</div>';
-  h += `<div class="pg"><b>Tipps</b><div class="dim">Ein Tipp kostet ${EPEN.tip} Sekunden${eSolo() ? '' : ' für die ganze Crew'}.</div>` + Object.keys(C.puz).map(p => `<div>${st.f[p] ? '✓ ' : ''}<b>${C.puz[p].n}:</b> ${st.tips[p] ? C.puz[p].tip : `<button type="button" class="btn alt sm" data-tip="${p}">Tipp zeigen</button>`}</div>`).join('') + '</div>';
+  const dfi = EDIFF[E.df];
+  h += `<div class="pg"><b>Hilfe</b><div class="dim">Ein Tipp kostet ${eP('tip')} Sekunden, die Lösung ${eP('sol')}${eSolo() ? '' : ' (für die ganze Crew)'}.${dfi.sol ? '' : ' Auf Schwer gibt es keine Lösungen.'}</div>` + Object.keys(C.puz).map(p => { const d = C.puz[p], T = EPZ[d.t], tl = st.tips[p] || 0, can2 = !!(T && T.sol) && !!dfi.sol && !st.f[p];
+    return `<div>${st.f[p] ? '✓ ' : ''}<b>${d.n}:</b> ` + (tl ? d.tip : `<button type="button" class="btn alt sm" data-tip="${p}">Tipp zeigen</button>`)
+      + (tl >= 2 ? `<div class="sol"><b>Lösung:</b> ${T.sol(E.sec[p], d)}</div>` : can2 ? ` <button type="button" class="btn alt sm" data-sol="${p}">Lösung zeigen</button>` : '') + '</div>'; }).join('') + '</div>';
   $('eLogB').innerHTML = h;
-  $('eLogB').querySelectorAll('[data-tip]').forEach(b => { b.onclick = () => { if(isAuth()) eTip(eMe(), b.dataset.tip); else send({t:'eh',p:b.dataset.tip}); }; });
+  $('eLogB').querySelectorAll('[data-tip]').forEach(b => { b.onclick = () => { if(isAuth()) eTip(eMe(), b.dataset.tip, 1); else send({t:'eh',p:b.dataset.tip,l:1}); }; });
+  $('eLogB').querySelectorAll('[data-sol]').forEach(b => { b.onclick = () => { if(isAuth()) eTip(eMe(), b.dataset.sol, 2); else send({t:'eh',p:b.dataset.sol,l:2}); }; });
   eDlg('log');
 }
 function eLockOpen(o){
@@ -3782,7 +4093,7 @@ function eLockDraw(){ const L = E.lock;
   $('eLockS').innerHTML = Array.from({length:L.len}, (_,i) => `<span class="slot">${L.code[i]===undefined ? '' : L.sym ? `<img class="sy" alt="${ESYM_N[L.code[i]]}" src="${eImg('s',L.code[i])}">` : L.code[i]}</span>`).join('');
   $('eLockOk').disabled = L.code.length < L.len; }
 function eLockSend(){ const L = E.lock; if(!L || L.code.length < L.len || L.wait) return; L.wait = true; eReq(L.o.i, L.code.slice()); setTimeout(() => { if(E.lock === L) L.wait = false; }, 1500); }
-function eLockRes(ok){ const L = E.lock; if(!L) return; L.wait = false; if(ok){ E.lock = null; if(E.dlg==='lock') eDlg(null); } else { L.code = []; eLockDraw(); $('eLockM').textContent = `Falscher Code! +${EPEN.lock} s`; } }
+function eLockRes(ok){ const L = E.lock; if(!L) return; L.wait = false; if(ok){ E.lock = null; if(E.dlg==='lock') eDlg(null); } else { L.code = []; eLockDraw(); $('eLockM').textContent = `Falscher Code! +${eP('lock')} s`; } }
 function eKey(e){
   /* returns true when the key press belongs to the escape game and nothing else should react to it */
   if(E.dlg==='lock'){ const d = /^(?:Digit|Numpad)([1-9])$/.exec(e.code);
@@ -3796,11 +4107,11 @@ function eKey(e){
 }
 function eShowWin(res){
   E.res = res; state = 'ewin'; eDlg(null); sfx.win();
-  const C = E.def, stars = res.total <= C.par ? 3 : res.total <= C.par*1.5 ? 2 : 1, old = save.esc.best[E.ch], rec = !old || res.total < old;
-  if(rec) save.esc.best[E.ch] = res.total; save.esc.stars[E.ch] = Math.max(save.esc.stars[E.ch] || 0, stars); persist(); stat('ec'); checkBadges();
-  $('ewinTitle').textContent = E.ch >= ECH.length-1 ? 'IHR SEID ENTKOMMEN!' : 'KAPITEL GESCHAFFT!';
-  $('ewinText').textContent = `${C.name}: ${fmt(res.t)}` + (res.pen ? ` + ${fmt(res.pen)} Strafzeit = ${fmt(res.total)}` : '') + `  ${'★'.repeat(stars)}${'☆'.repeat(3-stars)}`;
-  $('ewinExtra').textContent = (rec ? 'Neue Bestzeit! ' : '') + (stars < 3 ? `Drei Sterne gibt es unter ${fmt(C.par)}. ` : '') + (E.ch >= ECH.length-1 ? 'Die Insel versinkt hinter euch im Rauch. ' : '') + (!isAuth() ? 'Warte auf den Host …' : '');
+  const C = E.def, df = E.df, key = eResKey(E.ch,df), par = ePar(C,df), stars = res.total <= par ? 3 : res.total <= par*1.5 ? 2 : 1, old = save.esc.best[key], rec = !old || res.total < old;
+  if(rec) save.esc.best[key] = res.total; save.esc.stars[key] = Math.max(save.esc.stars[key] || 0, stars); persist(); stat('ec'); checkBadges();
+  $('ewinTitle').textContent = C.fin || 'KAPITEL GESCHAFFT!';
+  $('ewinText').textContent = `${C.name}: ${fmt(res.t)}` + (res.pen ? ` + ${fmt(res.pen)} Strafzeit = ${fmt(res.total)}` : '') + `  ${'★'.repeat(stars)}${'☆'.repeat(3-stars)}` + (df !== 1 ? ` (${EDIFF[df].n})` : '');
+  $('ewinExtra').textContent = (rec ? 'Neue Bestzeit! ' : '') + (stars < 3 ? `Drei Sterne gibt es unter ${fmt(par)}. ` : '') + (C.out ? C.out + ' ' : '') + (!isAuth() ? 'Warte auf den Host …' : '');
   $('eNextBtn').hidden = !isAuth() || E.ch >= ECH.length-1; $('eAgainBtn').hidden = !isAuth();
   show('ewinOv');
 }
@@ -3844,17 +4155,19 @@ function eFillPads(){
 }
 
 /* ----- menus ----- */
-function eUpdMenu(){ const C = ECH[E.sel], b = save.esc.best[E.sel], s = save.esc.stars[E.sel] || 0;
+function eUpdMenu(){ const C = ECH[E.sel], df = save.esc.df, k = eResKey(E.sel,df), b = save.esc.best[k], s = save.esc.stars[k] || 0;
   $('ecName').textContent = `Kapitel ${E.sel+1} · ${C.name}`;
-  $('ecInfo').textContent = (b ? `Bestzeit ${fmt(b)} ${'★'.repeat(s)}${'☆'.repeat(3-s)}` : 'Noch nicht geschafft') + ` · drei Sterne unter ${fmt(C.par)}`; }
+  $('ecInfo').textContent = `${EISL[C.isl|0]} · ` + (b ? `Bestzeit ${fmt(b)} ${'★'.repeat(s)}${'☆'.repeat(3-s)}` : 'Noch nicht geschafft') + ` · drei Sterne unter ${fmt(ePar(C,df))}`;
+  $('edfBtn').textContent = 'Schwierigkeit: ' + EDIFF[df].n; $('edfInfo').textContent = EDIFF[df].d; }
+$('edfBtn').onclick = () => { save.esc.df = (save.esc.df+1) % 3; persist(); eUpdMenu(); };
 $('ecPrev').onclick = () => { E.sel = (E.sel+ECH.length-1) % ECH.length; eUpdMenu(); };
 $('ecNext').onclick = () => { E.sel = (E.sel+1) % ECH.length; eUpdMenu(); };
-$('e1').onclick = () => eGo(E.sel,'solo');
+$('e1').onclick = () => eGo(E.sel,'solo',save.esc.df);
 $('eOn').onclick = () => openOnline('esc','escOv');
-$('eNextBtn').onclick = () => eGo(Math.min(ECH.length-1, E.ch+1), mode);
-$('eAgainBtn').onclick = () => eGo(E.ch, mode);
+$('eNextBtn').onclick = () => eGo(Math.min(ECH.length-1, E.ch+1), mode, E.df);
+$('eAgainBtn').onclick = () => eGo(E.ch, mode, E.df);
 $('eMenuBtn').onclick = quit;
-$('eRestart').onclick = () => { if(!E.on || !isAuth()) return; resume(); eGo(E.ch, mode); };
+$('eRestart').onclick = () => { if(!E.on || !isAuth()) return; resume(); eGo(E.ch, mode, E.df); };
 $('eMsgOk').onclick = () => eDlg(null);
 $('eLogX').onclick = () => eDlg(null);
 $('eLockX').onclick = () => eDlg(null);
@@ -3940,7 +4253,6 @@ for(const [n,p] of [['hurt',[70,40,90]], ['down',[40,30,40]], ['boom',[110]], ['
 
 /* ----- badges ----- */
 const doneLv = () => Object.keys(save.gems).length;
-const escDone = () => Object.keys(save.esc.best).length;
 const BADGES = [
  ['lv1','Erster Schatz','Schaffe dein erstes Level im Abenteuer.',0,'flag',() => doneLv() >= 1],
  ['lv10','Weltreisender','Schaffe 10 Level im Abenteuer.',1,'flag',() => doneLv() >= 10],
@@ -3967,8 +4279,10 @@ const BADGES = [
  ['on1','Online-Pirat','Fahre ein Rennen online zu Ende.',0,'ship',() => save.st.ko >= 1],
  ['on20','Stammcrew','Fahre 20 Rennen online.',1,'ship',() => save.st.ko >= 20],
  ['es1','Ausbrecher','Schaffe ein Kapitel der Escape-Insel.',0,'key',() => escDone() >= 1],
- ['es5','Inselkönig','Schaffe alle Kapitel der Escape-Insel.',2,'key',() => escDone() >= ECH.length],
- ['esS','Sternenfänger','Sammle 10 Sterne auf der Escape-Insel.',1,'star',() => Object.values(save.esc.stars).reduce((a,b) => a+b, 0) >= 10],
+ ['es5','Inselkönig','Schaffe die ersten fünf Kapitel der Escape-Insel.',2,'key',() => [0,1,2,3,4].every(c => escChap().has(c))],
+ ['es8','Nebelkönig','Schaffe alle 8 Kapitel der Escape-Insel.',2,'crown',() => escDone() >= ECH.length],
+ ['esH','Harter Brocken','Schaffe ein Kapitel der Escape-Insel auf Schwer.',1,'skull',() => escHard()],
+ ['esS','Sternenfänger','Sammle 10 Sterne auf der Escape-Insel.',1,'star',() => escStars() >= 10],
  ['day5','Stammgast','Spiele an 5 verschiedenen Tagen.',0,'sun',() => save.st.d >= 5],
  ['day20','Dauergast','Spiele an 20 verschiedenen Tagen.',1,'sun',() => save.st.d >= 20],
  ['dd1','Tagesheld','Schaffe das Tageslevel.',0,'sun',() => save.st.dd >= 1],
@@ -4018,7 +4332,7 @@ function checkBadges(quiet){
 const hm = s => { const m = Math.round(s/60); return m >= 60 ? Math.floor(m/60) + ' Std ' + (m%60) + ' Min' : m + ' Min'; };
 function profShow(){
   checkBadges(true);
-  const st = save.st, stars = Object.values(save.esc.stars).reduce((a,b) => a+b, 0);
+  const st = save.st, stars = escStars();
   const rows = [
     ['Abenteuer', `${doneLv()}/${MAXLVL} Level · ◆ ${totalGems()}/150`],
     ['Affenrennen', `${st.kr} Rennen · ${st.kw} Siege · ${st.kp}× Podest`],
@@ -4242,7 +4556,7 @@ function netTick(){
 }
 setInterval(netTick, 2000);
 function renderChips(){
-  const host = net.role === 'host', lb = host ? lobState() : (net.lob || {}), kartLob = (host ? lobbyGame : lb.game) === 'kart';
+  const host = net.role === 'host', lb = host ? lobState() : (net.lob || {}), kartLob = ['kart','battle'].includes(host ? lobbyGame : lb.game);
   $('chips').innerHTML = net.ids.map(i => {
     const s = lb.sel && lb.sel[i], who = kartLob && Array.isArray(s) ? `<small>${escH(KCHAR[Math.abs(s[0]|0) % KCHAR.length].n)}</small>` : '';
     const pg = i === 0 ? -1 : pingOf(i), pt = pg >= 0 ? `<small style="color:${pingCol(pg)}">${pg} ms</small>` : '';
@@ -4268,7 +4582,7 @@ function bootInvite(){
   let p; try { p = new URLSearchParams(location.search); } catch(e) { return; }
   const code = (p.get('raum') || '').toUpperCase().replace(/[^A-Z0-9]/g,'').slice(0,4), g = p.get('spiel');
   if(code.length !== 4) return;
-  if(g === 'kart' || g === 'esc' || g === 'jump') curGame = g;
+  if(g === 'battle') curGame = 'kart'; else if(g === 'kart' || g === 'esc' || g === 'jump') curGame = g;
   $('codeIn').value = code; openOnline(curGame, 'hubOv');
   onMsg(save.name ? `Einladung für Raum ${code}: verbinde …` : `Einladung für Raum ${code}: Trag deinen Namen ein und tipp auf Beitreten.`);
   try { p.delete('raum'); p.delete('spiel'); const q = p.toString(); history.replaceState(null, '', location.pathname + (q ? '?' + q : '') + location.hash); } catch(e) {}
@@ -4580,18 +4894,19 @@ function kHudExtra(k,vx,vy,vw,vh,u){
 /* ----- kart menu: mode, track variant, weather, workshop button ----- */
 function kUpdMenu2(){
   const tt = kart.ttm;
-  $('kmBtn').textContent = 'Modus: ' + (tt ? 'Zeitfahren' : 'Rennen');
-  $('kvBtn').textContent = 'Strecke: ' + KVR[kart.vr];
+  $('kmBtn').textContent = 'Modus: ' + (kart.btm ? 'Battle' : tt ? 'Zeitfahren' : 'Rennen');
+  $('kvBtn').textContent = kart.btm ? 'Strecke: –' : 'Strecke: ' + KVR[kart.vr]; $('kvBtn').disabled = !!kart.btm; $('kvBtn').style.opacity = kart.btm ? '0.45' : ''; $('ktAll').textContent = kart.btm ? 'Alle Arenen' : 'Alle Strecken';
   $('kwBtn').textContent = 'Wetter: ' + (tt ? 'Klar' : KWX[kart.wx]); $('kwBtn').disabled = tt; $('kwBtn').style.opacity = tt ? '0.45' : '';
-  $('k2').hidden = tt; $('kOn').hidden = tt; $('k1').textContent = tt ? 'Zeitfahren' : '1 Spieler';
+  $('k2').hidden = tt; $('kOn').hidden = tt; $('k1').textContent = tt ? 'Zeitfahren' : kart.btm ? 'Battle · 1 Spieler' : '1 Spieler';
   $('shopBtn').textContent = 'Werkstatt · ◉ ' + save.coins;
 }
-function kSelStep(d){ const n = KTRACKS.length + (kart.ttm ? 0 : KCUPS.length); kart.sel = (kart.sel + d + n) % n; kUpdMenu(); }
-$('kmBtn').onclick = () => { kart.ttm = !kart.ttm; if(kart.ttm && kart.sel >= KTRACKS.length) kart.sel = KCUPS[kart.sel - KTRACKS.length][1][0]; kUpdMenu(); };
+function kSelStep(d){ if(kart.btm){ kart.bsel = (kart.bsel + d + BTA.length) % BTA.length; kUpdMenu(); return; } const n = KTRACKS.length + (kart.ttm ? 0 : KCUPS.length); kart.sel = (kart.sel + d + n) % n; kUpdMenu(); }
+$('kmBtn').onclick = () => { if(!kart.ttm && !kart.btm){ kart.ttm = true; if(kart.sel >= KTRACKS.length) kart.sel = KCUPS[kart.sel - KTRACKS.length][1][0]; } else if(kart.ttm){ kart.ttm = false; kart.btm = true; } else kart.btm = false; kUpdMenu(); };
 $('kvBtn').onclick = () => { kart.vr = (kart.vr + 1) % 4; kUpdMenu(); };
 $('kwBtn').onclick = () => { kart.wx = (kart.wx + 1) % 3; kUpdMenu(); };
 $('lvrBtn').onclick = () => { if(net.role !== 'host') return; kart.vr = (kart.vr + 1) % 4; showLobby(); };
 $('lwxBtn').onclick = () => { if(net.role !== 'host') return; kart.wx = (kart.wx + 1) % 3; showLobby(); };
+$('dfBtn').onclick = () => { if(net.role !== 'host') return; save.esc.df = (save.esc.df+1) % 3; persist(); showLobby(); };
 
 function kCosOf(id,m,human){
   if(!human) return [-1,-1];
@@ -4722,8 +5037,11 @@ const dmy = date => { const p = String(date).split('-'); return p.length === 3 ?
 function dayBefore(date){ const p = String(date).split('-').map(Number); return new Date(Date.UTC(p[0], p[1] - 1, p[2]) - 864e5).toISOString().slice(0, 10); }
 function dailyStreak(){ const t = berlinDate(), l = save.st.dsl; return (l === t || l === dayBefore(t)) ? save.st.ds : 0; }
 function startDaily(m, di){ LSRC = di || dailyInfo(); startLevel(LSRC.n, m); }
-function lsrcLevel(n){ return LSRC.kind === 'daily' ? genLevel(LSRC.n, LSRC.seed) : genLevel(n); }
-function lsrcDone(){ if(LSRC.kind === 'daily') dailyDone(); }
+function lsrcLevel(n){
+  if(LSRC.kind === 'custom'){ const LD = edDecode(LSRC.code); if(LD) return edLevel(LD); }
+  return LSRC.kind === 'daily' ? genLevel(LSRC.n, LSRC.seed) : genLevel(n);
+}
+function lsrcDone(){ if(LSRC.kind === 'daily') dailyDone(); else if(LSRC.kind === 'custom') edDone(); }
 function dailyDone(){
   const d = LSRC.date, first = save.st.dsl !== d; runMsg = '';
   save.dly = (save.dly && typeof save.dly === 'object') ? save.dly : {};
@@ -4745,10 +5063,854 @@ function updDay(){
 $('dayBtn').onclick = () => startDaily('solo');
 $('dayBtn2').onclick = () => startDaily('duo');
 
+/* ================= Etappe 3: Battle (Arena, 3 Leben, nur Items) ================= */
+const BT_LIVES = 3, BT_MAX = 12000, BT_KARTS = 6;
+/* arenas: rounded rectangles around (0,0). pil = pillars [x,y,radius], pads = boost pads, boxes = item boxes */
+const BTA = [
+  {name:'Strandarena', th:0, hx:440, hy:440, r:440, pc:['#8d6b45','#c9a870'], pil:[[170,0,20],[85,147,20],[-85,147,20],[-170,0,20],[-85,-147,20],[85,-147,20]],
+   pads:[[250,0],[-250,0]], boxes:[[231,96],[96,231],[-96,231],[-231,96],[-231,-96],[-96,-231],[96,-231],[231,-96]]},
+  {name:'Vulkankrater', th:4, hx:520, hy:380, r:150, pc:['#4a3a44','#8a5a46'], pil:[[250,0,34],[-250,0,34],[0,150,30],[0,-150,30]],
+   pads:[[120,100],[-120,-100]], boxes:[[380,150],[380,-150],[-380,150],[-380,-150],[130,290],[-130,290],[130,-290],[-130,-290]]},
+  {name:'Hafenbecken', th:3, hx:400, hy:400, r:48, pc:['#6e4a2c','#b07a44'], pil:[[230,0,26],[-230,0,26],[0,230,26],[0,-230,26],[110,110,22],[-110,110,22],[110,-110,22],[-110,-110,22]],
+   pads:[[0,0]], boxes:[[300,300],[300,-300],[-300,300],[-300,-300],[160,0],[-160,0],[0,160],[0,-160]]},
+  {name:'Eispalast', th:5, hx:480, hy:360, r:200, pc:['#8fb6d6','#e6f5ff'], pil:[[0,0,44],[240,0,30],[-240,0,30]],
+   pads:[[0,130],[0,-130]], boxes:[[330,150],[330,-150],[-330,150],[-330,-150],[150,250],[-150,250],[150,-250],[-150,-250]]}
+];
+const BT_INFO = ['Rund und offen, mit sechs Baumstümpfen in der Mitte.','Zwei Felsen und zwei Lavasäulen, viel Platz zum Ausweichen.','Fässer und Kisten: hinter jeder Ecke wartet jemand.','Glatt wie Seife: Hier rutscht jeder.'];
+/* signed distance to the arena outline (negative inside) and the outward direction */
+function kArD(A,x,y){ const qx = Math.abs(x)-(A.hx-A.r), qy = Math.abs(y)-(A.hy-A.r); return Math.hypot(Math.max(qx,0),Math.max(qy,0)) + Math.min(Math.max(qx,qy),0) - A.r; }
+function kArG(A,x,y){
+  const sx = x >= 0 ? 1 : -1, sy = y >= 0 ? 1 : -1, qx = Math.abs(x)-(A.hx-A.r), qy = Math.abs(y)-(A.hy-A.r);
+  if(qx > 0 && qy > 0){ const l = Math.hypot(qx,qy) || 1; return [sx*qx/l, sy*qy/l]; }
+  return qx > qy ? [sx,0] : [0,sy];
+}
+function btGeom(A){
+  if(A.bp) return A;
+  const M = 64; A.bp = []; A.bi = []; A.wall = []; A.t0 = []; A.t1 = []; A.mid = [];
+  for(let i=0;i<M;i++){ const th = i*6.2832/M, c = Math.cos(th), s = Math.sin(th); let lo = 0, hi = 2000;
+    for(let q=0;q<30;q++){ const m = (lo+hi)/2; if(kArD(A,c*m,s*m) < 0) lo = m; else hi = m; }
+    A.bp.push([c*lo, s*lo]); }
+  for(const p of A.bp){ const g = kArG(A,p[0],p[1]); A.bi.push([p[0]-g[0]*16, p[1]-g[1]*16]); }
+  for(let i=0;i<M;i++){ const a = A.bp[i], b = A.bp[(i+1)%M]; A.wall.push([a[0],a[1],b[0],b[1]]); }
+  const T = 80, nx = Math.ceil(A.hx/T), ny = Math.ceil(A.hy/T);
+  for(let gy=-ny;gy<ny;gy++) for(let gx=-nx;gx<nx;gx++){ const x0 = gx*T, y0 = gy*T, x1 = x0+T, y1 = y0+T;
+    if(kArD(A,x0,y0) > -18 || kArD(A,x1,y0) > -18 || kArD(A,x1,y1) > -18 || kArD(A,x0,y1) > -18) continue;
+    ((gx+gy) & 1 ? A.t1 : A.t0).push([x0,y0,x1,y1]); }
+  for(let i=0;i<24;i++){ const a = i*6.2832/24; A.mid.push([Math.cos(a)*74, Math.sin(a)*74]); }
+  return A;
+}
+/* the arena as a "track" object, so everything that wants a track (physics, camera, menus) finds what it expects */
+function kBuildArena(ti){
+  const A = BTA[Math.max(0, Math.min(BTA.length-1, ti|0))]; btGeom(A); if(A.tr) return A.tr;
+  const th = KTH[A.th], N = 96, sx = new Float32Array(N), sy = new Float32Array(N), sa = new Float32Array(N), nx = new Float32Array(N), ny = new Float32Array(N), kap = new Float32Array(N);
+  const R = Math.min(A.hx,A.hy)*0.55;
+  for(let i=0;i<N;i++){ const a = i*6.2832/N; sx[i] = Math.cos(a)*R; sy[i] = Math.sin(a)*R; sa[i] = a + 1.5708; nx[i] = -Math.sin(sa[i]); ny[i] = Math.cos(sa[i]); }
+  const rnd = mulberry32(BTA.indexOf(A)*131 + 5), sc = [];
+  for(let q=0;q<34;q++){ const p = A.bp[(rnd()*A.bp.length)|0], g = kArG(A,p[0],p[1]), off = 80 + rnd()*230, k = th.sc[(rnd()*th.sc.length)|0];
+    sc.push({x:p[0]+g[0]*off, y:p[1]+g[1]*off, k, s:(KSCALE[k] || 1)*(0.9+rnd()*0.5)}); }
+  const pads = A.pads.map((p,i) => ({x:p[0], y:p[1], a:i%2 ? 3.1416 : 0})), boxes = A.boxes.map(b => ({x:b[0], y:b[1]}));
+  const pil = A.pil.map(p => ({x:p[0], y:p[1], r:p[2]})); A.pl = pil;
+  const sAt = (x,y) => { for(const p of pads) if(Math.abs(x-p.x) < 26 && Math.abs(y-p.y) < 26) return 2; return kArD(A,x,y) < 0 ? 1 : 0; };
+  return A.tr = { ti, vr:0, vname:A.name, coins:[], N, sx, sy, sa, nx, ny, kap, w:160, th:A.th, name:A.name, pat:kTile(A.th), sAt, dist2:() => 1e12, sc, feat:[], pads, boxes, arch:[[0,0],[0,0]], grip:th.grip || 1, len:6.2832*R,
+    x0:-A.hx, y0:-A.hy, x1:A.hx, y1:A.hy, bx:-A.hx-80, by:-A.hy-80, bw:A.hx*2+160, bh:A.hy*2+160, cl:new Float32Array(N), cf:new Float32Array(N), vis:new Uint8Array(N), arena:A };
+}
+/* where a kart starts: eight places on an oval, everybody looks at the middle (every device sorts by id, so all see the same) */
+function btSpawn(A,sl){ const th = (22.5 + 45*sl)*Math.PI/180; return [Math.cos(th)*A.hx*0.66, Math.sin(th)*A.hy*0.66, th + Math.PI]; }
+function kBtInit(){
+  const K = kart, A = K.tr.arena, n = K.karts.length, ord = K.karts.slice().sort((a,b) => a.id - b.id);
+  ord.forEach((k,j) => { const p = btSpawn(A, Math.round(j*8/n) % 8); k.x = k.nx = p[0]; k.y = k.ny = p[1]; k.a = k.md = k.ca = k.na = p[2]; });
+  for(const k of K.karts){ k.lives = BT_LIVES; k.out = false; k.outT = undefined; k.outDone = false; k.lap = 1; k.idx = 0; k.prog = 0; k.stk = 0; k.stkT = 0; k.specId = -1; k.cn = null; k.hold = 0; }
+  K.msg = null; K.spec = false; K.btEnd = 0;
+}
+/* ----- walls and pillars ----- */
+function kArCam(A,x,y){ const d = kArD(A,x,y); if(d > -14){ const g = kArG(A,x,y); return [x - g[0]*(d+14), y - g[1]*(d+14)]; } return [x,y]; }
+function kArBounce(k,gx,gy){
+  const K = kart, c = Math.cos(k.md), s = Math.sin(k.md), dot = c*gx + s*gy;
+  if(dot > 0){
+    const tx = c - dot*gx, ty = s - dot*gy; if(Math.hypot(tx,ty) > 0.05) k.md = Math.atan2(ty,tx);
+    if(dot > 0.4 && k.v > 1.6){ k.v *= 0.8; if(K.tick - (k.wbt || 0) > 18){ k.wbt = K.tick; kBurst(k.x,k.y,4,3,['#fff6b0','#ffffff'],1.1,12,1); if(k.ctrl==='local' && k.human){ sfx.down(); k.shk = Math.max(k.shk || 0, 5); } } }
+    else k.v *= 0.95;
+  }
+}
+function kArCol(k){
+  const A = kart.tr.arena; if(!A) return;
+  const d = kArD(A,k.x,k.y), R = 13;
+  if(d > -R){ const g = kArG(A,k.x,k.y), over = d + R; k.x -= g[0]*over; k.y -= g[1]*over; kArBounce(k,g[0],g[1]); }
+  for(const p of A.pl){ const dx = k.x-p.x, dy = k.y-p.y, dd = Math.hypot(dx,dy), m = p.r + 12;
+    if(dd < m && dd > 0.001){ const nx = dx/dd, ny = dy/dd; k.x = p.x + nx*m; k.y = p.y + ny*m; kArBounce(k,-nx,-ny); } }
+}
+/* the floor: a filled outline, checker tiles, a striped kerb and a mark in the middle (called from kView, which owns emit/cam) */
+function kArFloor(A,th,K,emit,cam,B,Cx,Cy){
+  const bp = A.bp, M = bp.length;
+  ctx.beginPath(); for(let i=0;i<M;i++) cam(i,bp[i][0],bp[i][1]); emit(M); ctx.fillStyle = th.road; ctx.fill();
+  for(let pass=0;pass<2;pass++){ const list = pass ? A.t1 : A.t0; ctx.beginPath();
+    for(const t of list){ const dx = (t[0]+t[2])/2-Cx, dy = (t[1]+t[3])/2-Cy; if(dx*dx+dy*dy > 1.7e6) continue;
+      cam(0,t[0],t[1]); cam(1,t[2],t[1]); cam(2,t[2],t[3]); cam(3,t[0],t[3]); emit(4); }
+    ctx.fillStyle = pass ? 'rgba(255,255,255,.075)' : 'rgba(0,0,0,.11)'; ctx.fill(); }
+  ctx.beginPath(); for(let i=0;i<24;i++) cam(i,A.mid[i][0],A.mid[i][1]); emit(24); ctx.fillStyle = 'rgba(255,255,255,.1)'; ctx.fill();
+  const bi = A.bi;
+  for(let pass=0;pass<2;pass++){ ctx.beginPath();
+    for(let i=0;i<M;i++){ if((i & 1) !== pass) continue; const j = (i+1) % M, a = bp[i], b = bp[j], c = bi[j], d = bi[i];
+      cam(0,a[0],a[1]); cam(1,b[0],b[1]); cam(2,c[0],c[1]); cam(3,d[0],d[1]); emit(4); }
+    ctx.fillStyle = th.curb[pass]; ctx.fill(); }
+}
+function kArObjs(L,A,th,proj,V){
+  const WH = 17, NEARZ = 5, M = A.wall.length, ctx2 = ctx;
+  for(let i=0;i<M;i++){
+    const w = A.wall[i]; let ax = w[0]-V.Cx, ay = w[1]-V.Cy, bx = w[2]-V.Cx, by = w[3]-V.Cy;
+    let fa = ax*V.fx + ay*V.fy, fb = bx*V.fx + by*V.fy;
+    if(fa < NEARZ && fb < NEARZ) continue;
+    let la = ax*V.rx + ay*V.ry, lb = bx*V.rx + by*V.ry;
+    if(fa < NEARZ){ const t = (NEARZ-fa)/(fb-fa); la += (lb-la)*t; fa = NEARZ; } else if(fb < NEARZ){ const t = (NEARZ-fb)/(fa-fb); lb += (la-lb)*t; fb = NEARZ; }
+    if(fa > 1500 && fb > 1500) continue;
+    const sa = V.F/fa, sb = V.F/fb, X1 = V.vcx + la*sa, X2 = V.vcx + lb*sb;
+    if((X1 < V.vx-60 && X2 < V.vx-60) || (X1 > V.vx+V.vw+60 && X2 > V.vx+V.vw+60)) continue;
+    const Y1 = V.hy + V.H*sa, Y2 = V.hy + V.H*sb, T1 = V.hy + (V.H-WH)*sa, T2 = V.hy + (V.H-WH)*sb, col = th.curb[(i >> 1) & 1], lw = Math.max(1,Math.min(sa,sb)*0.45);
+    L.push([(fa+fb)/2 + 2, () => { poly(ctx2,[X1,Y1,X2,Y2,X2,T2,X1,T1]); ctx2.fillStyle = col; ctx2.fill(); ctx2.strokeStyle = OL; ctx2.lineWidth = lw; ctx2.stroke();
+      ln(ctx2,[X1,T1,X2,T2],'rgba(255,255,255,.55)',Math.max(1,lw*0.9)); }]);
+  }
+  for(const p of A.pl){ const q = proj(p.x,p.y,0); if(!q || q[3] > 1400) continue;
+    L.push([q[3], () => { const w = p.r*2*q[2], h = (p.r < 30 ? 26 : 22)*q[2], x = q[0], y = q[1];
+      ctx2.globalAlpha = 0.22; el(ctx2,x+w*0.12,y,w*0.62,Math.max(1,w*0.16)); ctx2.fillStyle = '#000'; ctx2.fill(); ctx2.globalAlpha = 1;
+      rr(ctx2,x-w/2,y-h,w,h,w*0.14); fs(ctx2,A.pc[0],OL,Math.max(1,q[2]*0.5));
+      ctx2.fillStyle = 'rgba(255,255,255,.14)'; ctx2.fillRect(x-w*0.46,y-h+h*0.08,w*0.2,h*0.84);
+      ctx2.fillStyle = 'rgba(0,0,0,.14)'; ctx2.fillRect(x+w*0.18,y-h+h*0.08,w*0.28,h*0.84);
+      el(ctx2,x,y-h,w/2,Math.max(1,w*0.17)); fs(ctx2,A.pc[1],OL,Math.max(1,q[2]*0.5)); }]); }
+}
+/* ----- computer drivers: hunt the weakest, grab boxes when empty-handed, keep away from walls and pillars ----- */
+function kBtUse(k,t){
+  const it = k.item, K = kart, dist = t ? Math.hypot(t.x-k.x,t.y-k.y) : 1e9, da = t ? Math.abs(angd(Math.atan2(t.y-k.y,t.x-k.x),k.a)) : 9, c = Math.cos(k.a), s = Math.sin(k.a);
+  const back = r => K.karts.some(o => { if(o === k || o.out) return false; const dx = o.x-k.x, dy = o.y-k.y, dd = Math.hypot(dx,dy); return dd < r && dx*c + dy*s < -dd*0.5; });
+  const near = r => K.karts.some(o => o !== k && !o.out && Math.hypot(o.x-k.x,o.y-k.y) < r);
+  if(it==='nut' || it==='nut3' || it==='ball' || it==='salvo') return da < 0.3 && dist < 560;
+  if(it==='bird' || it==='twist') return da < 0.9 && dist < 600;
+  if(it==='hook') return da < 0.45 && dist < 400;
+  if(it==='rear') return back(330);
+  if(it==='peel' || it==='peel3' || it==='keg' || it==='fake') return back(240) || (near(150) && Math.random() < 0.03);
+  if(it==='wind' || it==='wind3') return da < 0.7 || dist > 380;
+  if(it==='shield') return near(270);
+  if(it==='calm') return near(240);
+  return true;
+}
+function kBtAI(k){
+  const K = kart, A = K.tr.arena;
+  if(k.stk > 0){ k.stk--; return {st:k.stkD, brake:true, drift:false, use:false}; }
+  k.stkT = (Math.abs(k.v) < 0.35 && K.cd <= 40) ? k.stkT+1 : 0;
+  if(k.stkT > 40){ k.stkT = 0; k.stk = 34; k.stkD = (k.id & 1) ? 1 : -1; }
+  /* going round in circles without getting anywhere: back off and look for something else for a while */
+  k.sAcc = (k.sAcc || 0) + Math.abs(angd(k.a, k.aL === undefined ? k.a : k.aL)); k.aL = k.a; k.sT = (k.sT | 0) + 1;
+  if(k.sT >= 150){ if(k.sAcc > 4.4 && K.cd <= 40){ k.stk = 26; k.stkD = Math.random() < 0.5 ? 1 : -1; k.skipKey = k.tKey; k.skipT = 300; } k.sAcc = 0; k.sT = 0; }
+  const skip = k.skipT > 0 ? k.skipKey : null; if(k.skipT > 0) k.skipT--;
+  let best = null, bs = 1e9;
+  for(const q of K.karts){ if(q === k || q.out || skip === 'k' + q.id) continue; const sc = Math.hypot(q.x-k.x,q.y-k.y) - (BT_LIVES-(q.lives | 0))*70; if(sc < bs){ bs = sc; best = q; } }
+  let tx = 0, ty = 0, dist = 0; k.tKey = null;
+  if(!k.item && k.roll <= 0){ let bb = null, bd = 1e9, bk = -1; K.boxes.forEach((b,bi) => { if(b.t > 30 || skip === 'b' + bi) return; const d = Math.hypot(b.x-k.x,b.y-k.y); if(d < bd){ bd = d; bb = b; bk = bi; } });
+    if(bb && (bd < 560 || !best)){ tx = bb.x; ty = bb.y; dist = Math.max(1,bd); k.tKey = 'b' + bk; } }
+  if(!dist && best){ const d0 = Math.hypot(best.x-k.x,best.y-k.y), lead = Math.min(14, d0/(Math.max(1.5,k.v)*4)); tx = best.x + Math.cos(best.a)*best.v*lead; ty = best.y + Math.sin(best.a)*best.v*lead; dist = Math.max(1,Math.hypot(tx-k.x,ty-k.y)); k.tKey = 'k' + best.id; }
+  if(!dist){ tx = 0; ty = 0; dist = Math.max(1,Math.hypot(k.x,k.y)); }
+  let vx = tx-k.x, vy = ty-k.y; const dl = Math.hypot(vx,vy) || 1; vx /= dl; vy /= dl;
+  const la = 60 + Math.max(0,k.v)*16, lx = k.x + Math.cos(k.a)*la, ly = k.y + Math.sin(k.a)*la;
+  for(const p of A.pl){ const dx = lx-p.x, dy = ly-p.y, dd = Math.hypot(dx,dy), lim = p.r + 46; if(dd < lim && dd > 0.01){ const w = (lim-dd)/lim*2.6; vx += dx/dd*w; vy += dy/dd*w; } }
+  const wd = kArD(A,lx,ly); if(wd > -50){ const g = kArG(A,lx,ly), w = Math.min(3,(wd+50)/50*3); vx -= g[0]*w; vy -= g[1]*w; }
+  const d = angd(Math.atan2(vy,vx), k.a);
+  let use = false;
+  if(k.item && k.roll <= 0){ k.hold = (k.hold | 0) + 1; if(k.useT === undefined || k.useT === null) k.useT = 14 + ((Math.random()*40) | 0);
+    if(k.useT > 0) k.useT--; else { use = kBtUse(k,best) || k.hold > 600; if(use){ k.hold = 0; k.useT = null; } } }
+  else k.useT = null;
+  const st = Math.max(-1,Math.min(1,d*2.4));
+  /* the target is close and off to the side: the kart cannot turn that tightly, so it backs up (steering is reversed while rolling backwards) */
+  if(dist < 150 && Math.abs(d) > 0.95 && Math.abs(d) < 2.9) return {st:k.v < -0.25 ? -st : st, brake:true, drift:false, use};
+  return {st, brake:(Math.abs(d) > 1.15 && dist < 240 && k.v > 1.9), drift:false, use};
+}
+/* objects in the arena: they stop at walls and pillars; the homing ones look for karts around them instead of following a track */
+function kBtObj(o){
+  const K = kart, A = K.tr.arena; if(!A) return false;
+  const mv = o.type==='ball' || o.type==='nut' || o.type==='twist' || o.type==='bird';
+  if(kArD(A,o.x,o.y) > (mv ? 6 : 26)){ o.dead = true; return true; }
+  if(mv && o.type !== 'bird') for(const p of A.pl) if(Math.hypot(o.x-p.x,o.y-p.y) < p.r + 4){ o.dead = true; return true; }
+  if(o.type==='nut' || o.type==='twist'){
+    let ta = o.a, bd = 1e9, rng = o.type==='nut' ? 210 : 420;
+    for(const k of K.karts){ if(k.id === o.owner || k.out) continue; const dx = k.x-o.x, dy = k.y-o.y, d2 = dx*dx+dy*dy;
+      if(d2 < rng*rng && d2 < bd && Math.cos(angd(Math.atan2(dy,dx),o.a)) > (o.type==='nut' ? 0.3 : -2)){ bd = d2; ta = Math.atan2(dy,dx); } }
+    o.a += angd(ta,o.a)*(o.type==='nut' ? 0.17 : 0.1); const sp = o.type==='nut' ? 5.6 : 5.2; o.x += Math.cos(o.a)*sp; o.y += Math.sin(o.a)*sp;
+    if(o.age > (o.type==='nut' ? 260 : 300)) o.dead = true; return true; }
+  return false;
+}
+/* ----- lives ----- */
+function kBtHit(k){
+  const K = kart; if(k.out) return;
+  k.lives = Math.max(0,(k.lives | 0) - 1);
+  if(k.lives <= 0){ k.out = true; k.outT = K.t; k.item = null; k.roll = 0; k.boost = 0; k.hook = 0; }
+}
+function kBtScan(){
+  const K = kart;
+  for(const k of K.karts){
+    if(k.out && !k.outDone){ k.outDone = true; if(k.outT === undefined) k.outT = K.t; k.v = 0; k.item = null; k.roll = 0;
+      kBurst(k.x,k.y,6,36,['#ffe14a','#ff9a3d','#ff5a1f','#6b6577'],3.4,42,3.2); kPart(k.x,k.y,5,0,0,0,12,'#fff3b0',10,false);
+      const me = K.views[0]; if(me && Math.hypot(me.x-k.x,me.y-k.y) < 500) sfx.boom();
+      K.msg = {t:K.tick, s:(k.ctrl==='local' && k.human) ? 'Du bist raus!' : kName(k.id) + ' ist raus!'}; }
+    if(!k.out && !(k.ctrl==='local' && k.human)) k.ca += angd(k.a - kDv(k)*kdr().cam, k.ca)*0.12;
+  }
+}
+function kBtOrd(){ return kart.karts.slice().sort((a,b) => ((a.out ? 1 : 0) - (b.out ? 1 : 0)) || ((b.lives | 0) - (a.lives | 0)) || ((b.outT || 0) - (a.outT || 0)) || (a.id - b.id)); }
+function kBtDone(){
+  const K = kart; if(K.t > BT_MAX) return true;
+  let alive = 0, hum = 0, anyHum = false;
+  for(const k of K.karts){ if(!k.out){ alive++; if(k.human) hum++; } if(k.human) anyHum = true; }
+  if(alive <= 1) return true;
+  if(anyHum && !hum){ K.btEnd = (K.btEnd | 0) + 1; if(K.btEnd > 300) return true; } else K.btEnd = 0;
+  return false;
+}
+function kBtEnd(){
+  const K = kart; if(K.res) return;
+  const ord = K.karts.slice().sort((a,b) => ((a.out ? 1 : 0) - (b.out ? 1 : 0)) || ((b.lives | 0) - (a.lives | 0)) || ((b.outT || 0) - (a.outT || 0)) || (kStatOf(b.id).hits - kStatOf(a.id).hits) || (a.id - b.id));
+  const res = ord.map(k => [k.id, k.out ? Math.max(1, Math.round(k.outT || K.t)) : -(k.lives | 0)]);
+  let tot = null;
+  if(mode==='online'){ tot = K.sess = K.sess || {}; res.forEach((r,i) => { tot[r[0]] = (tot[r[0]] || 0) + KPTS[i]; }); }
+  const stats = kStatPack();
+  K.lastRes = {res,tot,stats}; if(net.role==='host') broadcast({t:'kres',res,tot,stats,bt:1});
+  kShowBt(res,tot,stats);
+}
+function kShowBt(res,tot,stats){
+  const K = kart; K.res = res; state = 'kres'; kEngine(0,false);
+  const mine = K.views.filter(k => k.human).map(k => k.id);
+  $('kresTitle').textContent = 'BATTLE · ' + (K.tr.name || '').toUpperCase();
+  kTable(res.map((r,i) => `<span>${i+1}.</span><b style="color:${KCOL[r[0]]}">${escH(kName(r[0]))}</b><span>${r[1] < 0 ? '♥'.repeat(Math.min(5,-r[1])) : 'raus nach ' + fmtT(r[1])}</span>` + (tot ? `<span>${tot[r[0]] | 0} P</span>` : '')), tot ? 4 : 3);
+  $('kresPod').hidden = false; kPodSet(res.map(r => r[0]), false); $('kresStat').textContent = kStatLine(stats);
+  let extra = '';
+  if(!K.statDone){ K.statDone = true; const pl = res.findIndex(r => r[0] === mine[0]); stat('bt'); if(pl === 0) stat('bw'); if(mode==='online') stat('ko');
+    const my = stats && stats[mine[0]]; if(my && my[1] > 0) stat('kh', my[1]);
+    const gain = Math.min(40, 4 + 3*((my && my[1]) | 0) + (pl === 0 ? 10 : 0)); if(pl >= 0){ save.coins = (save.coins | 0) + gain; stat('kc', 0); extra = `+${gain} Münzen. `; persist(); }
+    checkBadges(); }
+  $('kresInfo').textContent = extra + (K.t > BT_MAX ? 'Die Zeit ist um. ' : '') + (tot ? 'Die Punkte zählen über alle Runden in diesem Raum. ' : '') + (!isAuth() ? 'Warte auf den Host …' : '');
+  $('kNext').hidden = !isAuth() || mode !== 'online'; $('kNext').textContent = 'Nächste Arena';
+  $('kAgain').hidden = !isAuth(); $('kLob').hidden = !(mode==='online' && isAuth());
+  show('kresOv');
+}
+/* ----- who the camera follows once you are out ----- */
+function kBtSpec(k){
+  const K = kart; let t = K.karts.find(q => q.id === k.specId && !q.out);
+  if(!t){ t = K.karts.filter(q => !q.out).sort((a,b) => a.rank - b.rank)[0] || k; k.specId = t.id; }
+  return t;
+}
+/* ----- HUD ----- */
+function kBtHud(k,vx,vy,vw,vh,u){
+  const K = kart;
+  for(let i=0;i<BT_LIVES;i++) txt('♥', vx+8*u+i*13*u, vy+18*u, 16*u, i < (k.lives | 0) ? '#ff5a6e' : '#5e5b78');
+  const alive = K.karts.filter(q => !q.out).length, left = Math.max(0, BT_MAX - K.t);
+  txt(`${alive} von ${K.karts.length} dabei`, vx+8*u, vy+32*u, 7.5*u, '#fff'); txt(fmtT(left), vx+8*u, vy+43*u, 7.5*u, left < 1800 ? '#ff9a7a' : '#ffe08a');
+}
+function kBtBoard(k,vx,vy,vw,vh,u,y0){
+  const K = kart, rows = K.karts.slice().sort((a,b) => a.rank - b.rank), x = vx+vw-7*u;
+  rows.forEach((q,i) => { const y = y0 + i*8.4*u; if(y > vy+vh-26*u) return; const c = q.out ? '#8d8aa0' : '#fff';
+    txt(q.out ? '–' : '♥'.repeat(Math.max(0,q.lives | 0)), x, y, 6.6*u, q.out ? '#8d8aa0' : '#ff7a8a', 'right');
+    txt(kName(q.id).slice(0,7), x-20*u, y, 6.6*u, c, 'right'); el(ctx,x-47*u,y-2.3*u,1.9*u); ctx.fillStyle = KCOL[q.id]; ctx.fill(); });
+}
+function kBtMsg(k,vx,vy,vw,vh,u){
+  const K = kart, vcx = vx+vw/2;
+  if(K.msg && K.tick - K.msg.t < 140 && K.cd <= 40){ const a = K.tick - K.msg.t; ctx.globalAlpha = Math.min(1,(140-a)/30); txt(K.msg.s, vcx, vy+vh*0.3 - Math.min(10,a/3)*u*0.4, 11*u, '#ffd84a', 'center'); ctx.globalAlpha = 1; }
+  if(K.spec && !K.res){ txt('Ausgeschieden · du schaust zu', vcx, vy+vh-24*u, 8*u, '#ffb0a0', 'center'); txt(kName(k.id), vcx, vy+vh-34*u, 7*u, KCOL[k.id], 'center'); }
+}
+/* ----- menu pieces ----- */
+function btThumb(i){
+  const key = 'b' + i; let c = kThumbs.get(key); if(c) return c;
+  const A = btGeom(BTA[i]), th = KTH[A.th]; c = document.createElement('canvas'); c.width = 96; c.height = 64; const g = c.getContext('2d');
+  g.fillStyle = th.ground; g.fillRect(0,0,96,64); const sc = Math.min(80/(A.hx*2), 52/(A.hy*2)), ox = 48, oy = 32;
+  const path = pts => { g.beginPath(); pts.forEach((p,q) => { const x = ox+p[0]*sc, y = oy+p[1]*sc; if(q) g.lineTo(x,y); else g.moveTo(x,y); }); g.closePath(); };
+  g.lineJoin = 'round'; path(A.bp); g.fillStyle = th.road; g.fill(); g.strokeStyle = th.curb[1]; g.lineWidth = 3; g.stroke(); path(A.bp); g.strokeStyle = th.curb[0]; g.lineWidth = 1; g.setLineDash([3,3]); g.stroke(); g.setLineDash([]);
+  for(const p of A.pil){ g.beginPath(); g.arc(ox+p[0]*sc, oy+p[1]*sc, Math.max(1.6,p[2]*sc), 0, 6.3); g.fillStyle = A.pc[1]; g.fill(); g.strokeStyle = OL; g.lineWidth = 1; g.stroke(); }
+  g.fillStyle = '#ffd84a'; for(const b of A.boxes) g.fillRect(ox+b[0]*sc-1.4, oy+b[1]*sc-1.4, 2.8, 2.8);
+  kThumbs.set(key,c); return c;
+}
+function kMapBt(){
+  const c = $('ktMap'), g = c.getContext('2d'), A = btGeom(BTA[kart.bsel]), th = KTH[A.th];
+  g.clearRect(0,0,c.width,c.height); g.lineJoin = 'round';
+  const sc = Math.min((c.width-30)/(A.hx*2), (c.height-30)/(A.hy*2)), ox = c.width/2, oy = c.height/2;
+  g.beginPath(); A.bp.forEach((p,q) => { const x = ox+p[0]*sc, y = oy+p[1]*sc; if(q) g.lineTo(x,y); else g.moveTo(x,y); }); g.closePath();
+  g.fillStyle = th.road; g.fill(); g.strokeStyle = th.curb[1]; g.lineWidth = 6; g.stroke(); g.strokeStyle = th.curb[0]; g.lineWidth = 2; g.stroke();
+  for(const p of A.pil){ g.beginPath(); g.arc(ox+p[0]*sc, oy+p[1]*sc, Math.max(3,p[2]*sc), 0, 6.3); g.fillStyle = A.pc[1]; g.fill(); g.strokeStyle = OL; g.lineWidth = 1.5; g.stroke(); }
+  g.fillStyle = '#ffd84a'; for(const b of A.boxes) g.fillRect(ox+b[0]*sc-3, oy+b[1]*sc-3, 6, 6);
+  g.fillStyle = '#ff8a1f'; for(const p of A.pads) g.fillRect(ox+p[0]*sc-5, oy+p[1]*sc-5, 10, 10);
+}
+function kUpdMenuBt(){
+  const A = BTA[kart.bsel];
+  $('ktName').textContent = A.name; $('ktInfo').textContent = `Battle · ${BT_LIVES} Leben · nur Items · wer zuletzt steht, gewinnt. ${BT_INFO[kart.bsel] || ''}`;
+  $('kcBtn').textContent = 'Tempo: ' + KCLS[kart.cls][0]; $('kdBtn').textContent = 'Drift: ' + KDR[save.kdrift][0]; kUpdMenu2(); kMapBt(); kUpdSel();
+}
+
+/* ================= Etappe 3: Level-Editor mit Teilen-Code ================= */
+const ED_CH = '.#XB?PLS^oGcCK';                      /* tile symbols a level may use */
+const ED_EN = ['crab','ccrab','urchin','snake','monkey','plant','rat','skel','beetle','golem','gull','parrot','phoenix','wisp','fish','lava','slime','fslime','bat','spider','stal','ghost'];
+const ED_ENN = {crab:'Krabbe',ccrab:'Krabbe 2',urchin:'Igel',snake:'Schlange',monkey:'Affe',plant:'Pflanze',rat:'Ratte',skel:'Skelett',beetle:'Käfer',golem:'Golem',gull:'Möwe',parrot:'Papagei',phoenix:'Phönix',wisp:'Irrlicht',fish:'Fisch',lava:'Lava',slime:'Schleim',fslime:'Feuer-Schl.',bat:'Fledermaus',spider:'Spinne',stal:'Tropfstein',ghost:'Geist'};
+const ED_D = [0.1, 0.5, 0.9], ED_DN = ['Leicht','Mittel','Schwer'];
+const ED_MINW = 30, ED_MAXW = 200, ED_START = 7, ED_MAXEN = 120, ED_MAXK = 24, ED_NSLOT = 6;
+const ED_TK = {X:'X', B:'B', '?':'?', P:'P', L:'L', S:'S', '^':'^', K:'K', o:'coin', G:'gem'};
+const ED_BL = [
+  {id:'ground', n:'Boden', c:'#', paint:1}, {id:'stone', n:'Stein', c:'X', paint:1}, {id:'brick', n:'Kiste', c:'B', paint:1},
+  {id:'q', n:'Frage', c:'?', paint:1}, {id:'power', n:'Power', c:'P', paint:1}, {id:'ledge', n:'Plattform', c:'L', paint:1},
+  {id:'spring', n:'Feder', c:'S'}, {id:'spike', n:'Stacheln', c:'^', paint:1}, {id:'turret', n:'Kanone', c:'K'},
+  {id:'coin', n:'Münze', c:'o', paint:1}, {id:'gem', n:'Edelstein', c:'G'}, {id:'flag', n:'Fahne', c:'c'}, {id:'goal', n:'Ziel', c:'C'}
+];
+const ED_TP = [{id:'pan', n:'Hand', k:'pan'}, {id:'erase', n:'Radierer', k:'erase'}];
+const ED_ET = ED_EN.map(t => ({id:'e:' + t, n:ED_ENN[t], e:t}));
+const ED_TI = {}; [...ED_TP, ...ED_BL, ...ED_ET].forEach(t => { ED_TI[t.id] = t; });
+const ED_SVG = {
+  pan:'<svg viewBox="0 0 24 24"><path d="M12 3v18M3 12h18M12 3l-3 3M12 3l3 3M12 21l-3-3M12 21l3-3M3 12l3-3M3 12l3 3M21 12l-3-3M21 12l-3 3"/></svg>',
+  erase:'<svg viewBox="0 0 24 24"><path d="M4 15l9-10 7 6-6 8H8z"/><path d="M8 20h12M9 10l7 6"/></svg>'
+};
+let ED = null, edInv = null, lobCust = null, edPickMode = false, edPlayers = 1, edShCur = null;
+const edName = s => String(s == null ? '' : s).replace(/[\u0000-\u001f\u007f<>]/g,'').replace(/\s+/g,' ').trim().slice(0,16);
+/* where a monster is put: on the ground, in the air, hanging from the ceiling or coming out of a pit */
+const edEClass = t => { const b = E_DEF[t].beh; return (b === 'fly' || b === 'chase') ? 'air' : b === 'pit' ? 'pit' : (b === 'swoop' || b === 'yo' || b === 'drop') ? 'ceil' : 'ground'; };
+function edSlots(){
+  if(!Array.isArray(save.custom)) save.custom = [];
+  save.custom.length = ED_NSLOT;
+  for(let i = 0; i < ED_NSLOT; i++){ const s = save.custom[i]; if(!s || typeof s !== 'object' || typeof s.c !== 'string' || s.c.length > 20000){ save.custom[i] = null; } else save.custom[i] = {n:edName(s.n) || 'Level', c:s.c, v:!!s.v}; }
+  return save.custom;
+}
+
+/* ----- codec: level <-> short text code (HL1.xxxx), checked with a checksum ----- */
+const ED_B64 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789-_';
+function edB64(b){
+  let s = '';
+  for(let i = 0; i < b.length; i += 3){
+    const n = (b[i] << 16) | ((b[i+1] || 0) << 8) | (b[i+2] || 0);
+    s += ED_B64[(n >> 18) & 63] + ED_B64[(n >> 12) & 63];
+    if(i + 1 < b.length) s += ED_B64[(n >> 6) & 63];
+    if(i + 2 < b.length) s += ED_B64[n & 63];
+  }
+  return s;
+}
+function edUnB64(s){
+  if(s.length % 4 === 1) return null;
+  const out = []; let acc = 0, nb = 0;
+  for(let i = 0; i < s.length; i++){
+    const v = ED_B64.indexOf(s[i]); if(v < 0) return null;
+    acc = (acc << 6) | v; nb += 6;
+    if(nb >= 8){ nb -= 8; out.push((acc >> nb) & 255); acc &= (1 << nb) - 1; }
+  }
+  return out;
+}
+const edSum = (b, n) => { let a = 1, c = 0; for(let i = 0; i < n; i++){ a = (a + b[i]) % 251; c = (c + a) % 251; } return [a, c]; };
+function edEncode(LD){
+  const W = LD.W, o = [1, (LD.world & 7) | ((LD.di & 3) << 3), W];
+  const nm = Array.from(new TextEncoder().encode(edName(LD.name)));
+  o.push(nm.length); for(const x of nm) o.push(x);
+  const en = LD.en.slice(0, ED_MAXEN); o.push(en.length);
+  for(const e of en) o.push(ED_EN.indexOf(e.type), e.tx, e.ty);
+  const tot = W * LH, cells = new Uint8Array(tot);
+  for(let tx = 0; tx < W; tx++) for(let ty = 0; ty < LH; ty++){ const k = ED_CH.indexOf(LD.g[ty][tx]); cells[tx*LH + ty] = k < 0 ? 0 : k; }
+  const op = (s, n) => { if(n <= 15) o.push(s | ((n - 1) << 4)); else o.push(s | 0xF0, n - 16); };
+  const colEq = (a, b) => { for(let k = 0; k < LH; k++) if(cells[a + k] !== cells[b + k]) return false; return true; };
+  let i = 0;
+  while(i < tot){
+    if(i >= LH && i % LH === 0){
+      let n = 0; while(n < 270 && i + (n + 1)*LH <= tot && colEq(i + n*LH, i - LH)) n++;
+      if(n > 0){ op(15, n); i += n*LH; continue; }
+    }
+    const s = cells[i]; let n = 1; while(i + n < tot && cells[i + n] === s && n < 270) n++;
+    op(s, n); i += n;
+  }
+  const c = edSum(o, o.length); o.push(c[0], c[1]);
+  return 'HL1.' + edB64(o);
+}
+/* loose = a work in progress without a goal is fine (own slots); otherwise the level must be playable */
+function edDecode(str, loose){
+  try {
+    const m = /HL1\.([A-Za-z0-9_-]+)/.exec(String(str == null ? '' : str).slice(0, 30000)); if(!m) return null;
+    const b = edUnB64(m[1]); if(!b || b.length < 12) return null;
+    const n = b.length - 2, c = edSum(b, n); if(c[0] !== b[n] || c[1] !== b[n + 1]) return null;
+    let p = 0; const u = () => { if(p >= n) throw 0; return b[p++]; };
+    if(u() !== 1) return null;
+    const h = u(), world = h & 7, di = (h >> 3) & 3, W = u();
+    if(world > 4 || di > 2 || W < ED_MINW || W > ED_MAXW) return null;
+    const nl = u(); if(nl > 64) return null;
+    const nm = []; for(let i = 0; i < nl; i++) nm.push(u());
+    const name = edName(new TextDecoder().decode(new Uint8Array(nm))) || 'Level';
+    const ne = u(); if(ne > ED_MAXEN) return null;
+    const en = [];
+    for(let i = 0; i < ne; i++){ const t = u(), tx = u(), ty = u(); if(t >= ED_EN.length || tx >= W || ty >= LH) return null; en.push({type:ED_EN[t], tx, ty}); }
+    const tot = W * LH, cells = new Uint8Array(tot); let i = 0;
+    while(i < tot){
+      const x = u(), s = x & 15; let k = (x >> 4) + 1; if((x >> 4) === 15) k = 16 + u();
+      if(s === 15){ if(i < LH || i % LH) return null; const e = i + k*LH; if(e > tot) return null; for(; i < e; i++) cells[i] = cells[i - LH]; }
+      else { if(s >= ED_CH.length || i + k > tot) return null; cells.fill(s, i, i + k); i += k; }
+    }
+    if(p !== n) return null;
+    const g = Array.from({length:LH}, (_, y) => { const r = new Array(W); for(let tx = 0; tx < W; tx++) r[tx] = ED_CH[cells[tx*LH + y]]; return r; });
+    const LD = {name, world, di, W, g, en};
+    edFix(LD);
+    if(!loose && !edCheck(LD).ok) return null;
+    return LD;
+  } catch(e) { return null; }
+}
+/* makes any level data safe: start area flat, at most 3 gems / 1 goal, monsters only where they make sense */
+function edFix(LD){
+  const W = LD.W, g = LD.g; let gems = 0, goals = 0, tur = 0;
+  for(let tx = 0; tx < W; tx++) for(let ty = 0; ty < LH; ty++){
+    if(tx < ED_START){ g[ty][tx] = ty >= 10 ? '#' : '.'; continue; }
+    const c = g[ty][tx];
+    if(c === 'G' && ++gems > 3) g[ty][tx] = '.';
+    else if(c === 'C' && ++goals > 1) g[ty][tx] = '.';
+    else if(c === 'K' && ++tur > ED_MAXK) g[ty][tx] = '.';
+  }
+  const seen = new Set(), out = [];
+  for(const e of LD.en){
+    if(!E_DEF[e.type] || e.tx < ED_START || e.tx >= W || e.ty < 0 || e.ty >= LH) continue;
+    const cl = edEClass(e.type); let ty = e.ty;
+    if((cl === 'ground' || cl === 'air') && (SOLID.has(g[ty][e.tx]) || g[ty][e.tx] === 'C')) continue;
+    if(cl === 'ceil' || cl === 'pit') ty = 0;
+    const key = (cl === 'ground' || cl === 'air') ? e.tx + ',' + ty : cl + e.tx;
+    if(seen.has(key) || out.length >= ED_MAXEN) continue;
+    seen.add(key); out.push({type:e.type, tx:e.tx, ty});
+  }
+  LD.en = out;
+}
+function edCheck(LD){
+  if(!LD || LD.g.length !== LH || LD.g.some(r => r.length !== LD.W)) return {ok:false, msg:'Das Level ist kaputt.'};
+  let goals = 0, gx = -1;
+  for(let tx = 0; tx < LD.W; tx++) for(let ty = 0; ty < LH; ty++) if(LD.g[ty][tx] === 'C'){ goals++; gx = tx; }
+  if(goals !== 1) return {ok:false, msg:'Setz genau ein Ziel (die Schatztruhe) ins Level.'};
+  if(gx < ED_START + 5 || gx > LD.W - 3) return {ok:false, msg:'Das Ziel gehört weiter weg vom Start und nicht ganz an den Rand.'};
+  return {ok:true, goalX:gx};
+}
+/* the level in the format the game itself plays */
+function edLevel(LD){
+  const W = LD.W, g = LD.g.map(r => r.slice(0, W)), tur = [], gems = []; let goalX = W - 3;
+  for(let tx = 0; tx < W; tx++) for(let ty = 0; ty < LH; ty++){ const c = g[ty][tx]; if(c === 'K') tur.push({tx, ty}); else if(c === 'G') gems.push([tx, ty]); else if(c === 'C') goalX = tx; }
+  const en = LD.en.map(e => { let ty = e.ty; if(e.type === 'spider'){ ty = 10; for(let y = 0; y < LH; y++) if(SOLID.has(g[y][e.tx])){ ty = y; break; } } return {type:e.type, tx:e.tx, ty}; });
+  return {g, W, en, tur, goalX, world:LD.world, d:ED_D[Math.min(2, LD.di)], arena:null, gems};
+}
+function edNew(world, W){
+  W = W || 80;
+  const g = Array.from({length:LH}, (_, y) => Array(W).fill(y >= 10 ? '#' : '.'));
+  g[9][W - 8] = 'C';
+  return {name:'Mein Level', world:world | 0, di:1, W, g, en:[]};
+}
+const edLink = code => location.href.split('#')[0].split('?')[0] + '?lvl=' + code;
+
+/* ----- editor session ----- */
+const edSnap = () => { const L = ED.LD; return {name:L.name, world:L.world, di:L.di, W:L.W, g:L.g.map(r => r.join('')), en:L.en.map(e => ({type:e.type, tx:e.tx, ty:e.ty}))}; };
+function edRestore(s){ const L = ED.LD; L.name = s.name; L.world = s.world; L.di = s.di; L.W = s.W; L.g = s.g.map(r => r.split('')); L.en = s.en.map(e => ({type:e.type, tx:e.tx, ty:e.ty})); edApply(); }
+function edTouch(){ ED.rev++; edInfo(); }
+function edBegin(){ ED.undo.push(edSnap()); if(ED.undo.length > 60) ED.undo.shift(); ED.chg = false; }
+function edEnd(){
+  if(!ED.chg){ ED.undo.pop(); edInfo(); return; }
+  ED.ver = false; edTouch(); clearTimeout(ED.st); ED.st = setTimeout(edSave, 600);
+}
+function edSave(){
+  if(!ED) return; clearTimeout(ED.st);
+  edSlots()[ED.slot] = {n:ED.LD.name, c:edEncode(ED.LD), v:!!ED.ver}; persist();
+}
+function edUndo(){
+  if(!ED || !ED.undo.length) return;
+  edRestore(ED.undo.pop()); ED.ver = false; edTouch(); clearTimeout(ED.st); ED.st = setTimeout(edSave, 600); edPal();
+}
+const edClamp = () => { ED.sx = Math.max(0, Math.min(ED.sx, Math.max(0, ED.LD.W*T - VW))); camX = ED.sx; };
+function edEnemies(){
+  const lv = edLevel(ED.LD);
+  ED.disp = lv.en.map((s, i) => { const e = spawnFrom(s, i); e.active = true; if(edEClass(s.type) === 'pit') e.y = LH*T - e.h - 2; return e; });
+  enemies = ED.disp;
+}
+/* hands the editor's level to the game's own drawing code */
+function edApply(){
+  const L = ED.LD; grid = L.g; LW = L.W; theme = THEMES[L.world]; goalX = 1e9; gemPos = []; arena = null; turrets = [];
+  items = []; shots = []; parts = []; bumps = new Map(); cpOn = new Set(); players = []; ghosts.clear();
+  edEnemies(); edClamp(); ED.rev++;
+}
+function edUiOn(on){
+  $('edTop').hidden = !on; $('edBot').hidden = !on; stage.classList.toggle('ed', on); cvs.style.touchAction = on ? 'none' : '';
+  if(!on){ cvs.style.marginTop = ''; $('edSetDlg').hidden = true; $('edShDlg').hidden = true; }
+  resize();
+}
+function edOpen(slot, LD, ver){
+  ED = {slot, LD, tool:'ground', tab:'b', sx:0, undo:[], ver:!!ver, grid:true, hover:null, stroke:null, pan:null, ptr:new Map(), chg:false, rev:0, mapSig:'', disp:[], st:0};
+  state = 'edit'; mode = 'solo'; LSRC = null; kart.on = false; E.on = false; eDlg(null);
+  show(null); edUiOn(true); edApply(); edPal(); edInfo();
+  toast('Tipp: Baustein unten wählen und übers Level ziehen. Mit „Testen“ spielst du es selbst.', 5200);
+}
+function edInfo(){
+  if(!ED) return; const L = ED.LD; let gm = 0; for(let tx = 0; tx < L.W; tx++) for(let ty = 0; ty < LH; ty++) if(L.g[ty][tx] === 'G') gm++;
+  $('edInfo').textContent = `${L.name} · ${L.W} Felder · ◆ ${gm}/3${ED.ver ? ' · geschafft ✓' : ''}`;
+  $('edUndo').disabled = !ED.undo.length;
+}
+const edIcSrc = new Map();
+function edIconSrc(t){
+  const th = THEMES[ED.LD.world], key = th.id + ':' + t.id; let c = edIcSrc.get(key); if(c) return c;
+  if(t.e){ const a = ART[t.e]; c = pixelize(Math.ceil(a.w), Math.ceil(a.h), g => a.d(g, 0)); }
+  else if(t.c === '#') c = pixelize(16, 16, g => { TILE.body(g, th, 0); g.save(); g.translate(0, -2); TILE.cap(g, th, 0); g.restore(); });
+  else if(t.c === 'c') c = pixelize(16, 30, g => cpArt(g, true));
+  else if(t.c === 'C') c = pixelize(30, 24, g => goalArt(g, false));
+  else c = pixelize(16, 16, g => TILE[ED_TK[t.c]](g, th));
+  edIcSrc.set(key, c); return c;
+}
+function edBtn(t, extra){
+  const b = document.createElement('button'); b.type = 'button'; b.className = 'edT' + (extra ? ' ' + extra : ''); b.dataset.t = t.id; b.title = t.n; b.setAttribute('aria-label', t.n);
+  if(ED_SVG[t.id]) b.innerHTML = ED_SVG[t.id];
+  else { const src = edIconSrc(t), c = document.createElement('canvas'); c.width = 28; c.height = 28; const g = c.getContext('2d'); g.imageSmoothingEnabled = false;
+    const f = Math.min(28/src.width, 28/src.height), w = Math.round(src.width*f), h = Math.round(src.height*f); g.drawImage(src, Math.round((28-w)/2), Math.round((28-h)/2), w, h); b.appendChild(c); }
+  const s = document.createElement('span'); s.textContent = t.n; b.appendChild(s);
+  b.onclick = () => edPickTool(t.id); return b;
+}
+function edPal(){
+  const pin = $('edPin'), pal = $('edPal'); pin.innerHTML = ''; pal.innerHTML = '';
+  pin.appendChild(edBtn(ED_TP[0])); pin.appendChild(edBtn(ED_TP[1]));
+  const other = ED.tab === 'b' ? {id:'tab_e', n:'Gegner', e:'crab'} : {id:'tab_b', n:'Blöcke', c:'B'};
+  const tb = edBtn(other, 'tab'); tb.onclick = () => { ED.tab = ED.tab === 'b' ? 'e' : 'b'; ED.tool = ED.tab === 'b' ? 'ground' : 'e:crab'; edPal(); }; pin.appendChild(tb);
+  for(const t of (ED.tab === 'b' ? ED_BL : ED_ET)) pal.appendChild(edBtn(t));
+  edSel(); resize();
+}
+function edSel(){ document.querySelectorAll('.edT[data-t]').forEach(b => b.classList.toggle('sel', b.dataset.t === ED.tool)); }
+function edPickTool(id){ if(!ED || !ED_TI[id]) return; ED.tool = id; edSel(); }
+const edTool = () => ED_TI[ED.tool] || ED_TI.ground;
+
+/* ----- changing the level ----- */
+const edFloor = (g, tx) => { for(let y = 0; y < LH; y++) if(SOLID.has(g[y][tx])) return y; return 10; };
+function edKillEn(tx, ty){   /* drop monsters standing in this cell */
+  const L = ED.LD, n = L.en.length;
+  L.en = L.en.filter(e => !(e.tx === tx && e.ty === ty && (edEClass(e.type) === 'ground' || edEClass(e.type) === 'air')));
+  if(L.en.length !== n) edEnemies();
+}
+function edPutTile(tx, ty, c){
+  const L = ED.LD, g = L.g;
+  if(tx < 0 || tx >= L.W || ty < 0 || ty >= LH) return false;
+  if(tx < ED_START){ if(!ED.warned){ ED.warned = true; toast('Der Startbereich bleibt frei.'); } return false; }
+  let ch = false;
+  if(c === '#'){
+    for(let y = ty; y < LH; y++) if(g[y][tx] !== '#'){ g[y][tx] = '#'; ch = true; edKillEn(tx, y); }
+  } else {
+    if(g[ty][tx] === c) return false;
+    if(c === 'C'){
+      if(tx < ED_START + 5 || tx > L.W - 3){ toast('Das Ziel gehört weiter weg vom Start und nicht ganz an den Rand.'); return false; }
+      for(let x = 0; x < L.W; x++) for(let y = 0; y < LH; y++) if(g[y][x] === 'C') g[y][x] = '.';
+    }
+    if(c === 'G' || c === 'K'){
+      let n = 0; for(let x = 0; x < L.W; x++) for(let y = 0; y < LH; y++) if(g[y][x] === c) n++;
+      if(c === 'G' && n >= 3){ toast('Maximal 3 Edelsteine pro Level.'); return false; }
+      if(c === 'K' && n >= ED_MAXK){ toast('Maximal ' + ED_MAXK + ' Kanonen.'); return false; }
+    }
+    g[ty][tx] = c; ch = true; edKillEn(tx, ty);
+  }
+  if(ch){ ED.chg = true; ED.rev++; }
+  return ch;
+}
+function edPutEn(type, tx, ty){
+  const L = ED.LD, cl = edEClass(type);
+  if(tx < 0 || tx >= L.W || ty < 0 || ty >= LH) return false;
+  if(tx < ED_START){ toast('Im Startbereich gibt es keine Gegner.'); return false; }
+  if((cl === 'ground' || cl === 'air') && (SOLID.has(L.g[ty][tx]) || L.g[ty][tx] === 'C')){ toast('Da steht schon ein Block im Weg.'); return false; }
+  if(cl === 'ceil' || cl === 'pit') ty = 0;
+  const same = e => { const c2 = edEClass(e.type); return (cl === 'ground' || cl === 'air') ? ((c2 === 'ground' || c2 === 'air') && e.tx === tx && e.ty === ty) : (c2 === cl && e.tx === tx); };
+  const had = L.en.find(same);
+  if(had && had.type === type && had.tx === tx && had.ty === ty) return false;
+  if(!had && L.en.length >= ED_MAXEN){ toast('Maximal ' + ED_MAXEN + ' Gegner.'); return false; }
+  L.en = L.en.filter(e => !same(e)); L.en.push({type, tx, ty});
+  ED.chg = true; edEnemies(); ED.rev++; return true;
+}
+function edErase(tx, ty, a){
+  const L = ED.LD, g = L.g;
+  if(a){ const i = ED.disp.findIndex(e => a.px >= e.x - 2 && a.px <= e.x + e.w + 2 && a.py >= e.y - 2 && a.py <= e.y + e.h + 2); if(i >= 0){ L.en.splice(i, 1); ED.chg = true; edEnemies(); ED.rev++; return true; } }
+  if(tx < ED_START || tx >= L.W || ty < 0 || ty >= LH) return false;
+  const n = L.en.length; L.en = L.en.filter(e => !(e.tx === tx && e.ty === ty && (edEClass(e.type) === 'ground' || edEClass(e.type) === 'air')));
+  if(L.en.length !== n){ ED.chg = true; edEnemies(); ED.rev++; return true; }
+  const c = g[ty][tx]; if(c === '.') return false;
+  if(c === '#') for(let y = ty; y < LH && g[y][tx] === '#'; y++) g[y][tx] = '.'; else g[ty][tx] = '.';
+  ED.chg = true; ED.rev++; return true;
+}
+function edResizeLevel(nw){
+  const L = ED.LD; nw = Math.max(ED_MINW, Math.min(ED_MAXW, nw)); if(nw === L.W) return;
+  edBegin();
+  if(nw > L.W){ for(let y = 0; y < LH; y++) for(let x = L.W; x < nw; x++) L.g[y].push(y >= 10 ? '#' : '.'); }
+  else { for(let y = 0; y < LH; y++) L.g[y].length = nw; L.en = L.en.filter(e => e.tx < nw); }
+  L.W = nw; ED.chg = true; edEnd(); edApply(); $('edWl').textContent = nw + ' Felder';
+}
+
+/* ----- pointer input: paint with drag, place single things on release, two fingers / middle button scroll ----- */
+function edAt(ev){
+  const r = cvs.getBoundingClientRect(), cx = snap(Math.max(0, camX));
+  const gx = (ev.clientX - r.left) / r.width * VW, gy = (ev.clientY - r.top) / r.height * (LH*T);
+  return {gx, gy, px:gx + cx, py:gy, tx:Math.floor((gx + cx)/T), ty:Math.floor(gy/T), inside:ev.clientX >= r.left && ev.clientX <= r.right && ev.clientY >= r.top && ev.clientY <= r.bottom};
+}
+function edLine(x0, y0, x1, y1){
+  const out = [], dx = Math.abs(x1 - x0), dy = Math.abs(y1 - y0), sx = x0 < x1 ? 1 : -1, sy = y0 < y1 ? 1 : -1; let err = dx - dy, x = x0, y = y0;
+  for(let k = 0; k < 400; k++){ out.push([x, y]); if(x === x1 && y === y1) break; const e2 = 2*err; if(e2 > -dy){ err -= dy; x += sx; } if(e2 < dx){ err += dx; y += sy; } }
+  return out;
+}
+function edStartPan(){
+  if(ED.stroke){
+    /* the first finger of a two-finger scroll has just painted a stray cell: take it back */
+    if(performance.now() - ED.stroke.t0 < 280 && ED.undo.length){ edRestore(ED.undo.pop()); ED.chg = false; edInfo(); }
+    else edEnd();
+    ED.stroke = null;
+  }
+  let sx = 0, n = 0; for(const p of ED.ptr.values()){ sx += p.x; n++; }
+  ED.pan = {x:n ? sx/n : 0, sx0:ED.sx};
+}
+function edStrokeCell(a){
+  const t = edTool(), S0 = ED.stroke; if(!S0) return;
+  const last = S0.last; S0.last = {tx:a.tx, ty:a.ty};
+  const cells = !last ? [[a.tx, a.ty]] : (last.tx !== a.tx || last.ty !== a.ty) ? edLine(last.tx, last.ty, a.tx, a.ty) : [];
+  for(const [tx, ty] of cells){ if(t.k === 'erase') edErase(tx, ty, (tx === a.tx && ty === a.ty) ? a : null); else edPutTile(tx, ty, t.c); }
+}
+function edSingle(a, t){ if(t.e) edPutEn(t.e, a.tx, a.ty); else if(t.c) edPutTile(a.tx, a.ty, t.c); }
+cvs.addEventListener('pointerdown', ev => {
+  if(state !== 'edit' || !ED || ev.button > 2) return;
+  ev.preventDefault(); try { cvs.setPointerCapture(ev.pointerId); } catch(e) {}
+  ED.ptr.set(ev.pointerId, {x:ev.clientX, y:ev.clientY});
+  const t = edTool();
+  if(ED.ptr.size >= 2 || ev.button === 1 || ev.button === 2 || t.k === 'pan'){ edStartPan(); return; }
+  ED.stroke = {last:null, t0:performance.now()}; edBegin(); const a = edAt(ev); ED.hover = a;
+  if(t.paint || t.k === 'erase') edStrokeCell(a);
+});
+cvs.addEventListener('pointermove', ev => {
+  if(state !== 'edit' || !ED) return;
+  const p = ED.ptr.get(ev.pointerId); if(p){ p.x = ev.clientX; p.y = ev.clientY; }
+  const a = edAt(ev); ED.hover = a.inside ? a : null;
+  if(ED.pan && p){ let sx = 0, n = 0; for(const q of ED.ptr.values()){ sx += q.x; n++; } const r = cvs.getBoundingClientRect(); ED.sx = ED.pan.sx0 - (sx/n - ED.pan.x) * VW / r.width; edClamp(); return; }
+  if(ED.stroke && p){ const t = edTool(); if(t.paint || t.k === 'erase') edStrokeCell(a); }
+});
+const edUp = ev => {
+  if(state !== 'edit' || !ED || !ED.ptr.delete(ev.pointerId)) return;
+  const a = edAt(ev);
+  if(ED.stroke && !ED.pan && ev.type === 'pointerup'){ const t = edTool(); if(!t.paint && t.k !== 'erase' && a.inside) edSingle(a, t); }
+  if(ED.ptr.size === 0){ if(ED.stroke){ edEnd(); ED.stroke = null; } ED.pan = null; if(ev.pointerType !== 'mouse') ED.hover = null; }
+  else if(ED.pan) edStartPan();
+};
+cvs.addEventListener('pointerup', edUp); cvs.addEventListener('pointercancel', edUp);
+cvs.addEventListener('pointerleave', () => { if(ED && !ED.stroke) ED.hover = null; });
+cvs.addEventListener('contextmenu', ev => { if(state === 'edit') ev.preventDefault(); });
+cvs.addEventListener('wheel', ev => { if(state !== 'edit' || !ED) return; ev.preventDefault(); ED.sx += (ev.deltaX || ev.deltaY) * VW / Math.max(100, cvs.clientWidth) * 1.2; edClamp(); }, {passive:false});
+$('edPal').addEventListener('wheel', ev => { if(ev.deltaY){ ev.currentTarget.scrollLeft += ev.deltaY; ev.preventDefault(); } }, {passive:false});
+{
+  const mapGo = ev => { if(!ED || ev.buttons === 0 && ev.type === 'pointermove') return; const c = $('edMap'), r = c.getBoundingClientRect(); ED.sx = (ev.clientX - r.left) / r.width * ED.LD.W*T - VW/2; edClamp(); };
+  $('edMap').addEventListener('pointerdown', ev => { try { ev.currentTarget.setPointerCapture(ev.pointerId); } catch(e) {} mapGo(ev); });
+  $('edMap').addEventListener('pointermove', mapGo);
+}
+addEventListener('keydown', ev => {
+  if(state !== 'edit' || !ED || (ev.target && (ev.target.tagName === 'INPUT' || ev.target.tagName === 'TEXTAREA'))) return;
+  if((ev.ctrlKey || ev.metaKey) && ev.code === 'KeyZ'){ ev.preventDefault(); edUndo(); }
+});
+
+/* ----- drawing on top of the game's own picture ----- */
+function edTick(dt){
+  if(!ED) return;
+  edClamp();
+  const dlg = !$('edSetDlg').hidden || !$('edShDlg').hidden;
+  if(!dlg){
+    const dx = ((keys.ArrowRight || keys.KeyD) ? 1 : 0) - ((keys.ArrowLeft || keys.KeyA) ? 1 : 0);
+    if(dx){ ED.sx += dx * 260 * dt; edClamp(); }
+    if(ED.stroke && ED.hover && !ED.pan){ const e = ED.hover.gx < 14 ? -1 : ED.hover.gx > VW - 14 ? 1 : 0; if(e){ ED.sx += e * 200 * dt; edClamp(); } }
+  }
+}
+function edDraw(){
+  if(!ED) return;
+  const g = ctx, cx = snap(Math.max(0, camX)), L = ED.LD, t = edTool(), px = 1/S;
+  if(ED.grid){
+    g.fillStyle = '#ffffff'; g.globalAlpha = 0.11;
+    const t0 = Math.floor(cx/T), t1 = Math.min(L.W, Math.ceil((cx + VW)/T));
+    for(let tx = t0; tx <= t1; tx++) g.fillRect(snap(tx*T - cx), 0, px, LH*T);
+    for(let ty = 1; ty < LH; ty++) g.fillRect(0, ty*T, VW, px);
+    g.globalAlpha = 1;
+  }
+  const sw = ED_START*T - cx;
+  if(sw > 0){ g.fillStyle = '#0b0a16'; g.globalAlpha = 0.4; g.fillRect(0, 0, sw, LH*T); g.globalAlpha = 1; txt('START', Math.max(3, sw/2 - 12), 30, 8, '#ffd84a'); }
+  { const t0 = Math.floor(cx/T), t1 = Math.min(L.W - 1, Math.ceil((cx + VW)/T)); for(let tx = Math.max(10, t0 - t0 % 10); tx <= t1; tx += 10){ const x = tx*T - cx; if(x >= 0) txt(String(tx), x + 2, 5, 5.5, '#dcd8f0'); } }
+  const h = ED.hover;
+  if(h && h.inside && t.k !== 'pan'){
+    const x = h.tx*T - cx, y = h.ty*T, ok = h.tx >= ED_START && h.tx < L.W;
+    if(t.k === 'erase'){ g.strokeStyle = '#ff5a5a'; g.lineWidth = 1.2; g.strokeRect(x + 0.5, y + 0.5, T - 1, T - 1); }
+    else if(ok){
+      if(t.c === '#'){ g.fillStyle = '#ffffff'; g.globalAlpha = 0.18; g.fillRect(x, y, T, (LH - h.ty)*T); g.globalAlpha = 1; }
+      g.globalAlpha = 0.6;
+      if(t.e){ const s = {type:t.e, tx:h.tx, ty:edEClass(t.e) === 'ceil' && t.e === 'spider' ? edFloor(L.g, h.tx) : h.ty}, e = spawnFrom(s, 0); e.active = true; if(edEClass(t.e) === 'pit') e.y = LH*T - e.h - 2; drawEnemy(e, cx); }
+      else if(t.c === '#') blit(sprite('g' + theme.id + '0', 16, 16, q => TILE.body(q, theme, 0)), x, y);
+      else if(t.c === 'C') blit(sprite('goal0', 30, 24, q => goalArt(q, false)), x - 7, y - 8);
+      else if(t.c === 'c') blit(sprite('cp0', 16, 30, q => cpArt(q, false)), x, y - 14);
+      else if(t.c) blit(tileSpr(ED_TK[t.c]), x, y);
+      g.globalAlpha = 1;
+      g.strokeStyle = '#ffd84a'; g.lineWidth = 1; g.strokeRect(x + 0.5, y + 0.5, T - 1, T - 1);
+    } else { g.strokeStyle = '#ff5a5a'; g.lineWidth = 1; g.strokeRect(x + 0.5, y + 0.5, T - 1, T - 1); }
+  }
+  edMapDraw();
+}
+function edMapDraw(){
+  const c = $('edMap'), w = c.clientWidth | 0; if(!w) return;
+  const sig = ED.rev + ':' + (ED.sx | 0) + ':' + w + ':' + VW; if(sig === ED.mapSig) return; ED.mapSig = sig;
+  if(c.width !== w) c.width = w; if(c.height !== 14) c.height = 14;
+  const g = c.getContext('2d'), L = ED.LD, th = THEMES[L.world], cw = w / L.W;
+  g.fillStyle = th.sky[1]; g.fillRect(0, 0, w, 14);
+  for(let tx = 0; tx < L.W; tx++){
+    let top = LH; for(let ty = 0; ty < LH; ty++) if(SOLID.has(L.g[ty][tx])){ top = ty; break; }
+    if(top < LH){ g.fillStyle = th.top; g.fillRect(Math.floor(tx*cw), Math.round(top*14/LH), Math.ceil(cw), 14); }
+    for(let ty = 0; ty < LH; ty++){ const q = L.g[ty][tx];
+      if(q === 'C'){ g.fillStyle = '#ffc94a'; g.fillRect(Math.floor(tx*cw), 0, Math.max(3, Math.ceil(cw)), 14); }
+      else if(q === 'G'){ g.fillStyle = '#4fe0ff'; g.fillRect(Math.floor(tx*cw), Math.round(ty*14/LH), Math.max(2, Math.ceil(cw)), 3); }
+      else if(q === 'c'){ g.fillStyle = '#ffffff'; g.fillRect(Math.floor(tx*cw), Math.round(ty*14/LH), Math.max(2, Math.ceil(cw)), 3); } }
+  }
+  g.fillStyle = '#e2483b'; for(const e of L.en) g.fillRect(Math.floor(e.tx*cw), edEClass(e.type) === 'ceil' ? 0 : edEClass(e.type) === 'pit' ? 11 : Math.round(Math.min(e.ty, LH - 1)*14/LH), Math.max(2, Math.ceil(cw)), 3);
+  g.fillStyle = '#52d470'; g.fillRect(0, 0, Math.max(2, ED_START*cw), 14); g.globalAlpha = 0.45; g.fillStyle = '#12111f'; g.fillRect(0, 0, Math.max(2, ED_START*cw), 14); g.globalAlpha = 1;
+  const vx = ED.sx / (L.W*T) * w, vw = Math.min(w, VW / (L.W*T) * w);
+  g.strokeStyle = '#ffffff'; g.lineWidth = 2; g.strokeRect(vx + 1, 1, Math.max(4, vw - 2), 12);
+}
+
+/* ----- top bar, settings, test play, share ----- */
+function edLeave(){ clearTimeout(ED && ED.st); edUiOn(false); }
+function edDoneBtn(){ edSave(); edLeave(); ED = null; toMenu(); edList(); }
+function edTest(){
+  const ck = edCheck(ED.LD); if(!ck.ok){ toast(ck.msg, 3600); return; }
+  edSave(); const code = edEncode(ED.LD), nm = ED.LD.name;
+  edUiOn(false); LSRC = {kind:'custom', code, name:nm, ed:true, slot:ED.slot};
+  startLevel(1, 'solo');
+}
+/* coming back from a test play */
+function edReturn(){
+  if(!(LSRC && LSRC.kind === 'custom' && LSRC.ed && ED)) return false;
+  LSRC = null; players = []; ghosts.clear(); eDlg(null); state = 'edit'; mode = 'solo'; show(null); edUiOn(true); edApply(); edPal(); edInfo();
+  if(ED.ver) toast('Dein Level ist geschafft. Jetzt kannst du es teilen.', 3600);
+  return true;
+}
+function edShareOpen(code, name){
+  edShCur = {code, name, link:edLink(code)};
+  $('edShTa').value = code; $('edShInfo').textContent = `„${name}“ · Schick den Code oder den Link an deine Crew.`;
+  $('edShNat').hidden = !navigator.share; $('edShDlg').hidden = false;
+}
+function edShareBtn(){
+  if(!ED.ver){ const ck = edCheck(ED.LD); toast(ck.ok ? 'Schaff dein Level erst einmal selbst („Testen“), dann kannst du es teilen.' : ck.msg, 4200); return; }
+  edSave(); edShareOpen(edEncode(ED.LD), ED.LD.name);
+}
+function edSetOpen(){
+  const L = ED.LD; $('edNm').value = L.name; $('edWl').textContent = L.W + ' Felder'; $('edGr').textContent = 'Raster: ' + (ED.grid ? 'an' : 'aus'); $('edClr').textContent = 'Alles leeren'; ED.clr = 0;
+  const w = $('edWorlds'); w.innerHTML = ''; THEMES.forEach((th, i) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'chip' + (L.world === i ? ' sel' : ''); b.textContent = th.name; b.onclick = () => { edBegin(); L.world = i; ED.chg = true; edEnd(); edApply(); edPal(); edSetOpen(); }; w.appendChild(b); });
+  const d = $('edDiffs'); d.innerHTML = ''; ED_DN.forEach((n, i) => { const b = document.createElement('button'); b.type = 'button'; b.className = 'chip' + (L.di === i ? ' sel' : ''); b.textContent = n; b.onclick = () => { edBegin(); L.di = i; ED.chg = true; edEnd(); edSetOpen(); }; d.appendChild(b); });
+  $('edSetDlg').hidden = false;
+}
+$('edDone').onclick = edDoneBtn;
+$('edUndo').onclick = edUndo;
+$('edTest').onclick = () => { if(ED) edTest(); };
+$('edShare').onclick = () => { if(ED) edShareBtn(); };
+$('edSetB').onclick = () => { if(ED) edSetOpen(); };
+$('edSetOk').onclick = () => { $('edSetDlg').hidden = true; edSave(); };
+$('edNm').addEventListener('input', () => { if(!ED) return; ED.LD.name = edName($('edNm').value) || 'Mein Level'; edInfo(); clearTimeout(ED.st); ED.st = setTimeout(edSave, 600); });
+$('edNm').addEventListener('keydown', ev => { ev.stopPropagation(); if(ev.key === 'Enter') $('edNm').blur(); });
+$('edNm').addEventListener('keyup', ev => ev.stopPropagation());
+$('edWm').onclick = () => { if(ED) edResizeLevel(ED.LD.W - 10); };
+$('edWp').onclick = () => { if(ED) edResizeLevel(ED.LD.W + 10); };
+$('edGr').onclick = () => { ED.grid = !ED.grid; $('edGr').textContent = 'Raster: ' + (ED.grid ? 'an' : 'aus'); };
+$('edClr').onclick = () => {
+  if(!ED) return;
+  if(!ED.clr){ ED.clr = 1; $('edClr').textContent = 'Sicher? Nochmal tippen'; setTimeout(() => { if(ED){ ED.clr = 0; $('edClr').textContent = 'Alles leeren'; } }, 3000); return; }
+  const L = ED.LD, f = edNew(L.world, L.W); edBegin(); L.g = f.g; L.en = []; ED.chg = true; edEnd(); edApply(); ED.clr = 0; $('edClr').textContent = 'Alles leeren';
+};
+$('edShX').onclick = () => { $('edShDlg').hidden = true; };
+$('edShCopy').onclick = async () => { if(edShCur) toast(await copyText(edShCur.code) ? 'Code kopiert.' : 'Kopieren ging nicht. Halte den Text gedrückt und kopiere ihn.', 2600); };
+$('edShLink').onclick = async () => { if(edShCur) toast(await copyText(edShCur.link) ? 'Link kopiert.' : 'Kopieren ging nicht.', 2600); };
+$('edShNat').onclick = () => { if(edShCur && navigator.share) navigator.share({title:'Hopplo-Level: ' + edShCur.name, text:'Schaffst du mein Hopplo-Level „' + edShCur.name + '“?', url:edShCur.link}).catch(() => {}); };
+$('edShTa').addEventListener('focus', () => { try { $('edShTa').select(); } catch(e) {} });
+
+/* ----- the list of own levels, import, invitation links ----- */
+function edNewIn(i){
+  const LD = edNew(0); LD.name = 'Level ' + (i + 1);
+  edSlots()[i] = {n:LD.name, c:edEncode(LD), v:false}; persist(); edOpen(i, LD, false);
+}
+function edPlayCode(code, name, slot, back){
+  LSRC = {kind:'custom', code, name, slot, back}; startLevel(1, edPlayers === 2 ? 'duo' : 'solo');
+}
+function edList(mode){
+  edPickMode = mode === 'lobby';
+  show('edOv'); $('edCodeBox').hidden = true; $('edMsg').textContent = '';
+  $('edSub').textContent = edPickMode ? 'Such ein Level für die Crew aus. Es muss schon einmal geschafft sein.' : 'Bau ein Level, schaff es einmal selbst, dann kannst du den Code an deine Crew schicken.';
+  $('edPl').hidden = edPickMode; $('edPl').textContent = edPlayers === 2 ? '2 Spieler' : '1 Spieler';
+  edSlotRows();
+}
+function edSlotRows(){
+  const box = $('edSlots'); box.innerHTML = ''; const sl = edSlots();
+  sl.forEach((s, i) => {
+    const d = document.createElement('div'); d.className = 'edSl';
+    const info = document.createElement('div'), r = document.createElement('div'); r.className = 'row';
+    const b = (txt, fn, cls) => { const x = document.createElement('button'); x.type = 'button'; x.className = 'btn sm' + (cls ? ' ' + cls : ''); x.textContent = txt; x.onclick = fn; r.appendChild(x); return x; };
+    const nb = document.createElement('b'), sm = document.createElement('small'); info.appendChild(nb); info.appendChild(sm);
+    const LD = s ? edDecode(s.c, true) : null;
+    if(s && !LD){ sl[i] = null; persist(); }
+    if(!s || !LD){ nb.textContent = 'Platz ' + (i + 1); sm.textContent = 'leer'; if(!edPickMode) b('Neu bauen', () => edNewIn(i)); }
+    else {
+      const ck = edCheck(LD);
+      nb.textContent = s.n; sm.textContent = `${THEMES[LD.world].name} · ${LD.W} Felder · ${ED_DN[LD.di]} · ${s.v ? 'geschafft ✓' : ck.ok ? 'noch nicht geschafft' : 'noch nicht fertig'}`;
+      if(edPickMode){ if(s.v) b('Wählen', () => { lobCust = {code:s.c, name:s.n}; showLobby(); }); else sm.textContent += ' (erst selbst schaffen)'; }
+      else {
+        if(ck.ok) b('Spielen', () => edPlayCode(s.c, s.n, i, 'list'));
+        b('Bauen', () => edOpen(i, LD, s.v), 'alt');
+        if(s.v) b('Teilen', () => edShareOpen(s.c, s.n), 'alt');
+        const del = b('✕', () => { if(!del._c){ del._c = 1; del.textContent = 'Sicher?'; setTimeout(() => { del._c = 0; del.textContent = '✕'; }, 3000); return; } sl[i] = null; persist(); edSlotRows(); }, 'alt');
+      }
+    }
+    d.appendChild(info); d.appendChild(r); box.appendChild(d);
+  });
+}
+function edInvite(LD, code){
+  edInv = {LD, code};
+  $('edInvInfo').textContent = `„${LD.name}“ · ${THEMES[LD.world].name}-Welt · ${LD.W} Felder · ${ED_DN[LD.di]}`;
+  $('edInvMsg').textContent = ''; $('edInvSave').disabled = false; show('edInvOv');
+}
+function edImportText(txt){
+  const m = /HL1\.[A-Za-z0-9_-]+/.exec(String(txt || '')); const LD = m ? edDecode(m[0]) : null;
+  return LD ? {LD, code:m[0]} : null;
+}
+$('edPaste').onclick = () => { $('edCodeBox').hidden = !$('edCodeBox').hidden; if(!$('edCodeBox').hidden) $('edCodeTa').focus(); };
+$('edCodeX').onclick = () => { $('edCodeBox').hidden = true; };
+$('edCodeGo').onclick = () => {
+  const r = edImportText($('edCodeTa').value);
+  if(!r){ $('edMsg').textContent = 'Der Code stimmt nicht. Hast du ihn ganz kopiert? Er beginnt mit HL1.'; return; }
+  $('edCodeTa').value = '';
+  if(edPickMode){ lobCust = {code:r.code, name:r.LD.name}; showLobby(); return; }
+  edInvite(r.LD, r.code);
+};
+$('edCodeTa').addEventListener('keydown', ev => ev.stopPropagation()); $('edCodeTa').addEventListener('keyup', ev => ev.stopPropagation());
+$('edPl').onclick = () => { edPlayers = edPlayers === 2 ? 1 : 2; $('edPl').textContent = edPlayers === 2 ? '2 Spieler' : '1 Spieler'; };
+$('edBack0').onclick = () => { if(edPickMode) showLobby(); else goHome('jump'); };
+$('edBtn').onclick = () => edList();
+$('custBtn').onclick = () => edList('lobby');
+$('edInvPlay').onclick = () => { if(edInv){ edPlayers = 1; edPlayCode(edInv.code, edInv.LD.name, undefined, 'hub'); } };
+$('edInvDuo').onclick = () => { if(edInv){ edPlayers = 2; edPlayCode(edInv.code, edInv.LD.name, undefined, 'hub'); } };
+$('edInvX').onclick = () => { goHome('jump'); };
+$('edInvSave').onclick = () => {
+  if(!edInv) return; const sl = edSlots(), i = sl.findIndex(x => !x);
+  if(i < 0){ $('edInvMsg').textContent = 'Alle 6 Plätze sind belegt. Lösch erst ein Level unter „Eigene Level“.'; return; }
+  sl[i] = {n:edInv.LD.name, c:edInv.code, v:true}; persist(); $('edInvSave').disabled = true; $('edInvMsg').textContent = `Gespeichert auf Platz ${i + 1}.`;
+};
+/* what happens when a level is won */
+function edDone(){
+  runMsg = ''; const L = LSRC;
+  if(L.slot !== undefined && L.slot !== null){
+    const s = edSlots()[L.slot];
+    if(s && s.c === L.code){
+      if(!s.v){ s.v = true; stat('ed'); runMsg = 'Dein Level ist geschafft und jetzt zum Teilen freigegeben.'; }
+      else runMsg = 'Dein Level ist startklar zum Teilen.';
+      if(ED && ED.slot === L.slot) ED.ver = true;
+    }
+  } else runMsg = 'Level von deiner Crew geschafft.';
+  persist(); checkBadges();
+}
+const edCl = () => LSRC && LSRC.kind === 'custom' ? LSRC.code : undefined;
+function edClientGo(m){
+  if(typeof m.cl !== 'string'){ LSRC = null; return true; }
+  const LD = edDecode(m.cl); if(!LD) return false;
+  LSRC = {kind:'custom', code:m.cl, name:LD.name}; return true;
+}
+function edStartOnline(c){ LSRC = {kind:'custom', code:c.code, name:c.name}; broadcast({t:'go', level:1, cl:c.code}); startLevel(1, 'online'); }
+/* ?lvl=... in the address: a level sent as a link */
+function edBoot(){
+  let p; try { p = new URLSearchParams(location.search); } catch(e) { return; }
+  const c = p.get('lvl'); if(!c) return;
+  try { p.delete('lvl'); const q = p.toString(); history.replaceState(null, '', location.pathname + (q ? '?' + q : '') + location.hash); } catch(e) {}
+  const r = edImportText(c);
+  if(!r){ toast('Der Level-Link ist kaputt oder abgeschnitten.', 4200); return; }
+  edInvite(r.LD, r.code);
+}
+
 /* ================= Main loop ================= */
 hubArt();
 toMenu(true);
-bootInvite();
+bootInvite(); edBoot();
 last = performance.now();
 function frame(now){
   const dt = Math.min(0.1, (now - last)/1000); last = now;
@@ -4760,9 +5922,11 @@ function frame(now){
       camX = (Math.sin(menuT*0.08 - Math.PI/2)*0.5 + 0.5) * Math.max(0, LW*T - VW);
       enemies.forEach(e => e.walk += 0.05); }
     else if(state === 'win') tick++;
+    else if(state === 'edit'){ tick++; edTick(dt); }
   }
   if(state !== 'kart' && kEng) kEngine(0,false);
   if(kart.on) kRender(); else if(E.on) eRender(); else render();
+  if(state === 'edit') edDraw();
   if(!$('kartOv').hidden) kPreview();
   if(!$('kresOv').hidden) kPodium();
   if(inGame()){ save.st.pt += dt; stDirty = true; }
@@ -4776,6 +5940,11 @@ if(dbg.on) Object.assign(window.HOP, { stat, checkBadges, BADGES, makeCode, read
 if(dbg.on) Object.assign(window.HOP, { KVR, KWX, KHAT, KPAINT, KSHOP, KBASE, kOwn, kCos, kCosOf, kcMsg, kCoins, kCoinPts, kVarPts, kBestKey, ttKey, ghEnc, ghDec, ghLoad, ghSave, ghInit, ghStep, ghGap, ghProgs, kEndTT, kUpdMenu, kUpdMenu2, kBuild, kParts, kPreview, shopOpen, shopDraw, shopClick, kNextCh, lobState, showLobby, kOnline, kShowRes, clientMsg, hostMsg, kTT });
 if(dbg.on) Object.assign(window.HOP, { netLost, rcTry, rcResume, kUndrop, wireClient, rcBanner, netTick, leaveNet, closeNet, cut: () => { window.__netCut = true; if(net.peer) net.peer.dead = true; }, heal: () => { window.__netCut = false; } });
 if(dbg.on) Object.assign(window.HOP, { dailyInfo, startDaily, dailyDone, dailyStreak, dayBefore, dmy, updDay, getLSRC: () => LSRC, runInfo: () => ({runT, runMsg}), genLevelSeed: genLevel });
+if(dbg.on) Object.assign(window.HOP, { BTA, BT_LIVES, BT_MAX, kBuildArena, btGeom, btSpawn, kArD, kArG, kArCol, kBtInit, kBtAI, kBtUse, kBtObj, kBtHit, kBtScan, kBtOrd, kBtDone, kBtEnd, kShowBt, kBtSpec, btThumb,
+  btStart: (ai, m) => { kart.btNext = true; kStart(ai, kart.cls, m || 'solo'); } });
+if(dbg.on) Object.assign(window.HOP, { ED_CH, ED_EN, ED_START, ED_MINW, ED_MAXW, edEncode, edDecode, edCheck, edLevel, edNew, edFix, edOpen, edTest, edList, edSlots, edUndo, edSave, edPutTile, edPutEn, edErase, edPickTool, edInvite, edImportText, edLink, edReturn, edPlayCode, edStartOnline, edClientGo, edB64, edUnB64, edClamp,
+  getED: () => ED, getTheme: () => theme.id, getInv: () => edInv, getLobCust: () => lobCust, setLobCust: v => { lobCust = v; }, edBegin, edEnd, edEnemies, edResizeLevel, edSetOpen, edShareOpen });
+if(dbg.on) Object.assign(window.HOP, { EDIFF, EISL, eP, eResKey, ePar, eCdTicks, eTip, escChap, escDone, escStars, escHard, eRunsOf, eStepsOf, eBfsCells, eUpdMenu });
 })();
 </script>
 </body>
