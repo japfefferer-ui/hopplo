@@ -185,6 +185,8 @@ h1,.overlay h2,.btn,.chip,.grid button{text-transform:uppercase}
 #toasts{position:absolute;z-index:9;left:50%;top:max(8px,env(safe-area-inset-top,0px));transform:translateX(-50%);display:flex;flex-direction:column;gap:6px;align-items:center;pointer-events:none;width:min(92%,440px)}
 .toast{background:#1d1b2e;color:var(--fg);box-shadow:0 0 0 3px var(--gold),0 0 0 6px #0c0b18;padding:.45em .8em;font-weight:800;font-size:clamp(11px,3cqmin,14px);text-align:center;transition:opacity .4s,transform .4s;overflow-wrap:anywhere}
 .toast.out{opacity:0;transform:translateY(-8px)}
+#rcBan{position:absolute;z-index:10;left:50%;top:calc(max(8px,env(safe-area-inset-top,0px)) + 44px);transform:translateX(-50%);display:flex;gap:.7em;align-items:center;white-space:nowrap;background:#2a1a0e;color:#ffd84a;box-shadow:0 0 0 3px #ff9a3c,0 0 0 6px #0c0b18;padding:.35em .6em .35em .8em;font-weight:800;font-size:clamp(11px,3cqmin,14px)}
+#rcBan[hidden]{display:none}#rcBan .btn{margin:0;padding:.3em .6em}
 #emoBar{position:absolute;z-index:7;top:calc(max(6px,env(safe-area-inset-top,0px)) + 40px);right:max(6px,env(safe-area-inset-right,0px));display:grid;grid-template-columns:repeat(3,auto);gap:4px;padding:4px;background:rgba(18,17,31,.9);box-shadow:0 0 0 2px #4a4680}
 #emoBar button{width:40px;height:40px;border:0;padding:3px;background:#24213f;cursor:pointer;display:grid;place-items:center;border-radius:0}
 #emoBar button:active{background:#3d3970}
@@ -203,6 +205,18 @@ h1,.overlay h2,.btn,.chip,.grid button{text-transform:uppercase}
 #codeTa{width:100%;box-sizing:border-box;font-family:var(--font);font-size:12px;border:0;border-radius:0;background:var(--fg);color:#17162b;padding:.4em;resize:vertical;word-break:break-all}
 #kresPod{width:auto;height:clamp(80px,30cqh,150px);aspect-ratio:2/1;max-width:100%;image-rendering:pixelated;background:#1b1933;outline:3px solid var(--line)}
 @container (max-height:310px){ #kresPod{display:none} }
+
+/* workshop */
+.shgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;width:min(100%,640px)}
+@container (max-width:560px){ .shgrid{grid-template-columns:repeat(3,1fr)} }
+.shc{display:flex;flex-direction:column;align-items:center;gap:2px;min-width:0;padding:6px;border:0;background:var(--panel);color:var(--fg);font-family:var(--font);font-size:.85em;cursor:pointer;box-shadow:inset 0 0 0 2px var(--line)}
+.shc canvas{width:100%;height:auto;background:rgba(20,18,36,.6);image-rendering:pixelated}
+.shc b{color:#fff;text-transform:uppercase;letter-spacing:.03em;font-size:.9em}
+.shc small{color:var(--muted)}
+.shc.on{box-shadow:inset 0 0 0 3px var(--gold)}
+.shc.lock canvas{filter:brightness(.55) saturate(.6)}
+.shc.buy small{color:#ffd84a;font-weight:800}
+#shopCoins{color:#ffd84a;font-size:1.2em}
 </style>
 
 <div class="wrap">
@@ -219,6 +233,7 @@ h1,.overlay h2,.btn,.chip,.grid button{text-transform:uppercase}
     </div>
     <div id="emoBar" hidden></div>
     <div id="toasts" aria-live="polite"></div>
+    <div id="rcBan" hidden role="status"><span id="rcTxt">Verbindung weg …</span><button class="btn alt sm" id="rcLeave" type="button">Verlassen</button></div>
     <div class="pad" id="padL" hidden></div>
     <div class="pad" id="padR" hidden></div>
 
@@ -264,6 +279,8 @@ h1,.overlay h2,.btn,.chip,.grid button{text-transform:uppercase}
         <span id="gemTotal">◆ 0/150</span>
       </div>
       <p class="dim" id="lvBest"></p>
+      <div class="row"><button class="btn alt sm" id="dayBtn" type="button">Tageslevel</button><button class="btn alt sm" id="dayBtn2" type="button">zu zweit</button></div>
+      <p class="dim" id="dayInfo"></p>
       <div class="row">
         <button class="btn" id="b1" type="button">1 Spieler</button>
         <button class="btn" id="b2" type="button">2 Spieler</button>
@@ -319,7 +336,7 @@ h1,.overlay h2,.btn,.chip,.grid button{text-transform:uppercase}
       <p id="lobbyInfo"></p>
       <div class="row"><button class="btn alt sm" id="shareBtn" type="button">Einladungslink teilen</button></div>
       <div class="chips" id="chips"></div>
-      <div class="row"><button class="btn alt sm" id="gameBtn" type="button">Spiel: Abenteuer</button><button class="btn alt sm" id="trkBtn" type="button">Level 1</button><button class="btn alt sm" id="tmpBtn" type="button">Tempo: Flott</button></div>
+      <div class="row"><button class="btn alt sm" id="gameBtn" type="button">Spiel: Abenteuer</button><button class="btn alt sm" id="trkBtn" type="button">Level 1</button><button class="btn alt sm" id="tmpBtn" type="button">Tempo: Flott</button><button class="btn alt sm" id="lvrBtn" type="button" hidden>Strecke: Normal</button><button class="btn alt sm" id="lwxBtn" type="button" hidden>Wetter: Klar</button></div>
       <div id="lobKart" hidden>
         <div class="tgrid" id="lobGrid"></div>
         <button class="btn alt sm" id="lobRnd" type="button">Zufällige Strecke</button>
@@ -328,6 +345,7 @@ h1,.overlay h2,.btn,.chip,.grid button{text-transform:uppercase}
           <div class="col">
             <div class="row"><button class="btn alt sm" id="lchPrev" type="button" aria-label="Vorheriger Fahrer">‹</button><b id="lchName">Affe</b><button class="btn alt sm" id="lchNext" type="button" aria-label="Nächster Fahrer">›</button></div>
             <div class="row"><button class="btn alt sm" id="lvhPrev" type="button" aria-label="Vorheriger Wagen">‹</button><b id="lvhName">Piratenschiff</b><button class="btn alt sm" id="lvhNext" type="button" aria-label="Nächster Wagen">›</button></div>
+            <div class="row"><button class="btn alt sm" id="lshopBtn" type="button">Werkstatt</button></div>
           </div>
         </div>
       </div>
@@ -345,6 +363,7 @@ h1,.overlay h2,.btn,.chip,.grid button{text-transform:uppercase}
           <canvas id="ktMap" width="360" height="200" aria-label="Streckenkarte"></canvas>
           <p class="dim" id="ktInfo"></p>
           <div class="row"><button class="btn alt sm" id="kcBtn" type="button">Tempo: Flott</button><button class="btn alt sm" id="kdBtn" type="button">Drift: Flach</button></div>
+          <div class="row"><button class="btn alt sm" id="kmBtn" type="button">Modus: Rennen</button><button class="btn alt sm" id="kvBtn" type="button">Strecke: Normal</button><button class="btn alt sm" id="kwBtn" type="button">Wetter: Klar</button></div>
           <div class="row"><button class="btn alt sm" id="ktAll" type="button">Alle Strecken</button><button class="btn alt sm" id="kpBtn" type="button">Auswahl: Spieler 1</button></div>
         </div>
         <div class="kcol">
@@ -352,9 +371,19 @@ h1,.overlay h2,.btn,.chip,.grid button{text-transform:uppercase}
           <canvas id="ktKart" width="150" height="104" aria-label="Vorschau von Fahrer und Wagen"></canvas>
           <div class="row"><button class="btn alt sm" id="vhPrev" type="button" aria-label="Vorheriger Wagen">‹</button><b id="vhName">Piratenschiff</b><button class="btn alt sm" id="vhNext" type="button" aria-label="Nächster Wagen">›</button></div>
           <p class="dim" id="vhInfo"></p>
+          <div class="row"><button class="btn alt sm" id="shopBtn" type="button">Werkstatt</button></div>
         </div>
       </div>
       <div class="row"><button class="btn" id="k1" type="button">1 Spieler</button><button class="btn" id="k2" type="button">2 Spieler</button><button class="btn" id="kOn" type="button">Online</button><button class="btn alt" data-back type="button">Zurück</button></div>
+    </div>
+
+    <div class="overlay" id="shopOv" hidden>
+      <h2 class="sm">WERKSTATT</h2>
+      <div class="row"><b id="shopCoins">◉ 0</b><button class="btn alt sm" id="shopP" type="button">Für: Spieler 1</button></div>
+      <div class="row" id="shopTabs"><button class="btn sm" type="button">Fahrer</button><button class="btn alt sm" type="button">Hüte</button><button class="btn alt sm" type="button">Lacke</button></div>
+      <div class="shgrid" id="shopGrid"></div>
+      <p class="dim" id="shopInfo"></p>
+      <div class="row"><button class="btn alt" id="shopBack" type="button">Zurück</button></div>
     </div>
 
     <div class="overlay" id="tracksOv" hidden>
@@ -838,11 +867,11 @@ const W_EN = [
  {g:[['beetle',0,3],['fslime',0,3],['golem',3,2],['skel',6,1]], a:[['phoenix',1,2],['wisp',5,1]], c:[['stal',4,1]], p:['lava',0], tur:3}
 ];
 const worldOf = n => Math.min(4, Math.floor((n-1)/10));
-const lvlName = n => `Level ${n} · ${THEMES[worldOf(n)].name}`;
+const lvlName = n => (LSRC && LSRC.kind === 'daily' && n === LSRC.n) ? 'Tageslevel ' + dmy(LSRC.date) : `Level ${n} · ${THEMES[worldOf(n)].name}`;
 
 /* ================= Level generator ================= */
-function genLevel(n){
-  const rnd = mulberry32(n*9973 + 11), ri = (a,b) => a + Math.floor(rnd()*(b-a+1)), ch = p => rnd() < p;
+function genLevel(n, seed){
+  const rnd = mulberry32(seed === undefined ? n*9973 + 11 : seed), ri = (a,b) => a + Math.floor(rnd()*(b-a+1)), ch = p => rnd() < p;
   const world = worldOf(n), sub = (n-1)%10, d = (n-1)/(MAXLVL-1), boss = n%10 === 0;
   const target = Math.round(92 + n*1.7) - (boss ? 22 : 0), MAXW = target + 140;
   const g = Array.from({length:LH}, () => Array(MAXW).fill('.'));
@@ -1031,7 +1060,7 @@ function spawnFrom(s,i){
   return mkEnemy(s.type, s.tx*T + (T-D.w)/2, (s.ty+1)*T - D.h, i);
 }
 function loadLevel(n){
-  const L = genLevel(n);
+  const L = LSRC ? lsrcLevel(n) : genLevel(n);
   grid = L.g; LW = L.W; goalX = L.goalX; theme = THEMES[L.world]; diff = L.d; arena = L.arena; gemPos = L.gems; gemMask = 0;
   enemies = isAuth() ? L.en.map(spawnFrom) : [];
   if(arena){
@@ -1538,7 +1567,7 @@ function hostMsg(id,m){
     case 'i': items = items.filter(it => it.id !== m.id); break;
     case 'f': if(state==='play') spawnShot(id, +m.x || 0, +m.y || 0, m.d > 0 ? 1 : -1); break;
     case 'g': authWin(id); break;
-    case 'kc': (net.ksel = net.ksel || {})[id] = [Math.abs(m.ch|0) % KCHAR.length, Math.abs(m.veh|0) % KVEH.length]; broadcast(lobState()); if(!$('lobbyOv').hidden) showLobby(); break;
+    case 'kc': (net.ksel = net.ksel || {})[id] = [Math.abs(m.ch|0) % KCHAR.length, Math.abs(m.veh|0) % KVEH.length]; (net.kcos = net.kcos || {})[id] = kcosClean(m.hat, m.pt); broadcast(lobState()); if(!$('lobbyOv').hidden) showLobby(); break;
     case 'nm': (net.names = net.names || {})[id] = cleanName(m.n); broadcast(lobState()); if(!$('lobbyOv').hidden) showLobby(); break;
     case 'kt': { const ti = m.ti|0; if(ti >= 0 && ti < KTRACKS.length && lobbyGame==='kart'){ net.votes[id] = ti; broadcast(lobState()); if(!$('lobbyOv').hidden) showLobby(); } break; }
     case 'ch': if(typeof m.s==='string'){ const s = m.s.replace(/\s+/g,' ').trim().slice(0,140); if(s){ chatAdd(id,s); broadcast({t:'ch',id,s}, id); } } break;
@@ -1551,7 +1580,8 @@ function clientMsg(m){
   if(!m || typeof m !== 'object') return;
   switch(m.t){
     case 'wel':
-      net.role = 'client'; net.myId = m.id; net.ids = m.ids; net.lob = m.lob || null; net.names = (m.lob && m.lob.names) || {}; net.votes = (m.lob && m.lob.votes) || {}; curLevel = m.level; send({t:'kc',ch:save.ksel[0][0],veh:save.ksel[0][1]}); send({t:'nm',n:save.name});
+      net.role = 'client'; net.myId = m.id; net.ids = m.ids; net.lob = m.lob || null; net.names = (m.lob && m.lob.names) || {}; net.votes = (m.lob && m.lob.votes) || {}; const rcLv = curLevel; curLevel = m.level; send(kcMsg()); send({t:'nm',n:save.name}); net.lastRx = performance.now();
+      if(rcResume(m, rcLv)) break;
       if(m.esc && typeof m.esc==='object' && m.esc.st && Array.isArray(m.esc.st.v)) eStart(Math.max(0,Math.min(ECH.length-1,m.esc.ch|0)), m.esc.seed|0, 'online', m.esc.st);
       else if(m.playing){ startLevel(m.level,'online'); gemMask = m.gm | 0;
         for(const k in m.tiles){ const [x,y] = k.split(',').map(Number); if(grid[y] && x < LW) grid[y][x] = m.tiles[k]; }
@@ -1559,9 +1589,10 @@ function clientMsg(m){
       else showLobby();
       break;
     case 'full': leaveNet('Der Raum ist voll (max. 4 Spieler).', true); break;
+    case 'end': leaveNet('Der Host hat den Raum verlassen.'); break;
     case 'lob': net.ids = m.ids; net.lob = m; net.names = m.names && typeof m.names==='object' ? m.names : {}; net.votes = m.votes && typeof m.votes==='object' ? m.votes : {}; if(!$('lobbyOv').hidden) showLobby(); break;
     case 'ch': if(typeof m.s==='string') chatAdd(Math.max(0,Math.min(3,m.id|0)), m.s.slice(0,140)); break;
-    case 'go': if(m.game==='esc') eStart(Math.max(0,Math.min(ECH.length-1,m.ch|0)), m.seed|0, 'online'); else if(m.game==='kart'){ if(Array.isArray(m.ids)) net.ids = m.ids; kart.osel = m.sel && typeof m.sel==='object' ? m.sel : null; kart.cup = null; kart.cls = Math.max(0,Math.min(2,m.cls|0)); kStart(Math.max(0,Math.min(KTRACKS.length-1,m.track|0)),kart.cls,'online'); } else startLevel(m.level,'online'); break;
+    case 'go': if(m.game==='esc') eStart(Math.max(0,Math.min(ECH.length-1,m.ch|0)), m.seed|0, 'online'); else if(m.game==='kart'){ if(Array.isArray(m.ids)) net.ids = m.ids; kart.osel = m.sel && typeof m.sel==='object' ? m.sel : null; kart.ocos = m.cos && typeof m.cos==='object' ? m.cos : null; kart.vr = Math.max(0,Math.min(3,m.vr|0)); kart.wx = Math.max(0,Math.min(2,m.wx|0)); kart.rid = m.rid|0; kart.cup = null; kart.cls = Math.max(0,Math.min(2,m.cls|0)); kStart(Math.max(0,Math.min(KTRACKS.length-1,m.track|0)),kart.cls,'online'); } else startLevel(m.level,'online'); break;
     case 's': if(state==='play') applySnap(m); break;
     case 'tile': if(state==='play' || state==='win') applyTile(m); break;
     case 'win': if(state==='play'){ state = 'win'; sfx.win(); finishLevel(); showWin(m.by); } break;
@@ -1588,18 +1619,18 @@ function getPeerLib(){
 /* Test transport (only with ?bc in the address): same interface as PeerJS, but over BroadcastChannel. */
 class FakeConn { constructor(peer,remote){ this.peer = peer; this.remote = remote; this.h = {}; this.open = true; }
   on(ev,f){ (this.h[ev] = this.h[ev] || []).push(f); } emit(ev,a){ (this.h[ev] || []).forEach(f => f(a)); }
-  send(d){ this.peer.bc.postMessage({to:this.remote,from:this.peer.id,k:'data',d}); }
-  close(){ this.open = false; this.peer.bc.postMessage({to:this.remote,from:this.peer.id,k:'close'}); } }
-class FakePeer { constructor(id){ this.id = id || 'c' + Math.random().toString(36).slice(2); this.h = {}; this.conns = {};
+  send(d){ if(this.peer.dead) return; this.peer.bc.postMessage({to:this.remote,from:this.peer.id,k:'data',d}); }
+  close(){ if(!this.open) return; this.open = false; if(!this.peer.dead) this.peer.bc.postMessage({to:this.remote,from:this.peer.id,k:'close'}); setTimeout(() => this.emit('close'), 0); } }
+class FakePeer { constructor(id){ this.id = id || 'c' + Math.random().toString(36).slice(2); this.h = {}; this.conns = {}; this.dead = !!window.__netCut;
     this.bc = new BroadcastChannel('hopplo-test');
-    this.bc.onmessage = e => { const m = e.data; if(m.to !== this.id) return;
-      if(m.k==='conn'){ const c = new FakeConn(this,m.from); this.conns[m.from] = c; this.emit('connection',c); this.bc.postMessage({to:m.from,from:this.id,k:'ack'}); setTimeout(() => c.emit('open'), 0); }
+    this.bc.onmessage = e => { const m = e.data; if(m.to !== this.id || this.dead) return;
+      if(m.k==='conn'){ const c = new FakeConn(this,m.from); c.metadata = m.meta; this.conns[m.from] = c; this.emit('connection',c); this.bc.postMessage({to:m.from,from:this.id,k:'ack'}); setTimeout(() => c.emit('open'), 0); }
       else if(m.k==='ack'){ this.conns[m.from] && this.conns[m.from].emit('open'); }
       else if(m.k==='data'){ this.conns[m.from] && this.conns[m.from].emit('data', m.d); }
-      else if(m.k==='close'){ const c = this.conns[m.from]; if(c){ c.open = false; c.emit('close'); } } };
-    setTimeout(() => this.emit('open', this.id), 10); }
+      else if(m.k==='close'){ const c = this.conns[m.from]; if(c && c.open){ c.open = false; c.emit('close'); } } };
+    if(!this.dead) setTimeout(() => this.emit('open', this.id), 10); }
   on(ev,f){ (this.h[ev] = this.h[ev] || []).push(f); } emit(ev,a){ (this.h[ev] || []).forEach(f => f(a)); }
-  connect(id){ const c = new FakeConn(this,id); this.conns[id] = c; this.bc.postMessage({to:id,from:this.id,k:'conn'}); return c; }
+  connect(id,o){ const c = new FakeConn(this,id); this.conns[id] = c; if(!this.dead) this.bc.postMessage({to:id,from:this.id,k:'conn',meta:o && o.metadata}); return c; }
   reconnect(){} destroy(){ for(const k in this.conns) this.conns[k].close(); this.bc.close(); } }
 const mkPeer = id => useBC ? new FakePeer(id) : (id ? new Peer(id, {debug:0}) : new Peer({debug:0}));
 const ROOM = 'hopplo-r2-';
@@ -1609,12 +1640,14 @@ const NOCONN = onGithub ? 'Verbindung nicht möglich. Prüf dein Internet und ve
 let netTimer = 0;
 function netFail(msg){ clearTimeout(netTimer); closeNet(); state = 'menu'; show('onlineOv'); onMsg(msg, true); }
 function onMsg(t, err){ const elm = $('onMsg'); elm.textContent = t; elm.className = err ? 'err' : ''; }
-function closeNet(){
-  const p = net.peer; net.peer = null; net.role = 'off'; net.conns.clear(); net.hostConn = null; net.myId = 0; net.ids = [0]; ghosts.clear(); net.lob = null; net.ksel = null; net.names = {}; net.votes = {}; net.ping = {}; net.pingAll = {}; kart.sess = null; $('chatLog').innerHTML = '';
-  try { if(p) p.destroy(); } catch(e) {}
+function closeNet(late){
+  const p = net.peer; net.peer = null; net.role = 'off'; net.conns.clear(); net.hostConn = null; net.myId = 0; net.ids = [0]; ghosts.clear(); net.lob = null; net.ksel = null; net.kcos = null; net.names = {}; net.votes = {}; net.ping = {}; net.pingAll = {}; net.lost = {}; net.cid = ''; net.lastRx = 0; if(net.rc){ clearTimeout(net.rc.timer); net.rc = null; } rcBanner(false); kart.sess = null; $('chatLog').innerHTML = '';
+  if(p){ if(late) setTimeout(() => { try { p.destroy(); } catch(e) {} }, 220); else { try { p.destroy(); } catch(e) {} } }
 }
 function leaveNet(msg, toOnline){
-  clearTimeout(netTimer); closeNet(); toMenu(!!msg);
+  const wasClient = net.role === 'client', wasHost = net.role === 'host';
+  if(wasClient) send({t:'bye'}); if(wasHost) broadcast({t:'end'});   /* tell the others: no reconnecting, the room is gone */
+  clearTimeout(netTimer); closeNet(wasClient || wasHost); toMenu(!!msg);
   if(toOnline){ show('onlineOv'); onMsg(msg || '', true); }
   else if(msg){ $('menuMsg').textContent = msg; $('menuMsg').hidden = false; }
 }
@@ -1630,23 +1663,42 @@ async function hostRoom(){
   peer.on('open', () => { if(net.peer!==peer) return; clearTimeout(netTimer); net.role = 'host'; net.code = code; net.myId = 0; net.ids = [0]; showLobby(); });
   peer.on('connection', conn => {
     const onOpen = () => {
-      const id = [1,2,3].find(i => !net.conns.has(i));
+      const meta = (conn.metadata && typeof conn.metadata === 'object') ? conn.metadata : {}, cid = typeof meta.cid === 'string' ? meta.cid.slice(0, 24) : '';
+      conn._cid = cid;
+      let id, rejoin = false;
+      const lostId = cid ? Object.keys(net.lost).map(Number).find(i => net.lost[i].cid === cid) : undefined;
+      const stale = cid ? [...net.conns].find(([i, c]) => c._cid === cid) : null;
+      if(lostId !== undefined && !net.conns.has(lostId)){ id = lostId; rejoin = true; }
+      else if(stale){ id = stale[0]; rejoin = true; const oc = stale[1]; oc._drop = null; net.conns.delete(id); try { oc.close(); } catch(e) {} }
+      else {
+        id = [1,2,3].find(i => !net.conns.has(i) && !net.lost[i]);
+        if(id === undefined) id = Object.keys(net.lost).map(Number).filter(i => !net.conns.has(i)).sort((a, b) => net.lost[a].until - net.lost[b].until)[0];
+      }
       if(id === undefined){ try { conn.send({t:'full'}); } catch(e) {} setTimeout(() => { try { conn.close(); } catch(e) {} }, 400); return; }
-      conn._id = id; net.conns.set(id, conn);
+      delete net.lost[id];
+      conn._id = id; conn._rx = performance.now(); conn._drop = drop; net.conns.set(id, conn);
       net.ids = [0, ...net.conns.keys()].sort();
-      conn.send({t:'wel', id, ids:net.ids, playing: state==='play' || state==='win', won: state==='win', level:curLevel, tiles:tileLog, gm:gemMask, lob:lobState(), esc: E.on && state==='esc' ? {ch:E.ch, seed:E.seed, st:E.st} : null});
+      let kin = null, kres = null;
+      if(rejoin && kart.on && kart.tr && (meta.rid | 0) === (kart.rid | 0) && kart.karts.some(q => q.id === id)){ kUndrop(id); kin = {rid:kart.rid}; if(kart.res) kres = kart.lastRes || null; }
+      conn.send({t:'wel', id, ids:net.ids, playing: state==='play' || state==='win', won: state==='win', level:curLevel, tiles:tileLog, gm:gemMask, lob:lobState(), esc: E.on && state==='esc' ? {ch:E.ch, seed:E.seed, st:E.st} : null, rejoin, kart:kin, kres});
+      if(rejoin) toast(pName(id) + ' ist wieder da.');
       broadcast(lobState(), id); if(E.on) eJoined(id);
       if(!$('lobbyOv').hidden) showLobby();
     };
     const drop = () => {
       if(conn._id === undefined || net.conns.get(conn._id) !== conn) return;
-      net.conns.delete(conn._id); ghosts.delete(conn._id); if(kart.on) kDrop(conn._id); if(E.on) eDrop(conn._id);
-      if(net.names) delete net.names[conn._id]; delete net.votes[conn._id]; if(net.ksel) delete net.ksel[conn._id];
+      const id = conn._id, inGame = kart.on || E.on || state === 'play' || state === 'win' || state === 'esc' || state === 'kart' || state === 'kres';
+      net.conns.delete(id); ghosts.delete(id); if(kart.on) kDrop(id); if(E.on) eDrop(id);
+      if(!conn._bye && conn._cid && inGame){
+        net.lost[id] = {cid:conn._cid, until:Date.now() + net.hb.keep, name:cleanName((net.names || {})[id])};
+        toast(pName(id) + ': Verbindung weg. Der Platz bleibt kurz reserviert.', 3200);
+      } else { if(net.names) delete net.names[id]; if(net.ksel) delete net.ksel[id]; if(net.kcos) delete net.kcos[id]; }
+      delete net.votes[id];
       net.ids = [0, ...net.conns.keys()].sort(); broadcast(lobState());
       if(!$('lobbyOv').hidden) showLobby();
     };
-    conn.on('data', m => { if(conn._id !== undefined) hostMsg(conn._id, m); });
-    conn.on('close', drop); conn.on('error', drop);
+    conn.on('data', m => { conn._rx = performance.now(); if(conn._id === undefined) return; if(m && m.t === 'bye'){ conn._bye = true; drop(); try { conn.close(); } catch(e) {} return; } hostMsg(conn._id, m); });
+    conn.on('close', () => drop()); conn.on('error', () => drop());
     if(conn.open) onOpen(); else conn.on('open', onOpen);
   });
   peer.on('disconnected', () => { try { if(net.peer===peer) peer.reconnect(); } catch(e) {} });
@@ -1668,11 +1720,8 @@ async function joinRoom(){
   netTimer = setTimeout(() => { if(net.peer===peer && net.role==='off') netFail('Raum nicht gefunden. Stimmt der Code und ist der Host noch im Raum?'); }, 12000);
   peer.on('open', () => {
     if(net.peer !== peer) return;
-    const conn = peer.connect(ROOM + code, {reliable:true, serialization:'json'});
-    net.hostConn = conn;
-    conn.on('open', () => clearTimeout(netTimer));
-    conn.on('data', clientMsg);
-    conn.on('close', () => { if(net.peer===peer && net.role==='client') leaveNet('Verbindung zum Host verloren.'); });
+    net.cid = net.cid || ('c' + Math.random().toString(36).slice(2, 12));
+    wireClient(peer, peer.connect(ROOM + code, {reliable:true, serialization:'json', metadata:{cid:net.cid, rid:0}}));
   });
   peer.on('error', err => {
     if(net.peer !== peer) return;
@@ -1681,9 +1730,10 @@ async function joinRoom(){
   });
 }
 function lobState(){
-  const names = {}, sel = {}, ns = net.names || {}, ks = net.ksel || {};
-  net.ids.forEach(i => { names[i] = i === net.myId ? save.name : (ns[i] || ''); sel[i] = i === 0 ? save.ksel[0] : (ks[i] || [i,i]); });
-  return {t:'lob', ids:net.ids, game:lobbyGame, track:kart.sel < KTRACKS.length ? kart.sel : 0, cls:kart.cls, level:selLevel, ech:E.sel, names, votes:net.votes || {}, sel};
+  const names = {}, sel = {}, cos = {}, ns = net.names || {}, ks = net.ksel || {}, kc = net.kcos || {};
+  for(const i in (net.lost || {})) names[i] = net.lost[i].name;
+  net.ids.forEach(i => { names[i] = i === net.myId ? save.name : (ns[i] || ''); sel[i] = i === 0 ? save.ksel[0] : (ks[i] || [i,i]); cos[i] = i === 0 ? kCos(0) : (kc[i] || [-1,-1]); });
+  return {t:'lob', ids:net.ids, game:lobbyGame, track:kart.sel < KTRACKS.length ? kart.sel : 0, cls:kart.cls, level:selLevel, ech:E.sel, names, votes:net.votes || {}, sel, cos, vr:kart.vr|0, wx:kart.wx|0};
 }
 function showLobby(){
   state = 'menu'; show('lobbyOv');
@@ -1691,9 +1741,10 @@ function showLobby(){
   const host = net.role === 'host';
   const lb = host ? lobState() : (net.lob || {}), gm = host ? lobbyGame : (lb.game || lobbyGame), kartLob = gm === 'kart';
   const ec = Math.max(0, Math.min(ECH.length-1, lb.ech|0)), kt = Math.max(0, Math.min(KTRACKS.length-1, lb.track|0));
-  const what = lb.game==='esc' ? `Escape-Insel · Kapitel ${ec+1} · ${ECH[ec].name}` : lb.game==='kart' ? `Affenrennen · ${KTRACKS[kt].name} · Tempo ${KCLS[Math.max(0,Math.min(2,lb.cls|0))][0]}` : lb.level ? `Abenteuer · ${lvlName(lb.level)}` : '';
-  $('lobbyInfo').textContent = host ? (kartLob ? 'Gib den Code weiter. Die Crew stimmt über die Strecke ab, du entscheidest.' : 'Gib den Code an deine Crew, dann drück Start.') : kartLob ? 'Tipp auf eine Strecke, um abzustimmen. Der Host startet.' : (what ? what + '. ' : '') + 'Der Host startet das Spiel.';
+  const what = lb.game==='esc' ? `Escape-Insel · Kapitel ${ec+1} · ${ECH[ec].name}` : lb.game==='kart' ? `Affenrennen · ${KTRACKS[kt].name}${(lb.vr|0) ? ' (' + KVR[Math.max(0,Math.min(3,lb.vr|0))] + ')' : ''}${(lb.wx|0) ? ' · ' + KWX[Math.max(0,Math.min(2,lb.wx|0))] : ''} · Tempo ${KCLS[Math.max(0,Math.min(2,lb.cls|0))][0]}` : lb.level ? `Abenteuer · ${lvlName(lb.level)}` : '';
+  $('lobbyInfo').textContent = host ? (kartLob ? 'Gib den Code weiter. Die Crew stimmt über die Strecke ab, du entscheidest.' : 'Gib den Code an deine Crew, dann drück Start.') : kartLob ? 'Tipp auf eine Strecke, um abzustimmen. Der Host startet.' + (((lb.vr|0) || (lb.wx|0)) ? ' Gefahren wird: ' + [(lb.vr|0) ? KVR[Math.max(0,Math.min(3,lb.vr|0))] : '', (lb.wx|0) ? KWX[Math.max(0,Math.min(2,lb.wx|0))] : ''].filter(Boolean).join(' · ') + '.' : '') : (what ? what + '. ' : '') + 'Der Host startet das Spiel.';
   $('startBtn').hidden = !host; $('gameBtn').hidden = !host; $('trkBtn').hidden = !host || kartLob; $('tmpBtn').hidden = !host || !kartLob;
+  $('lvrBtn').hidden = $('lwxBtn').hidden = !host || !kartLob; $('lvrBtn').textContent = 'Strecke: ' + KVR[kart.vr|0]; $('lwxBtn').textContent = 'Wetter: ' + KWX[kart.wx|0];
   $('gameBtn').textContent = 'Spiel: ' + (lobbyGame==='esc' ? 'Escape-Insel' : lobbyGame==='kart' ? 'Affenrennen' : 'Abenteuer');
   $('trkBtn').textContent = lobbyGame==='esc' ? `Kapitel ${E.sel+1}: ${ECH[E.sel].name}` : lvlName(selLevel);
   $('tmpBtn').textContent = 'Tempo: ' + KCLS[kart.cls][0];
@@ -1709,7 +1760,7 @@ function showLobby(){
 /* ================= Win / flow ================= */
 let newHat = '';
 function finishLevel(){
-  recLevelTime(); const before = totalGems();
+  recLevelTime(); if(LSRC){ lsrcDone(); return; } const before = totalGems();
   if(curLevel < MAXLVL && curLevel+1 > save.max) save.max = curLevel+1;
   save.gems[curLevel] = (save.gems[curLevel] || 0) | gemMask;
   const after = totalGems(); newHat = '';
@@ -1725,8 +1776,8 @@ function authWin(by){
 }
 const fmt = s => String(Math.floor(s/60)).padStart(2,'0') + ':' + String(s%60).padStart(2,'0');
 function showWin(by){
-  const fin = curLevel >= MAXLVL;
-  $('winTitle').textContent = fin ? 'ALLE 50 GESCHAFFT!' : 'LEVEL GESCHAFFT!';
+  const fin = !LSRC && curLevel >= MAXLVL;
+  $('winTitle').textContent = LSRC ? (LSRC.kind === 'daily' ? 'TAGESLEVEL GESCHAFFT!' : 'LEVEL GESCHAFFT!') : fin ? 'ALLE 50 GESCHAFFT!' : 'LEVEL GESCHAFFT!';
   const who = mode==='solo' ? '' : `${pName(by)} hat den Schatz geholt. `;
   $('winText').textContent = `${who}${lvlName(curLevel)} in ${fmtTk(runT)}. Edelsteine: ${'◆'.repeat(bits(gemMask))}${'◇'.repeat(3-bits(gemMask))}`;
   const rows = players.map(p => [p.id,p.coins,p.deaths]);
@@ -1734,15 +1785,15 @@ function showWin(by){
   rows.sort((a,b) => a[0]-b[0]);
   $('stats').innerHTML = '<span></span><span>Münzen</span><span>Stürze</span>' + rows.map(r => `<b style="color:${PCOL[r[0]%4]}">${escH(pName(r[0]))}</b><span>${r[1]}</span><span>${r[2]}</span>`).join('');
   $('winExtra').textContent = (runMsg ? runMsg + ' ' : '') + (newHat ? `Neuer Hut freigeschaltet: ${newHat}! ` : '') + (!isAuth() ? 'Warte auf den Host …' : '');
-  $('nextBtn').hidden = fin || !isAuth(); $('againBtn').hidden = !isAuth();
+  $('nextBtn').hidden = fin || !isAuth() || !!LSRC; $('againBtn').hidden = !isAuth();
   show('winOv');
 }
 function goLevel(n){
-  selLevel = n;
+  if(!LSRC) selLevel = n;
   if(net.role==='host') broadcast({t:'go', level:n});
   startLevel(n, mode);
 }
-const OVS = ['hubOv','menu','levelsOv','helpOv','infoOv','onlineOv','lobbyOv','pauseOv','winOv','kartOv','kresOv','escOv','ewinOv','tracksOv','profOv'];
+const OVS = ['hubOv','menu','levelsOv','helpOv','infoOv','onlineOv','lobbyOv','pauseOv','winOv','kartOv','kresOv','escOv','ewinOv','tracksOv','profOv','shopOv'];
 function show(id){
   OVS.forEach(o => { $(o).hidden = o !== id; });
   $('pauseBtn').hidden = !inGame();
@@ -1769,9 +1820,10 @@ function updMenu(){
   $('hatBtn').textContent = 'Hut: ' + HATS[save.hat][0];
   const nx = HATS.find(h => h[1] > tg);
   $('gemTotal').textContent = `◆ ${tg}/150` + (nx ? ` · ${nx[0]} ab ${nx[1]}` : '');
+  updDay();
 }
 function toMenu(hub){
-  state = 'menu'; mode = 'solo'; players = []; ghosts.clear(); kart.on = false; E.on = false; eDlg(null);
+  state = 'menu'; mode = 'solo'; LSRC = null; players = []; ghosts.clear(); kart.on = false; E.on = false; eDlg(null);
   selLevel = Math.max(1, Math.min(save.max, selLevel));
   loadLevel(selLevel); enemies.forEach(e => e.active = true);
   $('menuMsg').hidden = true; updMenu(); if(hub) show('hubOv'); else goHome(curGame);
@@ -2172,9 +2224,10 @@ function kTile(ti){
     for(const ox of [-256,0,256]) for(const oy of [-256,0,256]){ if(x+ox < -50 || x+ox > 306 || y+oy < -50 || y+oy > 306) continue; el(g,x+ox,y+oy,rx,ry); g.fill(); } }
   g.globalAlpha = 1; p = ctx.createPattern(c,'repeat'); kTiles.set(ti,p); return p;
 }
-function kBuild(ti){
-  if(kart.built && kart.built.ti === ti) return kart.built;
-  const T0 = KTRACKS[ti], th = KTH[T0.th], P = T0.p, n = P.length, den = [], w = T0.w;
+function kBuild(ti,vr){
+  vr = (vr === undefined ? kart.vr : vr) | 0;
+  if(kart.built && kart.built.ti === ti && kart.built.vr === vr) return kart.built;
+  const T0 = KTRACKS[ti], th = KTH[T0.th], P = kVarPts(T0.p, vr), n = P.length, den = [], w = T0.w;
   const cr = (a,b,c,d,t) => 0.5*(2*b + (c-a)*t + (2*a-5*b+4*c-d)*t*t + (3*b-a-3*c+d)*t*t*t);
   for(let i=0;i<n;i++){ const a = P[(i+n-1)%n], b = P[i], c = P[(i+1)%n], d = P[(i+2)%n];
     for(let s=0;s<48;s++){ const t = s/48; den.push([cr(a[0],b[0],c[0],d[0],t)*100, cr(a[1],b[1],c[1],d[1],t)*100]); } }
@@ -2209,27 +2262,28 @@ function kBuild(ti){
   const boxes = [];
   for(const f of [0.07,0.23,0.4,0.57,0.73,0.9]){ const i = Math.floor(f*N); for(const q of [-1.5,-0.5,0.5,1.5]){ const lat = q*w/5; boxes.push({x:sx[i]+nx[i]*lat, y:sy[i]+ny[i]*lat}); } }
   const al = w/2 + 10, arch = [[sx[0]-nx[0]*al, sy[0]-ny[0]*al],[sx[0]+nx[0]*al, sy[0]+ny[0]*al]];
-  return kart.built = { ti, N, sx, sy, sa, nx, ny, kap, w, th:T0.th, name:T0.name, pat:kTile(T0.th), sAt, dist2, sc, feat, pads, boxes, arch, grip:th.grip || 1, len:L,
+  return kart.built = { ti, vr, vname:T0.name + (vr ? ' · ' + KVR[vr] : ''), coins:kCoinPts(sx,sy,nx,ny,N,w), N, sx, sy, sa, nx, ny, kap, w, th:T0.th, name:T0.name, pat:kTile(T0.th), sAt, dist2, sc, feat, pads, boxes, arch, grip:th.grip || 1, len:L,
     x0, y0, x1, y1, bx, by, bw, bh, cl:new Float32Array(N), cf:new Float32Array(N), vis:new Uint8Array(N) };
 }
 
 /* ----- race setup ----- */
 function kStart(ti,cls,m){
   ensureAudio();
-  const K = kart; E.on = false; curGame = 'kart'; mode = m; K.ti = ti; K.cls = cls; K.top = KCLS[cls][1];
-  const tr = K.tr = kBuild(ti);
+  const K = kart; E.on = false; curGame = 'kart'; mode = m; K.ti = ti; K.cls = cls; K.top = KCLS[cls][1]; K.tt = !!K.ttNext && m==='solo'; K.ttNext = false; K.wxe = K.tt ? 0 : (K.wx | 0);
+  const tr = K.tr = kBuild(ti, K.vr|0);
   const humans = m==='online' ? net.ids.slice() : m==='duo' ? [0,1] : [0], ais = [];
-  for(let i=0;i<8 && ais.length < 8-humans.length;i++) if(!humans.includes(i)) ais.push(i);
+  for(let i=0;i<8 && ais.length < (K.tt ? 0 : 8-humans.length);i++) if(!humans.includes(i)) ais.push(i);
   K.karts = ais.concat(humans).map((id,j) => {
     const i = (((tr.N-6-j*3) % tr.N) + tr.N) % tr.N, lat = (j%2 ? 1 : -1)*tr.w*0.2, a = tr.sa[i], human = humans.includes(id);
     const ctrl = human ? ((m!=='online' || id===net.myId) ? 'local' : 'remote') : (isAuth() ? 'ai' : 'remote');
     const x = tr.sx[i]-Math.sin(a)*lat, y = tr.sy[i]+Math.cos(a)*lat;
-    const cv = human ? (m==='online' ? ((K.osel && K.osel[id]) || [id,id]) : save.ksel[m==='duo' ? id : 0]) : [id*3+2, id*5+1];
-    return {id,human,ctrl,ch:Math.abs(cv[0]|0) % KCHAR.length,veh:Math.abs(cv[1]|0) % KVEH.length,slot:m==='duo' ? id : 0,x,y,a,md:a,ca:a,v:0,w:0,drift:0,dT:0,boost:0,spin:0,star:0,anchor:0,imm:0,hop:0,item:null,roll:0,shield:false,chg:0,hook:0,hookId:-1,ink:0,fl:0,
+    const cv = human ? (m==='online' ? ((K.osel && K.osel[id]) || [id,id]) : save.ksel[m==='duo' ? id : 0]) : [(id*3+2) % KBASE, id*5+1], cs = kCosOf(id,m,human);
+    return {id,human,ctrl,ch:Math.abs(cv[0]|0) % KCHAR.length,veh:Math.abs(cv[1]|0) % KVEH.length,hat:cs[0],pt:cs[1],cn:(human && ctrl==='local' && !K.tt) ? new Uint8Array(tr.coins.length) : null,cc:0,cb:0,cl:0,lapTs:[],lapG:0,slot:m==='duo' ? id : 0,x,y,a,md:a,ca:a,v:0,w:0,drift:0,dT:0,boost:0,spin:0,star:0,anchor:0,imm:0,hop:0,item:null,roll:0,shield:false,chg:0,hook:0,hookId:-1,ink:0,fl:0,
             lap:0,idx:i,prog:i-tr.N,rank:j+1,finished:false,finT:0,lane:((j%3)-1)*0.3,laneT:0,skill:human ? 1 : 0.9+((id*37)%10)/100+cls*0.012,rb:1,wrong:0,pre:0,ownT:0,slip:0,lost:0,resc:0,off:false,sk:null,nx:x,ny:y,na:a};
   });
   K.views = K.karts.filter(k => k.ctrl==='local');
-  K.skids = []; K.objs = []; K.pt = []; K.stat = {}; K.statDone = false; K.boomed = new Set(); K.sq = 0; K.lastQ = -1; K.hostRank = null; K.lastKs = performance.now(); K.skipped = 0; K.boxes = tr.boxes.map(b => ({x:b.x,y:b.y,t:0})); K.tick = 0; K.cd = 230; K.t = 0; K.res = null; K.firstFin = 0; K.hidden.clear(); K.lastLap = 0;
+  K.gr = null; K.ghost = null; if(K.tt){ const p0 = K.karts[0]; K.gr = {x:[p0.x], y:[p0.y], a:[p0.a]}; K.ghost = ghInit(); }
+  K.skids = []; K.objs = []; K.pt = []; K.stat = {}; K.statDone = false; K.boomed = new Set(); K.sq = 0; K.lastQ = -1; K.hostRank = null; K.lastKs = performance.now(); K.skipped = 0; K.boxes = K.tt ? [] : tr.boxes.map(b => ({x:b.x,y:b.y,t:0})); K.tick = 0; K.cd = 230; K.t = 0; K.res = null; K.lastRes = null; K.firstFin = 0; K.hidden.clear(); K.lastLap = 0;
   nextId = 1000; state = 'kart'; K.on = true; show(null);
   if(document.activeElement && document.activeElement.blur) document.activeElement.blur();
   last = performance.now(); acc = 0;
@@ -2387,6 +2441,7 @@ function kPhys(k,inp){
   k.slip = sl ? k.slip+1 : Math.max(0,k.slip-3); if(k.slip > 40) top *= 1.07;
   if(k.star > 0) top *= 1.22; else if(s===0 && k.boost <= 0) top *= 0.5;
   if(k.boost > 0) top *= 1.42;
+  if(k.cb > 0){ k.cb--; top *= 1.05; }
   if(k.anchor > 0) top *= 0.5;
   if(k.calm > 0) top *= 0.58;
   if(k.ink > 0){ k.ink--; if(k.ctrl==='ai') top *= 0.88; }
@@ -2407,7 +2462,7 @@ function kPhys(k,inp){
     if(inp.use && !k.uPrev && k.item && k.roll <= 0) kUse(k);
   }
   k.dPrev = inp.drift; k.uPrev = inp.use;
-  k.md += angd(k.a - kDv(k)*kdr().sl, k.md)*0.3*tr.grip;
+  k.md += angd(k.a - kDv(k)*kdr().sl, k.md)*0.3*tr.grip*(K.wxe===1 ? 0.8 : 1);
   k.x += Math.cos(k.md)*k.v; k.y += Math.sin(k.md)*k.v;
   if(k.x < tr.bx+20 || k.x > tr.bx+tr.bw-20 || k.y < tr.by+20 || k.y > tr.by+tr.bh-20){ k.x = Math.max(tr.bx+20,Math.min(tr.bx+tr.bw-20,k.x)); k.y = Math.max(tr.by+20,Math.min(tr.by+tr.bh-20,k.y)); k.v *= 0.9; }
   const skid = k.drift || k.spin > 0 || (inp.brake && k.v > 1.5);
@@ -2449,7 +2504,7 @@ function kStep(){
     const inp = (k.ctrl==='ai' || k.finished) ? kAI(k) : kInput(k.slot);
     if(!racing){ k.pre = inp.drift ? k.pre+1 : 0; k.dPrev = inp.drift; k.uPrev = inp.use; continue; }
     if(K.cd===40 && k.human && k.pre > 0 && k.pre <= 20){ k.boost = 58; sfx.spring(); }
-    kPhys(k,inp); kProg(k);
+    kPhys(k,inp); kProg(k); if(k.cn) kCoins(k); if(K.tt && k.human) kTT(k);
     if(inp.reset && !k.rPrev) kRescue(k); k.rPrev = inp.reset;
     if(!k.finished && k.lap > KLAPS){ k.finished = true; k.finT = K.t;
       if(k.human){ if(!K.firstFin) K.firstFin = K.t; sfx.win(); kConfetti(k); if(net.role==='client') send({t:'kf',time:K.t}); } }
@@ -2486,6 +2541,7 @@ function kStep(){
         if(o.type==='keg') kBoom(o); else if(kHit(k) && o.owner !== k.id) kCredit(o.owner); if(isAuth()) o.dead = true; else { K.hidden.set(o.id,1); send({t:'kx',id:o.id}); } break; } } }
   K.objs = K.objs.filter(o => !o.dead && !K.hidden.has(o.id));
   for(const k of K.karts) kFxKart(k), kLapStat(k);
+  if(K.ghost) ghStep();
   kPartStep();
   /* Remote karts are shown where they were a moment ago, so their progress is moved on by the time since their last update */
   const kNow = performance.now(), kSpp = tr.len / tr.N, kAdv = k => (k.ctrl==='remote' && k.kAt && !k.finished) ? Math.min(0.4, (kNow - k.kAt)/1000) * Math.max(0,k.v) * 60 / kSpp : 0;
@@ -2553,17 +2609,18 @@ function kClientMsg(m){
   else if(m.t==='klob'){ kart.on = false; kEngine(0,false); showLobby(); }
   else if(m.t==='kres' && Array.isArray(m.res)) kShowRes(m.res, m.tot && typeof m.tot==='object' ? m.tot : null, m.stats && typeof m.stats==='object' ? m.stats : null);
 }
-function kDrop(id){ const k = kart.karts.find(q => q.id===id); if(k){ k.ctrl = 'ai'; k.human = false; } }
+function kDrop(id){ const k = kart.karts.find(q => q.id===id); if(k){ k.ctrl = 'ai'; k.human = false; k.away = true; } }
 
 /* ----- results ----- */
-function kName(id){ const k = kart.karts.find(q => q.id===id); return k && k.human ? (mode==='solo' ? (save.name || 'Du') : pName(id) + (mode==='online' && id===net.myId ? ' (du)' : '')) : KNAME[id]; }
+function kName(id){ const k = kart.karts.find(q => q.id===id); return k && (k.human || k.away) ? (mode==='solo' ? (save.name || 'Du') : pName(id) + (mode==='online' && id===net.myId ? ' (du)' : '')) : KNAME[id]; }
 function kEnd(ord){
+  if(kart.tt){ kEndTT(); return; }
   const K = kart, N = K.tr.N;
   const res = ord.map(k => [k.id, k.finished ? k.finT : Math.round(K.t + Math.max(1, KLAPS*N - k.prog)*8/(K.top*0.93))]);
   let tot = null;
   if(mode==='online'){ tot = K.sess = K.sess || {}; res.forEach((r,i) => { tot[r[0]] = (tot[r[0]] || 0) + KPTS[i]; }); }
   const stats = kStatPack();
-  if(net.role==='host') broadcast({t:'kres',res,tot,stats});
+  kart.lastRes = {res,tot,stats}; if(net.role==='host') broadcast({t:'kres',res,tot,stats});
   kShowRes(res,tot,stats);
 }
 function kTable(rows,cols){ const elm = $('kresTab'); elm.style.gridTemplateColumns = `repeat(${cols},auto)`; elm.innerHTML = rows.join(''); }
@@ -2572,8 +2629,9 @@ function kShowRes(res,tot,stats){
   const cup = K.cup, mine = K.views.filter(k => k.human).map(k => k.id);
   if(cup) res.forEach((r,i) => { cup.pts[r[0]] = (cup.pts[r[0]] || 0) + KPTS[i]; });
   let extra = '';
-  if(mode==='solo'){ const r = res.find(q => q[0]===mine[0]); if(r && r[1] > 0 && (!save.kt[K.ti] || r[1] < save.kt[K.ti])){ save.kt[K.ti] = r[1]; persist(); extra = 'Neue Bestzeit! '; } }
-  $('kresTitle').textContent = K.tr.name.toUpperCase();
+  if(mode==='solo'){ const r = res.find(q => q[0]===mine[0]), bk = kBestKey(K.ti); if(r && r[1] > 0 && (!save.kt[bk] || r[1] < save.kt[bk])){ save.kt[bk] = r[1]; persist(); extra = 'Neue Bestzeit! '; } }
+  extra += kCoinNote();
+  $('kresTitle').textContent = (K.tr.vname || K.tr.name).toUpperCase();
   kTable(res.map((r,i) => `<span>${i+1}.</span><b style="color:${KCOL[r[0]]}">${escH(kName(r[0]))}</b><span>${r[1] > 0 ? fmtT(r[1]) : '–'}</span>` + (cup ? `<span>+${KPTS[i]}</span>` : tot ? `<span>${tot[r[0]] | 0} P</span>` : '')), cup || tot ? 4 : 3);
   $('kresPod').hidden = false; kPodSet(res.map(r => r[0]), false); $('kresStat').textContent = kStatLine(stats);
   if(!K.statDone){ K.statDone = true; const pl = res.findIndex(r => r[0] === mine[0]); stat('kr'); if(pl === 0) stat('kw'); if(pl >= 0 && pl < 3) stat('kp'); if(mode==='online') stat('ko');
@@ -2676,18 +2734,19 @@ function kIcon(t,x,y,s,n){
 }
 function kParts(L,k,proj,ca,own){
   const K = kart, V = KVEH[k.veh] || KVEH[0], C = KCHAR[k.ch] || KCHAR[0];
+  const PT = (k.pt >= 0 && KPAINT[k.pt]) || null, hullOf = si => PT ? (PT.rb ? 'hsl(' + ((K.tick*3 + si*34) % 360) + ',80%,58%)' : PT.hull) : V.hull, lineC = PT ? PT.line : V.line;
   const ha = k.a + kDv(k)*kdr().vis + (k.spin > 0 ? K.tick*0.45 : 0), c = Math.cos(ha), s = Math.sin(ha), hz = (k.hop > 0 ? Math.sin(k.hop/10*Math.PI)*3 : 0) + (k.spin > 0 || k.v < 0.4 ? 0 : Math.sin(K.tick*0.55+k.id*1.7)*(k.off ? 0.6 : 0.22)*Math.min(1,k.v/2.5));
   const p0 = proj(k.x,k.y,0); if(!p0 || p0[3] > 900 || (!own && p0[3] < 30)) return;
   const P = (lx,ly,lz) => proj(k.x+lx*c-ly*s, k.y+lx*s+ly*c, lz+hz) || p0;
   const rel = angd(ha,ca), ac = Math.abs(Math.cos(rel)), as = Math.abs(Math.sin(rel)), col = KCOL[k.id], lw = z => Math.max(1,z*0.3), back = Math.cos(rel) > 0.4;
   L.push([p0[3]+30, () => { ctx.globalAlpha = 0.28; el(ctx,p0[0],p0[1],p0[2]*(5.6*ac+9*as),p0[2]*1.7); ctx.fillStyle = '#000'; ctx.fill(); ctx.globalAlpha = 1; }]);
-  if(p0[2] < 1.4){ L.push([p0[3], () => { const z = p0[2]; ctx.fillStyle = V.hull; ctx.fillRect(p0[0]-5*z,p0[1]-6*z,10*z,5*z); ctx.fillStyle = col; ctx.fillRect(p0[0]-4*z,p0[1]-16*z,8*z,8*z); }]); return; }
+  if(p0[2] < 1.4){ L.push([p0[3], () => { const z = p0[2]; ctx.fillStyle = hullOf(0); ctx.fillRect(p0[0]-5*z,p0[1]-6*z,10*z,5*z); ctx.fillStyle = col; ctx.fillRect(p0[0]-4*z,p0[1]-16*z,8*z,8*z); }]); return; }
   if(k.star > 0) L.push([p0[3]+12, () => { const z = p0[2], g = ctx.createRadialGradient(p0[0],p0[1]-8*z,z,p0[0],p0[1]-8*z,18*z); g.addColorStop(0,'rgba(255,220,90,.75)'); g.addColorStop(1,'rgba(255,220,90,0)'); ctx.fillStyle = g; ctx.fillRect(p0[0]-18*z,p0[1]-26*z,36*z,36*z); }]);
   /* body of the vehicle: slices along its length */
   V.slabs.forEach(([lx,r,z0,z1],si) => { const p = P(lx,0,z0), pt = P(lx,0,z1), w = p[2]*(2*r*ac + 2.7*as);
     L.push([p[3], () => { const x0 = p[0]-w/2, z = p[2];
-      ctx.beginPath(); ctx.moveTo(x0,pt[1]); ctx.lineTo(x0+w,pt[1]); ctx.quadraticCurveTo(x0+w,p[1],x0+w*0.74,p[1]); ctx.lineTo(x0+w*0.26,p[1]); ctx.quadraticCurveTo(x0,p[1],x0,pt[1]); ctx.closePath(); fs(ctx,V.hull,V.line,lw(z));
-      if(V.rim){ rr(ctx,x0,pt[1],w,z*1.2,z*0.5); fs(ctx,V.rim==='p' ? col : V.rim,V.line,lw(z)); }
+      ctx.beginPath(); ctx.moveTo(x0,pt[1]); ctx.lineTo(x0+w,pt[1]); ctx.quadraticCurveTo(x0+w,p[1],x0+w*0.74,p[1]); ctx.lineTo(x0+w*0.26,p[1]); ctx.quadraticCurveTo(x0,p[1],x0,pt[1]); ctx.closePath(); fs(ctx,hullOf(si),lineC,lw(z));
+      if(V.rim){ rr(ctx,x0,pt[1],w,z*1.2,z*0.5); fs(ctx,V.rim==='p' ? col : V.rim,lineC,lw(z)); }
       if(V.hoop && si%2===0){ ctx.fillStyle = '#55556e'; ctx.fillRect(x0+w*0.05,pt[1]+(p[1]-pt[1])*0.45,w*0.9,z*0.9); }
       if(si===0 && back){
         if(V.win){ ctx.fillStyle = '#ffe9a0'; for(const sx of [-0.46,0.14]){ rr(ctx,p[0]+sx*w*0.5,pt[1]+z*2,w*0.16,z*1.6,z*0.3); ctx.fill(); } }
@@ -2712,9 +2771,10 @@ function kParts(L,k,proj,ca,own){
   const bd = P(sx0,0,7.2+dz), hd = P(sx0,0,hzC), mzl = P(sx0+1.9,0,hzC-0.6), kn = P(sx0-2.6,0,hzC+0.8);
   L.push([bd[3]+0.01, () => { el(ctx,bd[0],bd[1],bd[2]*2.3*B,bd[2]*2.6*B); fs(ctx,C.c,OL,lw(bd[2])); }]);
   if(C.belly){ const bl = P(sx0+1.3,0,7+dz); L.push([bl[3], () => { el(ctx,bl[0],bl[1],bl[2]*1.5,bl[2]*1.9); ctx.fillStyle = C.belly; ctx.fill(); }]); }
-  if(C.ear==='round') for(const ly of [-2.9,2.9]){ const e = P(sx0,ly*B,hzC+0.3); L.push([e[3], () => { el(ctx,e[0],e[1],e[2]*1.15*B); fs(ctx,C.c,OL,lw(e[2])); el(ctx,e[0],e[1],e[2]*0.55*B); ctx.fillStyle = C.f; ctx.fill(); }]); }
+  if(C.ear==='round') for(const ly of [-2.9,2.9]){ const e = P(sx0,ly*B,hzC+0.3); L.push([e[3], () => { el(ctx,e[0],e[1],e[2]*1.15*B); fs(ctx,C.ec || C.c,OL,lw(e[2])); el(ctx,e[0],e[1],e[2]*0.55*B); ctx.fillStyle = C.ec ? '#4a4a62' : C.f; ctx.fill(); }]); }
   else if(C.ear==='point') for(const ly of [-2.2,2.2]){ const e = P(sx0,ly,hzC+2.4); L.push([e[3]+0.03, () => { const z = e[2]; poly(ctx,[e[0]-z*1.2,e[1]+z*1.3,e[0],e[1]-z*1.5,e[0]+z*1.2,e[1]+z*1.3]); fs(ctx,C.c,OL,lw(z)); }]); }
   else if(C.ear==='crest'){ const e = P(sx0-0.4,0,hzC+3.2); L.push([e[3]+0.03, () => { const z = e[2]; for(const [dx,cc] of [[-1.3,'#ffd24a'],[1.3,'#ffd24a'],[0,'#2f7fe0']]){ el(ctx,e[0]+dx*z,e[1]-(dx ? 0 : z*0.7),z*0.8,z*1.5); fs(ctx,cc,OL,lw(z)*0.7); } }]); }
+  else if(C.ear==='ant'){ const b = P(sx0+0.2,0,hzC+2.4), t = P(sx0+0.2,0,hzC+5.2); L.push([t[3], () => { ln(ctx,[b[0],b[1],t[0],t[1]],OL,Math.max(1.5,t[2]*0.9)); ln(ctx,[b[0],b[1],t[0],t[1]],'#6a7390',Math.max(1,t[2]*0.5)); el(ctx,t[0],t[1],t[2]*0.95); fs(ctx,(K.tick>>4)%2 ? '#ff5a5a' : '#ffb0a8',OL,lw(t[2])*0.7); }]); }
   else if(C.ear==='stalk') for(const ly of [-1.7,1.7]){ const b = P(sx0+0.6,ly,hzC+1.6), t = P(sx0+0.6,ly,hzC+4.4), pu = P(sx0+1.4,ly,hzC+4.4);
     L.push([t[3], () => { ln(ctx,[b[0],b[1],t[0],t[1]],C.c,t[2]*0.7); el(ctx,t[0],t[1],t[2]*1.1); fs(ctx,'#fff',OL,lw(t[2])*0.7); }]); L.push([pu[3]-0.02, () => { el(ctx,pu[0],pu[1],pu[2]*0.5); ctx.fillStyle = '#1d1b2e'; ctx.fill(); }]); }
   else if(C.ear==='bulge') for(const ly of [-1.7,1.7]){ const e = P(sx0+0.3,ly,hzC+2.3), pe = P(sx0+1.4,ly,hzC+2.6);
@@ -2722,15 +2782,18 @@ function kParts(L,k,proj,ca,own){
   L.push([kn[3], () => { el(ctx,kn[0],kn[1],kn[2]*0.9); fs(ctx,col,OL,lw(kn[2])*0.8); }]);
   L.push([hd[3], () => { el(ctx,hd[0],hd[1],hd[2]*2.7*B); fs(ctx,C.c,OL,lw(hd[2])); }]);
   L.push([hd[3]-0.05, () => { const z = hd[2]*B; ctx.beginPath(); ctx.ellipse(hd[0],hd[1],z*2.72,z*2.72,0,Math.PI*1.08,Math.PI*1.92); ctx.closePath(); fs(ctx,col,OL,lw(hd[2])); }]);
+  if(k.hat >= 0 && KHAT[k.hat]) L.push([hd[3]-0.08, () => { KHAT[k.hat].draw(ctx, hd[0], hd[1], hd[2]*B, col, K.tick); }]);
   L.push([mzl[3], () => { const z = mzl[2], x = mzl[0], y = mzl[1], o = lw(z)*0.7; ctx.strokeStyle = OL; ctx.lineWidth = o;
     if(C.face==='muzzle'){ el(ctx,x,y,z*1.9*B,z*1.5*B); fs(ctx,C.f,OL,o); ctx.beginPath(); ctx.arc(x,y-z*0.1,z*0.9,0.4,2.74); ctx.stroke(); }
     else if(C.face==='beak'){ poly(ctx,[x-z*1.3,y-z*0.5,x+z*1.3,y-z*0.5,x,y+z*1.5]); fs(ctx,'#ffb23a',OL,o); }
     else if(C.face==='smile'){ ctx.beginPath(); ctx.arc(x,y-z*0.3,z*1.3,0.5,2.64); ctx.stroke(); }
     else if(C.face==='skull'){ rr(ctx,x-z*1.3,y+z*0.2,z*2.6,z*1.4,z*0.4); fs(ctx,'#e2dfd0',OL,o); for(const dx of [-0.5,0.5]) ln(ctx,[x+dx*z,y+z*0.3,x+dx*z,y+z*1.5],OL,o); el(ctx,x,y-z*0.4,z*0.35); ctx.fillStyle = OL; ctx.fill(); }
     else if(C.face==='wide'){ el(ctx,x,y+z*0.2,z*2.4,z*1.2); fs(ctx,C.f,OL,o); ln(ctx,[x-z*1.8,y+z*0.2,x+z*1.8,y+z*0.2],OL,o); }
+    else if(C.face==='robot'){ rr(ctx,x-z*1.6,y-z*0.1,z*3.2,z*1.6,z*0.3); fs(ctx,'#39405a',OL,o); for(let q=-1;q<=1;q++) ln(ctx,[x+q*z*0.85,y+z*0.15,x+q*z*0.85,y+z*1.25],'#9fe8ff',o*0.8); }
     else if(C.face==='cat'){ el(ctx,x,y+z*0.2,z*1.5,z*1.1); fs(ctx,C.f,OL,o); el(ctx,x,y-z*0.3,z*0.4,z*0.3); ctx.fillStyle = '#ff8fa3'; ctx.fill(); for(const d of [-1,1]){ ln(ctx,[x+d*z*0.9,y+z*0.1,x+d*z*2.8,y-z*0.3],OL,o*0.7); ln(ctx,[x+d*z*0.9,y+z*0.5,x+d*z*2.8,y+z*0.7],OL,o*0.7); } } }]);
   if(C.ear!=='stalk' && C.ear!=='bulge') for(const ly of [-1,1]){ const e = P(sx0+2.3,ly,hzC+0.8);
     L.push([e[3]-0.02, () => { if(C.face==='skull'){ el(ctx,e[0],e[1],e[2]*0.85,e[2]*1.05); ctx.fillStyle = '#2b2233'; ctx.fill(); return; }
+      if(C.patch){ el(ctx,e[0],e[1],e[2]*1.25,e[2]*1.5); ctx.fillStyle = C.patch; ctx.fill(); }
       el(ctx,e[0],e[1],e[2]*0.75,e[2]*0.85); fs(ctx,C.face==='cat' ? '#c9f27a' : '#fff',OL,lw(e[2])*0.6); el(ctx,e[0],e[1],e[2]*0.35,e[2]*(C.face==='cat' ? 0.7 : 0.35)); ctx.fillStyle = '#1d1b2e'; ctx.fill(); }]); }
   /* effects */
   if(k.boost > 0) for(const ly of [-2.2,2.2]){ const f = P(-9.4,ly,3.4), g = P(-12.6,ly,3.2), h = P(-15.6,ly,3);
@@ -2746,11 +2809,11 @@ function kParts(L,k,proj,ca,own){
   { const em = emoGet(k.id); if(em) L.push([p0[3]-3, () => { const z = p0[2]; emoBubble(ctx, em, p0[0], p0[1] - z*(mz+mh+2), Math.max(11, z*4.6)); }]); }
   if(!own && k.human) L.push([p0[3]-1, () => { txt(kName(k.id).replace(' (du)',''), p0[0], p0[1]-p0[2]*(mz+mh+4), Math.max(9,p0[2]*3), col, 'center'); }]);
 }
-function kPreview(cid,sel0,pid){
-  const c = $(cid || 'ktKart'), main = ctx, sel = sel0 || save.ksel[kart.selP], L = [];
+function kPreview(cid,sel0,pid,cos0,ang){
+  const c = (cid && cid.getContext) ? cid : $(cid || 'ktKart'), main = ctx, sel = sel0 || save.ksel[kart.selP], cs = cos0 || kCos(kart.selP), L = [];
   ctx = c.getContext('2d'); ctx.setTransform(1,0,0,1,0,0); ctx.clearRect(0,0,c.width,c.height); ctx.imageSmoothingEnabled = false; ctx.lineJoin = 'round'; ctx.lineCap = 'round';
   try {
-    const k = {id:pid == null ? kart.selP : pid,x:0,y:0,a:performance.now()/1100,drift:0,spin:0,hop:0,star:0,boost:0,anchor:0,shield:false,off:false,v:0,dT:0,human:true,ch:sel[0],veh:sel[1]};
+    const k = {id:pid == null ? kart.selP : pid,x:0,y:0,a:ang != null ? ang : performance.now()/1100,drift:0,spin:0,hop:0,star:0,boost:0,anchor:0,shield:false,off:false,v:0,dT:0,human:true,ch:sel[0],veh:sel[1],hat:cs[0],pt:cs[1]};
     const F = c.height*1.5, H = 13, hy = c.height*0.17;
     kParts(L,k,(wx,wy,wz) => { const fd = wx+40, sc = F/fd; return [c.width/2 + wy*sc, hy + (H-wz)*sc, sc, fd]; },0,true);
     L.sort((a,b) => b[0]-a[0]); for(const s of L) s[1]();
@@ -2815,6 +2878,7 @@ function kView(k,vx,vy,vw,vh){
   strip(-(hw+20),hw+20,th.shoulder);
   strip(-(hw+6),hw+6,th.curb[0],2,0); strip(-(hw+6),hw+6,th.curb[1],2,1);
   strip(-hw,hw,th.road);
+  if(K.wxe===1) strip(-hw,hw,'rgba(70,92,140,.3)');
   if(th.planks) strip(-hw,hw,'rgba(60,37,18,.2)',1,0); else strip(-hw,hw,'rgba(0,0,0,.06)',5,0);
   strip(hw-5.4,hw-2.6,'rgba(255,255,255,.8)'); strip(-(hw-2.6),-(hw-5.4),'rgba(255,255,255,.8)');
   strip(-1.3,1.3,'rgba(255,255,255,.5)',3,0);
@@ -2829,19 +2893,21 @@ function kView(k,vx,vy,vw,vh){
       cam(0,s[0]+px,s[1]+py); cam(1,s[2]+px,s[3]+py); cam(2,s[2]-px,s[3]-py); cam(3,s[0]-px,s[1]-py); emit(4); }
     ctx.fillStyle = 'rgba(20,18,26,.34)'; ctx.fill(); }
   ctx.drawImage(dsky('h'+tr.th,th.haze,null,vw,vh*0.2,true),vx,hy);
+  if(K.wxe===2) kFog(vx,vy,vw,vh,hy,th.haze);
   /* upright things, far to near */
   const proj = (wx,wy,wz) => { const dx = wx-Cx, dy = wy-Cy, fd = dx*fx + dy*fy; if(fd < 3) return null; const sc = F/fd; return [vcx + (dx*rx+dy*ry)*sc, hy + (H-wz)*sc, sc, fd]; };
-  const L = [];
-  for(const o of tr.sc){ const p = proj(o.x,o.y,0); if(!p || p[3] > 1000 || p[0] < vx-vw*0.3 || p[0] > vx+vw*1.3) continue;
+  const L = [], FOGD = K.wxe===2 ? 340 : 800;
+  for(const o of tr.sc){ const p = proj(o.x,o.y,0); if(!p || p[3] > (K.wxe===2 ? FOGD*1.15 : 1000) || p[0] < vx-vw*0.3 || p[0] > vx+vw*1.3) continue;
     L.push([p[3], () => { const c = kSpr(o.k), w = c.lw*o.s*p[2], h = c.lh*o.s*p[2];
       if(p[3] < 420 && K.views.length < 2){ ctx.globalAlpha = 0.2; el(ctx,p[0]+w*0.06,p[1],w*0.32,Math.max(1,w*0.06)); ctx.fillStyle = '#000'; ctx.fill(); ctx.globalAlpha = 1; }
-      if(p[3] > 800) ctx.globalAlpha = (1000-p[3])/200; ctx.drawImage(c,p[0]-w/2,p[1]-h,w,h); ctx.globalAlpha = 1; }]); }
-  K.boxes.forEach((b,i) => { if(b.t > 0) return; const p = proj(b.x,b.y,5.4+Math.sin(K.tick*0.08+i)*1.2); if(!p || p[3] > 800) return;
+      if(K.wxe===2){ const fa = Math.max(0,Math.min(1,1.15-p[3]/FOGD)); if(fa <= 0.02) return; ctx.globalAlpha = fa; } else if(p[3] > 800) ctx.globalAlpha = (1000-p[3])/200; ctx.drawImage(c,p[0]-w/2,p[1]-h,w,h); ctx.globalAlpha = 1; }]); }
+  K.boxes.forEach((b,i) => { if(b.t > 0) return; const p = proj(b.x,b.y,5.4+Math.sin(K.tick*0.08+i)*1.2); if(!p || p[3] > FOGD) return;
     const gp = proj(b.x,b.y,0); if(gp) L.push([gp[3]+0.5, () => { const s = 9*gp[2]; ctx.globalAlpha = 0.3+0.1*Math.sin(K.tick*0.1+i); el(ctx,gp[0],gp[1],s*0.78,s*0.2); ctx.fillStyle = '#ffd84a'; ctx.fill(); ctx.globalAlpha = 1; }]);
     L.push([p[3], () => { const s = 9*p[2], f = 0.35+0.65*Math.abs(Math.cos(K.tick*0.05+i)), w = s*f;
       rr(ctx,p[0]-w/2,p[1]-s/2,w,s,s*0.16); fs(ctx,'#e0a94a',OL,Math.max(1,p[2]*0.4)); if(f > 0.6) txt('?',p[0],p[1]+s*0.02,Math.max(8,Math.round(s*0.31)*2),'#fff7d6','center');
       ctx.fillStyle = '#fff'; for(let q=0;q<2;q++){ const a = K.tick*0.07+i*2+q*3.14, sx = p[0]+Math.cos(a)*s*0.8, sy = p[1]+Math.sin(a*1.3)*s*0.62, z = s*(0.07+0.05*Math.sin(K.tick*0.2+q)); ctx.fillRect(sx-z,sy-z,z*2,z*2); } }]); });
-  for(const o of K.objs){ const ty = o.type, fz = ty==='bird' ? 13+Math.sin(K.tick*0.2+o.id)*1.6 : ty==='fake' ? 5.4+Math.sin(K.tick*0.08+o.id)*1.2 : (ty==='nut' || ty==='ball') ? 3 : 0, p = proj(o.x,o.y,fz); if(!p || p[3] > 800) continue;
+  if(k.cn) kCoinDraw(L,k,proj,FOGD);
+  for(const o of K.objs){ const ty = o.type, fz = ty==='bird' ? 13+Math.sin(K.tick*0.2+o.id)*1.6 : ty==='fake' ? 5.4+Math.sin(K.tick*0.08+o.id)*1.2 : (ty==='nut' || ty==='ball') ? 3 : 0, p = proj(o.x,o.y,fz); if(!p || p[3] > FOGD) continue;
     if(ty==='bird' || ty==='fake'){ const g = proj(o.x,o.y,0); if(g) L.push([g[3]+20, () => { ctx.globalAlpha = 0.25; el(ctx,g[0],g[1],g[2]*5,g[2]*1.6); ctx.fillStyle = '#000'; ctx.fill(); ctx.globalAlpha = 1; }]); }
     L.push([p[3], () => { if(ty==='nut') kIcon('nut',p[0],p[1],7*p[2]); else if(ty==='ball') kIcon('ball',p[0],p[1],8*p[2]);
       else if(ty==='keg'){ const bl = (o.age||0) > 330 && (K.tick>>2)%2; kIcon('keg',p[0],p[1]-3*p[2],(bl ? 10.5 : 9)*p[2]); }
@@ -2855,12 +2921,14 @@ function kView(k,vx,vy,vw,vh){
     L.push([(pa[3]+pb[3])/2, () => { const X = t => pa[0]+(pb[0]-pa[0])*t, Z = t => pa[2]+(pb[2]-pa[2])*t, Y = (t,z) => (pa[1]+(pb[1]-pa[1])*t) - z*Z(t);
       for(let i=0;i<10;i++) for(let r=0;r<2;r++){ const t0 = i/10, t1 = (i+1)/10; poly(ctx,[X(t0),Y(t0,21+r*3.5),X(t1),Y(t1,21+r*3.5),X(t1),Y(t1,24.5+r*3.5),X(t0),Y(t0,24.5+r*3.5)]); ctx.fillStyle = (i+r)%2 ? '#1d1b2e' : '#ffffff'; ctx.fill(); } }]);
   }
-  for(const o of K.karts) kParts(L,o,proj,ca,o===k);
+  for(const o of K.karts){ const n0 = L.length; kParts(L,o,proj,ca,o===k); if(K.wxe===2 && o !== k) kFade(L,n0,FOGD); }
+  if(K.ghost) kGhostDraw(L,proj,ca);
   for(const q of K.pt){ const p = proj(q.x,q.y,q.z); if(!p || p[3] > 650 || p[3] < 24) continue;
     L.push([p[3]-0.5, () => { const a = q.life/q.max, r = Math.min(11*u,Math.max(0.7,q.r*p[2]*(q.grow ? 1.9-a : 0.6+0.4*a))); ctx.globalAlpha = Math.min(1,a*(q.grow ? 1.1 : 1.8))*Math.min(1,(p[3]-24)/40); el(ctx,p[0],p[1],r); ctx.fillStyle = q.c; ctx.fill(); ctx.globalAlpha = 1; }]); }
   for(const o of K.karts){ if(!(o.hook > 0)) continue; const t = K.karts.find(q => q.id===o.hookId); if(!t) continue; const a = proj(o.x,o.y,5), b = proj(t.x,t.y,5);
     if(a && b) L.push([Math.min(a[3],b[3])-1, () => { ln(ctx,[a[0],a[1],b[0],b[1]],OL,Math.max(2,a[2]*1.1)); ln(ctx,[a[0],a[1],b[0],b[1]],'#d9bf8a',Math.max(1,a[2]*0.6)); }]); }
   L.sort((a,b) => b[0]-a[0]); for(const s of L) s[1]();
+  if(K.wxe===1) kRain(vx,vy,vw,vh,u,K.views.length < 2);
   if(th.amb && th.amb!=='stars' && K.views.length < 2) kAmb(th.amb,vx,vy,vw,vh,u);
   if(k.ink > 0){ const fade = Math.min(1,k.ink/70), grow = Math.min(1,(300-k.ink)/16); ctx.globalAlpha = 0.93*fade; ctx.fillStyle = '#231a4a';
     for(let i=0;i<9;i++){ const bx3 = vx + vw*(0.08+((i*37)%83)/100), by3 = vy + vh*(0.14+((i*53)%71)/100*0.8), r = (0.1+((i*29)%13)/100)*vh*grow; el(ctx,bx3,by3,r,r*0.82); ctx.fill(); el(ctx,bx3-r*0.3,by3-r*0.3,r*0.28,r*0.2); ctx.fillStyle = '#4a3a8a'; ctx.fill(); ctx.fillStyle = '#231a4a'; } ctx.globalAlpha = 1; }
@@ -2873,13 +2941,14 @@ function kView(k,vx,vy,vw,vh){
   if(k.lap !== k.lapP){ if(k.lapP && k.lap > k.lapP && k.lap <= KLAPS){ k.lapMsg = K.tick; k.lapTime = K.t - (k.lapT0 || 0); } k.lapT0 = K.t; k.lapP = k.lap; }
   if(k.rank !== k.rkP){ if(k.rkP && K.tick - (k.rkT || -99) > 30){ k.rkT = K.tick; k.rkD = k.rank < k.rkP ? 1 : -1; } k.rkP = k.rank; }
   if(k.item !== k.hudI){ k.hudI = k.item; k.hudT = K.tick; }
-  { const ra = k.rkT !== undefined ? K.tick - k.rkT : 99, pop = ra < 22 ? 1 + 0.55*(1 - ra/22) : 1, rcol = ra < 22 ? (k.rkD > 0 ? '#7dff8a' : '#ff8a7a') : (k.rank===1 ? '#ffd84a' : '#fff');
+  if(K.tt) txt('ZEITFAHREN', vx+8*u, vy+15*u, 8.5*u, '#7fe9ff'); else { const ra = k.rkT !== undefined ? K.tick - k.rkT : 99, pop = ra < 22 ? 1 + 0.55*(1 - ra/22) : 1, rcol = ra < 22 ? (k.rkD > 0 ? '#7dff8a' : '#ff8a7a') : (k.rank===1 ? '#ffd84a' : '#fff');
     txt(String(k.rank), vx+8*u, vy+(17+(pop-1)*9)*u, 24*u*pop, rcol); }
-  txt('/' + n, vx+25*u, vy+21*u, 9*u, '#fff');
+  if(!K.tt) txt('/' + n, vx+25*u, vy+21*u, 9*u, '#fff');
   txt(`Runde ${Math.max(1,Math.min(KLAPS,k.lap))}/${KLAPS}`, vx+8*u, vy+37*u, 8.5*u, '#fff'); txt(fmtT(k.finished ? k.finT : K.t), vx+8*u, vy+48*u, 7.5*u, '#ffe08a');
   if(net.role==='client' && !K.res && performance.now() - K.lastKs > 1500) txt('Verbindung wackelt …', vx+8*u, vy+59*u, 7.5*u, '#ffb347');
   else if(net.role !== 'off' && !K.res){ const pl = pingLabel(); if(pl) txt(pl, vx+8*u, vy+59*u, 6.5*u, pingCol(pingNum())); }
-  const bx = vcx-13*u, by = vy+5*u; rr(ctx,bx,by,26*u,26*u,6*u); ctx.fillStyle = 'rgba(20,18,36,.6)'; ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.4*u; ctx.stroke();
+  kHudExtra(k,vx,vy,vw,vh,u);
+  const bx = vcx-13*u, by = vy+5*u; if(!K.tt){ rr(ctx,bx,by,26*u,26*u,6*u); ctx.fillStyle = 'rgba(20,18,36,.6)'; ctx.fill(); ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.4*u; ctx.stroke(); }
   const it = k.roll > 0 ? KIK[(K.tick>>2) % KIK.length] : k.item; if(it) kIcon(it,vcx,by+13*u,20*u*(k.roll > 0 ? 1 : 1 + 0.3*Math.max(0,1-(K.tick-(k.hudT || 0))/14)),k.chg || 3);
   if(k.item && k.roll <= 0) txt(KITEM[k.item], vcx, by+34*u, 6.5*u, '#fff', 'center');
   const mm = 46*u, sc2 = mm/Math.max(tr.x1-tr.x0, tr.y1-tr.y0), mx = vx+vw-7*u-(tr.x1-tr.x0)*sc2, my = vy+28*u, MX = x => mx+(x-tr.x0)*sc2, MY = y => my+(y-tr.y0)*sc2;
@@ -2894,7 +2963,7 @@ function kView(k,vx,vy,vw,vh){
   if(K.cd > 0){ const lit = K.cd > 160 ? 1 : K.cd > 100 ? 2 : K.cd > 40 ? 3 : 0, go = K.cd <= 40;
     rr(ctx,vcx-36*u,cy-14*u,72*u,24*u,7*u); ctx.fillStyle = 'rgba(20,18,36,.85)'; ctx.fill();
     for(let i=0;i<3;i++){ el(ctx,vcx+(i-1)*21*u,cy-2*u,7.5*u); ctx.fillStyle = go ? '#3ddc5a' : i < lit ? '#ff3b3b' : '#3a3a48'; ctx.fill(); }
-    if(go) txt('LOS!', vcx, cy+26*u, 20*u, '#7dff8a', 'center'); else if(K.cd > 150) txt(tr.name, vcx, cy+26*u, 12*u, '#ffd84a', 'center'); }
+    if(go) txt('LOS!', vcx, cy+26*u, 20*u, '#7dff8a', 'center'); else if(K.cd > 150) txt(tr.vname || tr.name, vcx, cy+26*u, 12*u, '#ffd84a', 'center'); }
   else if(k.finished && state==='kres') { /* results overlay is showing */ }
   else if(k.finished) { txt('ZIEL!', vcx, cy, 34*u, '#ffd84a', 'center'); txt(`Platz ${k.rank}`, vcx, cy+28*u, 13*u, '#fff', 'center'); }
   else if(k.resc > 0) txt('Zurück auf die Strecke', vcx, cy, 12*u, '#fff', 'center');
@@ -2973,28 +3042,28 @@ function kTileGrid(box,cur,votes,pick,withCups,best){
 }
 /* driver and vehicle choice inside the online lobby */
 function lobPickUpd(){ const s = save.ksel[0]; $('lchName').textContent = KCHAR[s[0]].n; $('lvhName').textContent = KVEH[s[1]].n; }
-function lobCyc(which,n,d){ const s = save.ksel[0]; s[which] = (s[which]+d+n) % n; persist(); lobPickUpd();
-  if(net.role==='client') send({t:'kc',ch:s[0],veh:s[1]}); else if(net.role==='host'){ broadcast(lobState()); if(!$('lobbyOv').hidden) showLobby(); } }
+function lobCyc(which,n,d){ const s = save.ksel[0]; s[which] = which === 0 ? kNextCh(s[0],d) : (s[which]+d+n) % n; persist(); lobPickUpd();
+  if(net.role==='client') send(kcMsg()); else if(net.role==='host'){ broadcast(lobState()); if(!$('lobbyOv').hidden) showLobby(); } }
 
 /* ----- kart menu wiring ----- */
 function kUpdMenu(){
   const s = kart.sel;
-  if(s < KTRACKS.length){ $('ktName').textContent = KTRACKS[s].name; const b = save.kt[s]; const tr = kBuild(s); $('ktInfo').textContent = `${KTH[tr.th].n} · ${(tr.len*0.000185).toFixed(1).replace('.',',')} km pro Runde · ${KLAPS} Runden` + (b ? ` · Bestzeit ${fmtT(b)}` : ''); }
+  if(s < KTRACKS.length){ $('ktName').textContent = KTRACKS[s].name; const b = kart.ttm ? ((save.tt[ttKey(s)] || {}).t | 0) : save.kt[kBestKey(s)]; const tr = kBuild(s); $('ktInfo').textContent = `${KTH[tr.th].n} · ${(tr.len*0.000185).toFixed(1).replace('.',',')} km pro Runde · ${KLAPS} Runden` + (b ? ` · ${kart.ttm ? 'Zeitfahren-' : ''}Bestzeit ${fmtT(b)}` : ''); }
   else { const ci = s-KTRACKS.length, c = KCUPS[ci], r = save.cups[ci]; $('ktName').textContent = c[0]; $('ktInfo').textContent = '3 Rennen: ' + c[1].map(i => KTRACKS[i].name).join(', ') + (r ? ` · Bester Platz: ${r}.` : ''); }
-  $('kcBtn').textContent = 'Tempo: ' + KCLS[kart.cls][0]; $('kdBtn').textContent = 'Drift: ' + KDR[save.kdrift][0];
+  $('kcBtn').textContent = 'Tempo: ' + KCLS[kart.cls][0]; $('kdBtn').textContent = 'Drift: ' + KDR[save.kdrift][0]; kUpdMenu2();
   kMap(); kUpdSel();
 }
 function kGo(m){
-  const s = kart.sel;
+  const s = kart.sel; kart.ttNext = kart.ttm && m==='solo';
   if(s < KTRACKS.length){ kart.cup = null; kStart(s,kart.cls,m); }
   else { const ci = s-KTRACKS.length; kart.cup = {ci, race:0, pts:{}, final:false}; kStart(KCUPS[ci][1][0],kart.cls,m); }
 }
-function kOnline(ti){ net.votes = {}; const sel = {}; net.ids.forEach(id => { sel[id] = id===0 ? save.ksel[0] : ((net.ksel && net.ksel[id]) || [id,id]); });
-  kart.cup = null; kart.osel = sel; broadcast({t:'go',game:'kart',track:ti,cls:kart.cls,ids:net.ids,sel}); kStart(ti,kart.cls,'online'); }
-$('ktPrev').onclick = () => { kart.sel = (kart.sel + KTRACKS.length + KCUPS.length - 1) % (KTRACKS.length + KCUPS.length); kUpdMenu(); };
-$('ktNext').onclick = () => { kart.sel = (kart.sel + 1) % (KTRACKS.length + KCUPS.length); kUpdMenu(); };
+function kOnline(ti){ net.votes = {}; const sel = {}, cos = {}; net.ids.forEach(id => { sel[id] = id===0 ? save.ksel[0] : ((net.ksel && net.ksel[id]) || [id,id]); cos[id] = id===0 ? kCos(0) : ((net.kcos && net.kcos[id]) || [-1,-1]); });
+  kart.cup = null; kart.osel = sel; kart.ocos = cos; kart.rid = 1 + ((Math.random()*1e9)|0); broadcast({t:'go',game:'kart',track:ti,cls:kart.cls,ids:net.ids,sel,cos,vr:kart.vr|0,wx:kart.wx|0,rid:kart.rid}); kStart(ti,kart.cls,'online'); }
+$('ktPrev').onclick = () => kSelStep(-1);
+$('ktNext').onclick = () => kSelStep(1);
 $('kcBtn').onclick = () => { kart.cls = (kart.cls+1) % 3; kUpdMenu(); if(!$('lobbyOv').hidden) showLobby(); };
-const kCyc = (which,n,d) => { const s = save.ksel[kart.selP]; s[which] = (s[which] + d + n) % n; persist(); kUpdSel(); };
+const kCyc = (which,n,d) => { const s = save.ksel[kart.selP]; s[which] = which === 0 ? kNextCh(s[0],d) : (s[which] + d + n) % n; persist(); kUpdSel(); };
 $('chPrev').onclick = () => kCyc(0,KCHAR.length,-1); $('chNext').onclick = () => kCyc(0,KCHAR.length,1);
 $('vhPrev').onclick = () => kCyc(1,KVEH.length,-1); $('vhNext').onclick = () => kCyc(1,KVEH.length,1);
 $('kpBtn').onclick = () => { kart.selP = 1 - kart.selP; kUpdSel(); };
@@ -3005,7 +3074,7 @@ $('trkBtn').onclick = () => { if(lobbyGame==='esc') E.sel = (E.sel+1) % ECH.leng
 $('tmpBtn').onclick = () => { kart.cls = (kart.cls+1) % 3; showLobby(); };
 $('kOn').onclick = () => openOnline('kart','kartOv');
 $('kdBtn').onclick = () => { save.kdrift = (save.kdrift+1) % KDR.length; persist(); kUpdMenu(); };
-$('ktAll').onclick = () => { kTileGrid($('allGrid'), kart.sel, {}, ti => { kart.sel = ti; kUpdMenu(); show('kartOv'); }, true, true); show('tracksOv'); };
+$('ktAll').onclick = () => { kTileGrid($('allGrid'), kart.sel, {}, ti => { kart.sel = ti; kUpdMenu(); show('kartOv'); }, !kart.ttm, true); show('tracksOv'); };
 $('tracksBack').onclick = () => show('kartOv');
 $('lobRnd').onclick = () => { if(net.role!=='host') return; kart.sel = (Math.random()*KTRACKS.length)|0; showLobby(); };
 $('lchPrev').onclick = () => lobCyc(0,KCHAR.length,-1); $('lchNext').onclick = () => lobCyc(0,KCHAR.length,1);
@@ -3016,7 +3085,7 @@ $('kNext').onclick = () => {
   if(K.cup){ if(K.cup.race < 2){ K.cup.race++; kStart(KCUPS[K.cup.ci][1][K.cup.race],K.cls,mode); } else kShowCup(); }
   else if(net.role==='host') kOnline((K.ti+1) % KTRACKS.length);
 };
-$('kAgain').onclick = () => { if(net.role==='host') kOnline(kart.ti); else kStart(kart.ti,kart.cls,mode); };
+$('kAgain').onclick = () => { if(net.role==='host') kOnline(kart.ti); else { kart.ttNext = kart.tt; kStart(kart.ti,kart.cls,mode); } };
 $('kMenu').onclick = quit;
 
 
@@ -3589,7 +3658,7 @@ function eClientMsg(m){
 }
 function eDrop(id){ E.oth.delete(id); E.dirty = true; if(state==='esc') eEv({k:'toast',s:`${pName(id)} hat die Crew verlassen. Die Hinweise wurden neu verteilt, lest sie noch einmal.`,c:'#ffd84a'}); }
 function eJoined(id){ E.dirty = true; if(state==='esc') eEv({k:'toast',s:`${pName(id)} ist an Bord. Die Hinweise wurden neu verteilt, lest sie noch einmal.`,c:'#ffd84a'}); }
-addEventListener('pagehide', () => { try { if(net.peer) net.peer.destroy(); } catch(e) {} });
+addEventListener('pagehide', () => { try { if(net.role === 'host') broadcast({t:'end'}); if(net.peer) net.peer.destroy(); } catch(e) {} });
 setInterval(() => { if(document.hidden && E.on && state==='esc' && net.role==='host') for(let i=0;i<60 && state==='esc';i++) eHostTick(); }, 1000);
 
 /* ----- rendering ----- */
@@ -4156,8 +4225,16 @@ function pingLabel(){
 function pingNum(){ const s = pingLabel(); return s ? parseInt(s.replace(/\D/g,''), 10) : -1; }
 /* the host asks everybody every two seconds, the answer gives the delay; everybody then gets the list */
 function netTick(){
+  const now = Math.round(performance.now()), gap = now - (net.tickT || now); net.tickT = now;
+  if(net.role === 'client'){
+    if(gap > 5000 && net.lastRx) net.lastRx = Math.max(net.lastRx, now - net.hb.c + 3500);
+    if(net.lastRx && !net.rc && now - net.lastRx > net.hb.c) netLost();
+    return;
+  }
   if(net.role !== 'host') return;
-  const now = Math.round(performance.now());
+  for(const c of [...net.conns.values()]){ if(gap > 5000) c._rx = now; else if(c._rx && now - c._rx > net.hb.h){ try { if(c._drop) c._drop(); c.close(); } catch(e) {} } }
+  { const t = Date.now(); let gone = false; for(const i of Object.keys(net.lost)) if(net.lost[i].until < t){ delete net.lost[i]; if(net.names) delete net.names[i]; if(net.ksel) delete net.ksel[i]; if(net.kcos) delete net.kcos[i]; gone = true; }
+    if(gone){ broadcast(lobState()); if(!$('lobbyOv').hidden) showLobby(); } }
   for(const c of net.conns.values()){ try { if(c.open) c.send({t:'pi', n:now}); } catch(e) {} }
   const p = {0:0}; for(const id of net.conns.keys()) p[id] = net.ping[id] == null ? -1 : Math.round(net.ping[id]);
   net.pingAll = p; broadcast({t:'pg', p});
@@ -4257,7 +4334,7 @@ function kPodium(){
 }
 
 /* ================= Runde 3: Speedrun-Timer im Abenteuer ================= */
-let LSRC = null;   /* when set, loadLevel takes the level from here (daily level, own levels) */
+var LSRC = null;   /* when set, loadLevel takes the level from here (daily level, own levels) */
 const fmtTk = t => { t = Math.max(0, t | 0); const s = Math.floor(t/60), c = Math.floor((t % 60)*100/60); return String(Math.floor(s/60)).padStart(2,'0') + ':' + String(s % 60).padStart(2,'0') + '.' + String(c).padStart(2,'0'); };
 let runT = 0, runMsg = '';
 function recLevelTime(){
@@ -4268,7 +4345,7 @@ function recLevelTime(){
   else runMsg = `Deine Bestzeit: ${fmtTk(old)}.`;
 }
 function drawTimer(){
-  const t = state === 'win' ? runT : tick, best = (mode === 'solo' && !LSRC) ? save.lt[curLevel] : 0;
+  const t = state === 'win' ? runT : tick, best = LSRC ? ((LSRC.kind === 'daily' && mode === 'solo' && save.dly && save.dly[LSRC.date]) || 0) : (mode === 'solo' ? save.lt[curLevel] : 0);
   txt(fmtTk(t), VW-5, 10.5, 8.5, '#fff', 'right');
   if(best > 0) txt('Best ' + fmtTk(best), VW-5, 20, 6.2, '#bfe3ff', 'right');
 }
@@ -4277,6 +4354,396 @@ function drawTimer(){
 if('serviceWorker' in navigator && !dbg.on && !useBC && /^https?:$/.test(location.protocol)){
   addEventListener('load', () => { navigator.serviceWorker.register('sw.js').catch(() => {}); });
 }
+
+/* ================= Runde 4: Strecken-Varianten, Wetter, Münzen, Werkstatt-Daten, Zeitfahren mit Geist ================= */
+const KVR = ['Normal','Spiegel','Rückwärts','Spiegel + rückwärts'];
+const KWX = ['Klar','Regen','Nebel'];
+const KBASE = 8;                       /* the first 8 drivers are free, the others are bought in the workshop */
+kart.vr = 0; kart.wx = 0; kart.ttm = false; kart.ttNext = false; kart.ocos = null;
+if(!save.tt || typeof save.tt !== 'object') save.tt = {};
+if(!Array.isArray(save.unl)) save.unl = [];
+save.unl = save.unl.filter(x => typeof x === 'string' && x.length < 20);
+save.coins = Math.max(0, Math.floor(+save.coins || 0));
+if(!Array.isArray(save.kcos) || save.kcos.length !== 2 || !save.kcos.every(a => Array.isArray(a) && a.length === 2 && a.every(Number.isInteger))) save.kcos = [[-1,-1],[-1,-1]];
+
+/* ----- new drivers, hats and paints (bought with coins in the workshop) ----- */
+KCHAR.push(
+ {n:'Eisbär', c:'#f1f6fc', f:'#cfe0f0', ear:'round', face:'muzzle', big:1.1, belly:'#ffffff', cost:250},
+ {n:'Fuchs', c:'#e8742a', f:'#fff3e0', ear:'point', face:'muzzle', belly:'#fff3e0', cost:300},
+ {n:'Panda', c:'#f7f7f7', f:'#f7f7f7', ear:'round', ec:'#1d1b2e', patch:'#1d1b2e', face:'muzzle', big:1.1, cost:350},
+ {n:'Roboter', c:'#9aa7c0', f:'#dfe6f5', ear:'ant', face:'robot', cost:450}
+);
+const KHAT = [
+ {n:'Piratenhut', cost:90, draw:(g,x,y,z) => {
+   g.beginPath(); g.moveTo(x-3.9*z,y-2*z); g.quadraticCurveTo(x,y-6.2*z,x+3.9*z,y-2*z); g.quadraticCurveTo(x,y-3.4*z,x-3.9*z,y-2*z); g.closePath(); fs(g,'#2b2233',OL,Math.max(1,z*0.3));
+   g.beginPath(); g.moveTo(x-3.3*z,y-2.35*z); g.quadraticCurveTo(x,y-5.6*z,x+3.3*z,y-2.35*z); g.strokeStyle = '#ffc94a'; g.lineWidth = Math.max(1,z*0.28); g.stroke();
+   el(g,x,y-3.6*z,z*0.55); fs(g,'#f4f2e6',OL,Math.max(1,z*0.2)); }},
+ {n:'Krone', cost:300, draw:(g,x,y,z) => {
+   poly(g,[x-2.3*z,y-2.1*z,x-2.5*z,y-4.5*z,x-1.2*z,y-3.4*z,x,y-4.9*z,x+1.2*z,y-3.4*z,x+2.5*z,y-4.5*z,x+2.3*z,y-2.1*z]); fs(g,'#ffd23a',OL,Math.max(1,z*0.3));
+   g.fillStyle = '#c98a14'; g.fillRect(x-2.3*z,y-2.5*z,4.6*z,0.5*z);
+   el(g,x,y-3.1*z,z*0.55); fs(g,'#ff4f5a',OL,Math.max(1,z*0.2)); }},
+ {n:'Zylinder', cost:140, draw:(g,x,y,z) => {
+   el(g,x,y-2.1*z,3.3*z,0.85*z); fs(g,'#26243a',OL,Math.max(1,z*0.3));
+   rr(g,x-2*z,y-5.6*z,4*z,3.6*z,0.3*z); fs(g,'#26243a',OL,Math.max(1,z*0.3));
+   g.fillStyle = '#e2483b'; g.fillRect(x-2*z,y-3*z,4*z,0.8*z);
+   el(g,x,y-5.6*z,2*z,0.5*z); fs(g,'#3b3858',OL,Math.max(1,z*0.25)); }},
+ {n:'Kochmütze', cost:110, draw:(g,x,y,z) => {
+   for(const [dx,dy,r] of [[-1.35,-3.6,1.5],[1.35,-3.6,1.5],[0,-4.5,1.75]]){ el(g,x+dx*z,y+dy*z,r*z); fs(g,'#ffffff',OL,Math.max(1,z*0.28)); }
+   rr(g,x-2.2*z,y-3*z,4.4*z,1*z,0.3*z); fs(g,'#f2f2f8',OL,Math.max(1,z*0.28)); }},
+ {n:'Propeller', cost:180, draw:(g,x,y,z,col,t) => {
+   g.beginPath(); g.arc(x,y-1.9*z,2.6*z,Math.PI,0); g.closePath(); fs(g,'#4fa8ff',OL,Math.max(1,z*0.3));
+   g.fillStyle = '#e8f3ff'; g.fillRect(x-0.35*z,y-4.5*z,0.7*z,1*z);
+   const c = Math.cos(t*0.5); ln(g,[x-2.9*z*c,y-4.7*z,x+2.9*z*c,y-4.7*z],OL,Math.max(1.5,z*0.95)); ln(g,[x-2.9*z*c,y-4.7*z,x+2.9*z*c,y-4.7*z],'#ffd84a',Math.max(1,z*0.55));
+   el(g,x,y-4.7*z,0.5*z); fs(g,'#ff5a5a',OL,Math.max(1,z*0.2)); }},
+ {n:'Cowboyhut', cost:130, draw:(g,x,y,z) => {
+   el(g,x,y-2*z,4.3*z,1*z); fs(g,'#a8703a',OL,Math.max(1,z*0.3));
+   g.beginPath(); g.moveTo(x-2*z,y-2.1*z); g.lineTo(x-1.7*z,y-4.2*z); g.quadraticCurveTo(x,y-3.4*z,x+1.7*z,y-4.2*z); g.lineTo(x+2*z,y-2.1*z); g.closePath(); fs(g,'#c18847',OL,Math.max(1,z*0.3));
+   g.fillStyle = '#6b3f1b'; g.fillRect(x-1.95*z,y-2.9*z,3.9*z,0.6*z); }},
+ {n:'Rennhelm', cost:160, draw:(g,x,y,z,col) => {
+   g.beginPath(); g.arc(x,y-0.9*z,3.15*z,Math.PI,0); g.closePath(); fs(g,col,OL,Math.max(1,z*0.3));
+   g.fillStyle = '#ffffff'; g.fillRect(x-0.45*z,y-4.05*z,0.9*z,3.1*z);
+   g.fillStyle = 'rgba(255,255,255,.35)'; el(g,x-1.5*z,y-2.9*z,0.7*z,0.4*z); g.fill(); }},
+ {n:'Partyhut', cost:100, draw:(g,x,y,z) => {
+   poly(g,[x-2.1*z,y-2*z,x,y-6*z,x+2.1*z,y-2*z]); fs(g,'#ff4fa8',OL,Math.max(1,z*0.3));
+   ln(g,[x-1.3*z,y-3.2*z,x+1.3*z,y-3.8*z],'#ffe14a',Math.max(1,z*0.4)); ln(g,[x-0.7*z,y-4.6*z,x+0.9*z,y-5*z],'#ffe14a',Math.max(1,z*0.4));
+   el(g,x,y-6*z,0.75*z); fs(g,'#ffe14a',OL,Math.max(1,z*0.22)); }}
+];
+const KPAINT = [
+ {n:'Gold', cost:250, hull:'#e8b830', line:'#8a6a12'},
+ {n:'Meerblau', cost:80, hull:'#2f7fe0', line:'#173f80'},
+ {n:'Neon-Pink', cost:80, hull:'#ff4fa8', line:'#8a1c58'},
+ {n:'Nachtschwarz', cost:100, hull:'#34364a', line:'#0e0e16'},
+ {n:'Minze', cost:80, hull:'#3fd6a8', line:'#1b7a5f'},
+ {n:'Lava', cost:120, hull:'#e2483b', line:'#6a150e'},
+ {n:'Schnee', cost:120, hull:'#eef3fb', line:'#8a97b0'},
+ {n:'Regenbogen', cost:400, rb:1, line:'#2b2233'}
+];
+const KSHOP = [
+ ['Fahrer', [8,9,10,11].map(i => ({id:'c' + i, k:'c', i, n:KCHAR[i].n, cost:KCHAR[i].cost}))],
+ ['Hüte', KHAT.map((h,i) => ({id:'h' + i, k:'h', i, n:h.n, cost:h.cost}))],
+ ['Lacke', KPAINT.map((p,i) => ({id:'p' + i, k:'p', i, n:p.n, cost:p.cost}))]
+];
+const kOwn = id => save.unl.indexOf(id) >= 0;
+const chOwned = i => i < KBASE || kOwn('c' + i);
+function kNextCh(cur,d){ const n = KCHAR.length; for(let q=0;q<n;q++){ cur = (cur + d + n) % n; if(chOwned(cur)) return cur; } return 0; }
+save.ksel.forEach(s => { if(!(s[0] >= 0 && s[0] < KCHAR.length) || !chOwned(s[0])) s[0] = 0; });
+/* what the player of this slot wears: [hat, paint], -1 = nothing; only things that are really owned count */
+function kCos(slot){ const c = save.kcos[slot] || [-1,-1]; return [c[0] >= 0 && c[0] < KHAT.length && kOwn('h' + c[0]) ? c[0] : -1, c[1] >= 0 && c[1] < KPAINT.length && kOwn('p' + c[1]) ? c[1] : -1]; }
+function kcosClean(h,p){ h = h|0; p = p|0; return [h >= 0 && h < KHAT.length ? h : -1, p >= 0 && p < KPAINT.length ? p : -1]; }
+const kcMsg = () => { const c = kCos(0); return {t:'kc', ch:save.ksel[0][0], veh:save.ksel[0][1], hat:c[0], pt:c[1]}; };
+
+/* ----- track variants: mirrored and/or driven the other way round ----- */
+function kVarPts(P, vr){
+  let q = P;
+  if(vr & 1) q = q.map(p => [40 - p[0], p[1]]);
+  if(vr & 2) q = [q[0]].concat(q.slice(1).reverse());
+  return q;
+}
+const kBestKey = ti => (kart.vr|0) ? ti + '_' + (kart.vr|0) : ti;
+const ttKey = ti => ti + '_' + kart.cls + '_' + (kart.vr|0);
+
+/* ----- coins on the road: lines of four, one new set every lap, only the player who drives sees (and takes) his own ----- */
+function kCoinPts(sx,sy,nx,ny,N,w){
+  const out = [], F = [0.11,0.2,0.285,0.33,0.5,0.545,0.625,0.685,0.79,0.84], LAT = [-0.26,0.24,0,0.2,-0.22,0.26,-0.18,0.1,-0.24,0.22];
+  F.forEach((f,gi) => { const i0 = Math.floor(f*N); for(let j=0;j<4;j++){ const i = (i0 + j*4) % N, lat = LAT[gi]*w; out.push({x:sx[i]+nx[i]*lat, y:sy[i]+ny[i]*lat, i}); } });
+  return out;
+}
+function kCoins(k){
+  const K = kart, tr = K.tr, cs = tr.coins, N = tr.N; if(!k.cn || !cs) return;
+  if(k.cl !== k.lap){ k.cl = k.lap; k.cn.fill(0); }
+  for(let q=0;q<cs.length;q++){ if(k.cn[q]) continue; const c = cs[q]; let di = Math.abs(c.i - k.idx); if(di > N/2) di = N - di; if(di > 12) continue;
+    const dx = c.x - k.x, dy = c.y - k.y;
+    if(dx*dx + dy*dy < 225){ k.cn[q] = 1; k.cb = Math.min(70, (k.cb || 0) + 22); k.cc = (k.cc || 0) + 1; save.coins++; stat('kc');
+      kBurst(c.x,c.y,6,5,['#ffe14a','#fff6b0','#ffffff'],1.2,16,1.1); tone(1250 + (k.cc % 5)*90,1900,0.07,'square',0.03); } }
+}
+function kCoinNote(){ const n = kart.karts.reduce((a,k) => a + (k.ctrl==='local' && k.human ? (k.cc | 0) : 0), 0); return n > 0 ? `+${n} Münzen. ` : ''; }
+function kCoinDraw(L,k,proj,lim){
+  const K = kart, cs = K.tr.coins, cn = k.cn; if(!cs) return;
+  for(let q=0;q<cs.length;q++){ if(cn[q]) continue; const c = cs[q], dx = c.x - k.x, dy = c.y - k.y; if(dx*dx + dy*dy > lim*lim) continue;
+    const p = proj(c.x, c.y, 4.4 + Math.sin(K.tick*0.1 + q)*0.6); if(!p || p[3] > lim) continue;
+    L.push([p[3], () => { const s = 4.6*p[2], f = 0.22 + 0.78*Math.abs(Math.cos(K.tick*0.075 + q*0.9)), w = Math.max(1, s*f);
+      el(ctx,p[0],p[1],w,s); fs(ctx,'#ffcf2e',OL,Math.max(1,p[2]*0.38));
+      if(f > 0.45){ el(ctx,p[0],p[1],w*0.56,s*0.62); fs(ctx,'#ffe988',null); ln(ctx,[p[0],p[1]-s*0.32,p[0],p[1]+s*0.32],'#d89a14',Math.max(1,p[2]*0.45)); } }]); }
+}
+
+/* ----- weather: rain (grey light, wet road, a little more sliding) and fog ----- */
+function kRain(vx,vy,vw,vh,u,full){
+  const t = kart.tick;
+  ctx.fillStyle = 'rgba(32,44,78,.2)'; ctx.fillRect(vx,vy,vw,vh);
+  if(!full) return;
+  ctx.strokeStyle = 'rgba(205,225,255,.55)'; ctx.lineWidth = Math.max(1, 0.9*u); ctx.beginPath();
+  for(let i=0;i<64;i++){ const sp = 4.6 + (i%5)*0.8, x0 = vx + ((i*97 + 13) % 997)/997*vw, y0 = vy + (((t*sp + i*61)*u) % (vh + 18*u)) - 14*u; ctx.moveTo(x0,y0); ctx.lineTo(x0 - 2.4*u, y0 + (7 + (i%3)*2)*u); }
+  ctx.stroke();
+}
+function kFog(vx,vy,vw,vh,hy,haze){
+  const c = hexRgb(haze), a = v => `rgba(${c[0]},${c[1]},${c[2]},${v})`, y0 = hy - 0.17*vh, y1 = Math.max(hy + 8, hy + (vy + vh - hy)*0.55), g = ctx.createLinearGradient(0,y0,0,y1), tt = y => Math.max(0, Math.min(1, (y - y0)/(y1 - y0)));
+  g.addColorStop(0, a(0)); g.addColorStop(tt(hy - 0.05*vh), a(0.9)); g.addColorStop(tt(hy + 0.04*vh), a(1)); g.addColorStop(tt(hy + 0.13*vh), a(0.8)); g.addColorStop(tt(hy + 0.25*vh), a(0.42)); g.addColorStop(1, a(0));
+  ctx.fillStyle = g; ctx.fillRect(vx, y0, vw, y1 - y0);
+  ctx.fillStyle = 'rgba(200,208,216,.1)'; ctx.fillRect(vx,vy,vw,vh);
+}
+/* karts and things far away fade out in fog: wrap what kParts produced */
+function kFade(L,n0,lim){
+  for(let q=n0;q<L.length;q++){ const e = L[q], f = e[1], a = Math.max(0, Math.min(1, 1.15 - e[0]/lim)); L[q] = [e[0], () => { if(a <= 0.02) return; ctx.globalAlpha = a; f(); ctx.globalAlpha = 1; }]; }
+}
+
+/* ----- time trial with ghost ----- */
+const GH_STEP = 6;
+function ghEnc(r,t,laps){
+  const n = r.x.length, d = new Uint8Array(Math.max(0,(n-1)*3)), cl = (v,m) => Math.max(-m, Math.min(m, v));
+  const x0 = Math.round(r.x[0]*10)/10, y0 = Math.round(r.y[0]*10)/10, a0 = Math.round(r.a[0]*100)/100; let qx = x0, qy = y0, qa = a0;
+  for(let i=1;i<n;i++){ const dx = cl(Math.round((r.x[i]-qx)*2),127), dy = cl(Math.round((r.y[i]-qy)*2),127), da = cl(Math.round(angd(r.a[i],qa)*25),127);
+    d[(i-1)*3] = dx & 255; d[(i-1)*3+1] = dy & 255; d[(i-1)*3+2] = da & 255; qx += dx/2; qy += dy/2; qa += da/25; }
+  return {t, l:laps, n, x:x0, y:y0, a:a0, d:b64u(d)};
+}
+function ghDec(o){
+  const n = o.n | 0, d = unb64u(o.d), X = new Float32Array(n), Y = new Float32Array(n), A = new Float32Array(n), s8 = v => v > 127 ? v - 256 : v;
+  if(!(n >= 2) || d.length < (n-1)*3) return null;
+  let x = +o.x, y = +o.y, a = +o.a; X[0] = x; Y[0] = y; A[0] = a;
+  for(let i=1;i<n;i++){ x += s8(d[(i-1)*3])/2; y += s8(d[(i-1)*3+1])/2; a += s8(d[(i-1)*3+2])/25; X[i] = x; Y[i] = y; A[i] = a; }
+  if(![x,y,a].every(isFinite)) return null;
+  return {n, X, Y, A, t:+o.t || 0, l:Array.isArray(o.l) ? o.l.map(v => +v || 0) : []};
+}
+function ghSave(key,r,t,laps){ try { localStorage.setItem('hopplo.gh.' + key, JSON.stringify(ghEnc(r,t,laps))); } catch(e) {} }
+function ghLoad(key){
+  try { const o = JSON.parse(localStorage.getItem('hopplo.gh.' + key) || 'null'); if(!o || typeof o.d !== 'string' || !(o.n >= 2) || o.n > 8000) return null; return ghDec(o); } catch(e) { return null; }
+}
+/* how far along the track the ghost is at every sample (same way the karts count their progress) */
+function ghProgs(G){
+  const tr = kart.tr, N = tr.N, P = new Float32Array(G.n); let bi = 0, bd = 1e12, lap = 0;
+  for(let i=0;i<N;i++){ const d = (tr.sx[i]-G.X[0])*(tr.sx[i]-G.X[0]) + (tr.sy[i]-G.Y[0])*(tr.sy[i]-G.Y[0]); if(d < bd){ bd = d; bi = i; } }
+  let idx = bi; P[0] = (lap-1)*N + idx;
+  for(let s=1;s<G.n;s++){ let b2 = idx, d2 = 1e12;
+    for(let o=-10;o<=24;o++){ const i = (((idx+o) % N) + N) % N, d = (tr.sx[i]-G.X[s])*(tr.sx[i]-G.X[s]) + (tr.sy[i]-G.Y[s])*(tr.sy[i]-G.Y[s]); if(d < d2){ d2 = d; b2 = i; } }
+    if(idx > N*0.8 && b2 < N*0.2) lap++; else if(idx < N*0.2 && b2 > N*0.8) lap--;
+    idx = b2; P[s] = Math.max(P[s-1], (lap-1)*N + idx); }
+  return P;
+}
+function ghInit(){
+  const K = kart, me = K.karts[0], G = ghLoad(ttKey(K.ti)); if(!G) return null;
+  G.P = ghProgs(G); G.on = true;
+  G.k = {id:7, human:false, x:G.X[0], y:G.Y[0], a:G.A[0], md:G.A[0], v:0, ch:me.ch, veh:me.veh, hat:me.hat, pt:me.pt, drift:0, dT:0, spin:0, hop:0, star:0, boost:0, anchor:0, calm:0, shield:false, off:false};
+  return G;
+}
+function ghStep(){
+  const K = kart, G = K.ghost; if(!G) return;
+  const f = K.t / GH_STEP, i = Math.floor(f);
+  if(i >= G.n - 1){ G.on = false; return; }
+  const fr = f - i, g = G.k, px = g.x, py = g.y;
+  g.x = G.X[i] + (G.X[i+1]-G.X[i])*fr; g.y = G.Y[i] + (G.Y[i+1]-G.Y[i])*fr; g.a = G.A[i] + (G.A[i+1]-G.A[i])*fr; g.md = g.a;
+  g.v = K.t > 0 ? Math.min(6, Math.hypot(g.x-px, g.y-py)) : 0; G.on = true;
+}
+function ghGap(k){
+  const G = kart.ghost; if(!G || !G.P || !G.on) return null;
+  const P = G.P, n = G.n, pp = k.prog; if(!(pp > P[0]) || !(pp < P[n-1])) return null;
+  let lo = 0, hi = n - 1; while(hi - lo > 1){ const m = (lo + hi) >> 1; if(P[m] <= pp) lo = m; else hi = m; }
+  return (kart.t - (lo + (pp - P[lo])/((P[hi] - P[lo]) || 1))*GH_STEP)/60;
+}
+function kGhostDraw(L,proj,ca){
+  const G = kart.ghost; if(!G || !G.on) return;
+  const L2 = []; kParts(L2,G.k,proj,ca,false);
+  for(const e of L2){ const f = e[1]; L.push([e[0], () => { ctx.globalAlpha = 0.42; f(); ctx.globalAlpha = 1; }]); }
+  const p = proj(G.k.x,G.k.y,0); if(p && p[3] < 520) L.push([p[3]-1, () => { txt('Geist', p[0], p[1]-p[2]*23, Math.max(8,p[2]*3), '#7fe9ff', 'center'); }]);
+}
+/* every step of the time trial: lap times and the recording for the next ghost */
+function kTT(k){
+  const K = kart;
+  if(k.lap !== k.lapG){ if(k.lapG >= 1 && k.lap > k.lapG) k.lapTs.push(K.t); k.lapG = k.lap; }
+  if(!k.finished && K.gr && K.t > 0 && K.t % GH_STEP === 0){ K.gr.x.push(k.x); K.gr.y.push(k.y); K.gr.a.push(k.a); }
+}
+function kEndTT(){
+  const K = kart, k = K.karts[0], t = k.finT, key = ttKey(K.ti), old = save.tt[key], G = K.ghost, laps = k.lapTs.slice(0,KLAPS);
+  K.res = [[k.id, t]]; state = 'kres'; kEngine(0,false);
+  const had = !!(old && old.t > 0), best = !had || t < old.t; let msg = '';
+  stat('tt'); stat('kr');
+  if(best){ save.tt[key] = {t}; ghSave(key, K.gr, t, laps); if(had){ stat('gh'); msg = `Neue Bestzeit! Du warst ${((old.t - t)/60).toFixed(2).replace('.',',')} s schneller als dein Geist.`; } else msg = 'Deine erste Zeit! Beim nächsten Mal fährt dein Geist mit.'; }
+  else msg = `Dein Geist war ${((t - old.t)/60).toFixed(2).replace('.',',')} s schneller. Bestzeit: ${fmtT(old.t)}.`;
+  persist(); checkBadges();
+  const rows = []; let prev = 0, gprev = 0;
+  rows.push(`<span>Zeit</span><b style="color:#ffd84a">${fmtT(t)}</b><span></span>`);
+  laps.forEach((c,i) => { const lt = c - prev, gl = G && G.l[i] ? G.l[i] - gprev : 0, dl = gl ? lt - gl : 0;
+    rows.push(`<span>Runde ${i+1}</span><b>${fmtT(lt)}</b><span style="color:${dl > 0 ? '#ff8a7a' : '#7dff8a'}">${gl ? (dl > 0 ? '+' : '-') + (Math.abs(dl)/60).toFixed(2).replace('.',',') : ''}</span>`); prev = c; if(G && G.l[i]) gprev = G.l[i]; });
+  $('kresTitle').textContent = (K.tr.vname || K.tr.name).toUpperCase() + ' · ZEITFAHREN';
+  kTable(rows,3); $('kresPod').hidden = true; $('kresStat').textContent = ''; $('kresInfo').textContent = msg;
+  $('kNext').hidden = true; $('kAgain').hidden = false; $('kLob').hidden = true; show('kresOv');
+  if(best) sfx.win();
+}
+/* extra HUD: coin counter and the gap to the ghost */
+function kHudExtra(k,vx,vy,vw,vh,u){
+  const K = kart, vcx = vx + vw/2;
+  if(k.cn){ el(ctx,vcx-32*u,vy+13*u,4*u,4.4*u); fs(ctx,'#ffcf2e',OL,1*u); txt('x' + (k.cc | 0), vcx-26*u, vy+15*u, 8*u, '#ffe08a'); }
+  if(K.tt){
+    if(K.ghost){ const g = ghGap(k); if(g !== null) txt('Geist ' + (g > 0 ? '+' : '-') + Math.abs(g).toFixed(2), vx+8*u, vy+59*u, 7.5*u, g > 0 ? '#ff8a7a' : '#7dff8a'); else if(K.cd > 0) txt('Dein Geist fährt mit', vx+8*u, vy+59*u, 6.5*u, '#7fe9ff'); }
+    else if(K.cd > 0) txt('Erste Fahrt: dein Geist entsteht', vx+8*u, vy+59*u, 6.5*u, '#bfe3ff');
+  }
+}
+
+/* ----- kart menu: mode, track variant, weather, workshop button ----- */
+function kUpdMenu2(){
+  const tt = kart.ttm;
+  $('kmBtn').textContent = 'Modus: ' + (tt ? 'Zeitfahren' : 'Rennen');
+  $('kvBtn').textContent = 'Strecke: ' + KVR[kart.vr];
+  $('kwBtn').textContent = 'Wetter: ' + (tt ? 'Klar' : KWX[kart.wx]); $('kwBtn').disabled = tt; $('kwBtn').style.opacity = tt ? '0.45' : '';
+  $('k2').hidden = tt; $('kOn').hidden = tt; $('k1').textContent = tt ? 'Zeitfahren' : '1 Spieler';
+  $('shopBtn').textContent = 'Werkstatt · ◉ ' + save.coins;
+}
+function kSelStep(d){ const n = KTRACKS.length + (kart.ttm ? 0 : KCUPS.length); kart.sel = (kart.sel + d + n) % n; kUpdMenu(); }
+$('kmBtn').onclick = () => { kart.ttm = !kart.ttm; if(kart.ttm && kart.sel >= KTRACKS.length) kart.sel = KCUPS[kart.sel - KTRACKS.length][1][0]; kUpdMenu(); };
+$('kvBtn').onclick = () => { kart.vr = (kart.vr + 1) % 4; kUpdMenu(); };
+$('kwBtn').onclick = () => { kart.wx = (kart.wx + 1) % 3; kUpdMenu(); };
+$('lvrBtn').onclick = () => { if(net.role !== 'host') return; kart.vr = (kart.vr + 1) % 4; showLobby(); };
+$('lwxBtn').onclick = () => { if(net.role !== 'host') return; kart.wx = (kart.wx + 1) % 3; showLobby(); };
+
+function kCosOf(id,m,human){
+  if(!human) return [-1,-1];
+  if(m !== 'online') return kCos(m === 'duo' ? id : 0);
+  if(id === net.myId) return kCos(0);
+  const c = kart.ocos && kart.ocos[id]; return Array.isArray(c) ? kcosClean(c[0], c[1]) : [-1,-1];
+}
+/* ================= Runde 4: Werkstatt (Fahrer, Hüte und Lacke gegen Münzen) ================= */
+let shopTab = 0, shopFrom = 'kartOv';
+const shopSlot = () => shopFrom === 'lobbyOv' ? 0 : kart.selP;
+function shopOpen(from){ shopFrom = from; shopTab = Math.max(0, Math.min(KSHOP.length-1, shopTab)); show('shopOv'); shopDraw(); }
+function shopDraw(){
+  const slot = shopSlot(), sel = save.ksel[slot], cos = kCos(slot), box = $('shopGrid');
+  $('shopCoins').textContent = '◉ ' + save.coins;
+  $('shopP').hidden = shopFrom === 'lobbyOv';
+  $('shopP').textContent = 'Für: Spieler ' + (slot+1);
+  Array.from($('shopTabs').children).forEach((b,i) => b.classList.toggle('alt', i !== shopTab));
+  box.innerHTML = '';
+  for(const it of KSHOP[shopTab][1]){
+    const owned = kOwn(it.id), on = it.k === 'c' ? sel[0] === it.i : it.k === 'h' ? cos[0] === it.i : cos[1] === it.i, afford = save.coins >= it.cost;
+    const b = document.createElement('button'), cv = document.createElement('canvas'), nm = document.createElement('b'), st = document.createElement('small');
+    b.type = 'button'; b.className = 'shc' + (on ? ' on' : '') + (owned ? '' : ' lock') + (!owned && afford ? ' buy' : ''); cv.width = 96; cv.height = 66;
+    nm.textContent = it.n; st.textContent = on ? 'Angelegt' : owned ? 'Anlegen' : '◉ ' + it.cost;
+    b.append(cv, nm, st); b.setAttribute('aria-label', it.n + ', ' + st.textContent); b.onclick = () => shopClick(it);
+    box.appendChild(b);
+    kPreview(cv, it.k === 'c' ? [it.i, sel[1]] : sel, slot, it.k === 'h' ? [it.i, cos[1]] : it.k === 'p' ? [cos[0], it.i] : cos, 0.55);
+  }
+  $('shopInfo').textContent = KSHOP[shopTab][0] === 'Fahrer' ? 'Neue Fahrer kannst du im Menü mit den Pfeilen wählen.' : 'Tipp auf etwas Freigeschaltetes, um es an- oder abzulegen. Münzen sammelst du im Rennen.';
+}
+function shopClick(it){
+  const slot = shopSlot();
+  if(!kOwn(it.id)){
+    if(save.coins < it.cost){ toast('Dir fehlen noch ' + (it.cost - save.coins) + ' Münzen.'); return; }
+    save.coins -= it.cost; save.unl.push(it.id); persist(); sfx.coin(); toast('Freigeschaltet: ' + it.n); checkBadges();
+  }
+  if(it.k === 'c') save.ksel[slot][0] = it.i;
+  else if(it.k === 'h') save.kcos[slot][0] = kCos(slot)[0] === it.i ? -1 : it.i;
+  else save.kcos[slot][1] = kCos(slot)[1] === it.i ? -1 : it.i;
+  persist(); shopDraw();
+}
+$('shopTabs').onclick = e => { const i = Array.from($('shopTabs').children).indexOf(e.target.closest('button')); if(i >= 0){ shopTab = i; shopDraw(); } };
+$('shopP').onclick = () => { kart.selP = 1 - kart.selP; shopDraw(); };
+$('shopBack').onclick = () => {
+  if(shopFrom === 'lobbyOv'){ if(net.role === 'client') send(kcMsg()); showLobby(); if(net.role === 'host') broadcast(lobState()); }
+  else { kUpdMenu(); show('kartOv'); }
+};
+$('shopBtn').onclick = () => shopOpen('kartOv');
+$('lshopBtn').onclick = () => shopOpen('lobbyOv');
+
+/* ================= reconnect: the line drops, the game goes on ================= */
+/* hb.c  = client thinks the host is gone after this many ms of silence      hb.h = host thinks the client is gone
+   hb.rt = how long one reconnect try may take   hb.gap = pause after a failed try   hb.max = tries   hb.keep = how long a place stays reserved */
+net.lost = {}; net.rc = null; net.cid = ''; net.lastRx = 0; net.tickT = 0; net.rcN = 0; net.rcOk = 0;
+net.hb = {c:9000, h:12000, rt:7000, gap:2500, max:10, keep:90000};
+function rcBanner(on){
+  const b = $('rcBan'); if(!b) return;
+  b.hidden = !on;
+  if(on && net.rc) $('rcTxt').textContent = 'Verbindung weg … verbinde neu (' + Math.min(net.rc.n, net.hb.max) + '/' + net.hb.max + ')';
+}
+/* one place for wiring a connection to the host: used for the first join and for every reconnect try */
+function wireClient(peer, conn){
+  net.hostConn = conn;
+  conn.on('open', () => clearTimeout(netTimer));
+  conn.on('data', m => { if(net.hostConn !== conn) return; net.lastRx = performance.now(); clientMsg(m); });
+  conn.on('close', () => { if(net.peer === peer && net.hostConn === conn && net.role === 'client') netLost(); });
+}
+function netLost(){
+  if(net.role !== 'client' || net.rc) return;
+  net.rcN++; net.rc = {n:0, t0:performance.now(), timer:0};
+  const c = net.hostConn; try { if(c) c.close(); } catch(e) {}
+  rcTry();
+}
+function rcTry(){
+  const rc = net.rc; if(!rc || net.role !== 'client') return;
+  clearTimeout(rc.timer);
+  if(rc.n >= net.hb.max) return rcGiveUp();
+  rc.n++; rcBanner(true);
+  let peer; const old = net.peer;
+  try { peer = mkPeer(); } catch(e) { rc.timer = setTimeout(rcTry, net.hb.gap); return; }
+  net.peer = peer; try { if(old && old !== peer) old.destroy(); } catch(e) {}
+  const again = ms => { if(net.rc === rc && net.peer === peer){ clearTimeout(rc.timer); rc.timer = setTimeout(rcTry, ms); } };
+  rc.timer = setTimeout(rcTry, net.hb.rt);
+  peer.on('open', () => {
+    if(net.peer !== peer || net.rc !== rc) return;
+    const conn = peer.connect(ROOM + net.code, {reliable:true, serialization:'json', metadata:{cid:net.cid, rid:kart.on ? (kart.rid | 0) : 0}});
+    wireClient(peer, conn);
+    conn.on('close', () => again(net.hb.gap));
+  });
+  peer.on('error', () => again(net.hb.gap));
+}
+function rcGiveUp(){ leaveNet('Verbindung zum Host verloren.'); }
+/* the host answered our reconnect try. true = our own game just goes on, false = join normally (the host did not know us any more, or the game moved on) */
+function rcResume(m, lv0){
+  const was = net.rc; if(!was) return false;
+  clearTimeout(was.timer); net.rc = null; net.rcOk++; rcBanner(false);
+  if(m.rejoin){
+    if(kart.on && kart.tr && m.kart && (m.kart.rid | 0) === (kart.rid | 0)){
+      kart.lastKs = performance.now();
+      if(m.kres && Array.isArray(m.kres.res) && !kart.res) kShowRes(m.kres.res, m.kres.tot && typeof m.kres.tot === 'object' ? m.kres.tot : null, m.kres.stats && typeof m.kres.stats === 'object' ? m.kres.stats : null);
+      toast('Wieder verbunden.'); return true;
+    }
+    if(E.on && state === 'esc' && m.esc && typeof m.esc === 'object' && (m.esc.seed | 0) === E.seed && (m.esc.ch | 0) === E.ch && m.esc.st && Array.isArray(m.esc.st.v)){
+      E.st = m.esc.st; E.dirty = true; toast('Wieder verbunden.'); return true;
+    }
+    if(!kart.on && !E.on && mode === 'online' && m.playing && lv0 === m.level && (state === 'play' || state === 'win')){
+      gemMask |= (m.gm | 0);
+      for(const k in m.tiles){ const [x,y] = k.split(',').map(Number); if(grid[y] && x < LW) grid[y][x] = m.tiles[k]; }
+      if(m.won && state === 'play'){ state = 'win'; sfx.win(); finishLevel(); showWin(0); }
+      toast('Wieder verbunden.'); return true;
+    }
+  }
+  if(kart.on){ kart.on = false; kEngine(0, false); }
+  toast(m.rejoin ? 'Wieder verbunden.' : 'Wieder im Raum. Das Spiel ist ohne dich weitergelaufen.', 3200);
+  return false;
+}
+/* a player who dropped out and came back: the computer driver hands the kart back */
+function kUndrop(id){ const k = kart.karts.find(q => q.id === id); if(k && k.ctrl === 'ai'){ k.ctrl = 'remote'; k.human = true; k.away = false; k.kq = -1; } }
+$('rcLeave').onclick = () => leaveNet();
+
+/* ================= Tageslevel: jeden Tag (deutsche Zeit) ein anderes Level, fuer alle gleich ================= */
+function dayHash(str){ let h = 2166136261; for(let i = 0; i < str.length; i++){ h ^= str.charCodeAt(i); h = Math.imul(h, 16777619); } return h >>> 0; }
+function dailyInfo(date){
+  date = date || berlinDate();
+  const h = dayHash('hopplo-tag-' + date); let n = 6 + (h % 40); if(n % 10 === 0) n++;     /* level 6..45, never a boss */
+  return {kind:'daily', date, n, seed:(dayHash('hopplo-saat-' + date) || 1)};
+}
+const dmy = date => { const p = String(date).split('-'); return p.length === 3 ? p[2] + '.' + p[1] + '.' : String(date); };
+function dayBefore(date){ const p = String(date).split('-').map(Number); return new Date(Date.UTC(p[0], p[1] - 1, p[2]) - 864e5).toISOString().slice(0, 10); }
+function dailyStreak(){ const t = berlinDate(), l = save.st.dsl; return (l === t || l === dayBefore(t)) ? save.st.ds : 0; }
+function startDaily(m, di){ LSRC = di || dailyInfo(); startLevel(LSRC.n, m); }
+function lsrcLevel(n){ return LSRC.kind === 'daily' ? genLevel(LSRC.n, LSRC.seed) : genLevel(n); }
+function lsrcDone(){ if(LSRC.kind === 'daily') dailyDone(); }
+function dailyDone(){
+  const d = LSRC.date, first = save.st.dsl !== d; runMsg = '';
+  save.dly = (save.dly && typeof save.dly === 'object') ? save.dly : {};
+  if(first){ stat('dd'); save.st.ds = save.st.dsl === dayBefore(d) ? save.st.ds + 1 : 1; save.st.dsl = d; }
+  if(mode === 'solo'){
+    const old = save.dly[d];
+    if(!(old > 0) || runT < old){ save.dly[d] = runT; runMsg = old > 0 ? `Neue Tagesbestzeit! Vorher ${fmtTk(old)}.` : 'Deine erste Zeit heute.'; }
+    else runMsg = `Deine Bestzeit heute: ${fmtTk(old)}.`;
+  }
+  const ks = Object.keys(save.dly).sort(); while(ks.length > 60) delete save.dly[ks.shift()];
+  if(save.st.ds > 1) runMsg += (runMsg ? ' ' : '') + `${save.st.ds} Tage in Folge!`;
+  persist(); checkBadges();
+}
+function updDay(){
+  const di = dailyInfo(), done = save.st.dsl === di.date, best = save.dly && save.dly[di.date], st = dailyStreak();
+  $('dayBtn').textContent = 'Tageslevel ' + dmy(di.date) + (done ? ' ✓' : '');
+  $('dayInfo').textContent = THEMES[worldOf(di.n)].name + '-Welt' + (done ? (best > 0 ? ' · Bestzeit ' + fmtTk(best) : ' · geschafft') : ' · noch offen') + (st > 1 ? ' · Serie ' + st + ' Tage' : '');
+}
+$('dayBtn').onclick = () => startDaily('solo');
+$('dayBtn2').onclick = () => startDaily('duo');
 
 /* ================= Main loop ================= */
 hubArt();
@@ -4299,13 +4766,16 @@ function frame(now){
   if(!$('kartOv').hidden) kPreview();
   if(!$('kresOv').hidden) kPodium();
   if(inGame()){ save.st.pt += dt; stDirty = true; }
-  if(!$('lobbyOv').hidden && !$('lobKart').hidden) kPreview('lobKartCv', save.ksel[0], net.myId);
+  if(!$('lobbyOv').hidden && !$('lobKart').hidden) kPreview('lobKartCv', save.ksel[0], net.myId, kCos(0));
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);
 if(dbg.on) window.HOP = { E, ECH, EMAPS, EPZ, eStart, eStep, eAct, eReq, eSolid, eCan, eOpen, eWard, eMy, eOwner, eIds, eMe, eInteract, eNoteHTML, eHostTick, eBuild, eLogOpen, eDlg, eLabel, eCanUse, ePlayers, chatSend, getState:() => state, kart, kStart, kStep, kAI, kBuild, KTRACKS, kSendLatest, kUse, kRoll, kBoom, kInk, kHit, kTileGrid, kThumb, pName, cleanName, escH, showLobby, lobState, kdr, KITEM, KIK, KDR, KTH, KOT, kObjs, kShoot, kCalm, kCalmed, kAIUse, kIcon, KCHAR, KVEH, gen:genLevel, start:startLevel, step:n => { for(let i=0;i<n;i++) step(); }, solidAt, gen:genLevel, dbg, net, save, authDmg, ART, E_DEF, BOSS,
   get:() => ({state,players,enemies,items,shots,ghosts,LW,goalX,grid,tick,curLevel,gemMask,arena,VW,S,gemPos}) };
 if(dbg.on) Object.assign(window.HOP, { stat, checkBadges, BADGES, makeCode, readCode, mergeSave, toast, copyText, ST0, tilt, tiltSteer, onMotion, EMO_DRAW, emoGet, showEmote, sendEmote, emoNow, kStatPack, kStatLine, kPodSet, kPodium, kPod, kName, fmtTk, recLevelTime, pingLabel, inviteURL, renderChips, netTick, kShowRes, berlinDate, profShow, bdgCv, kLapStat, kCredit, pixelize, pirateArt, mulberry32 });
+if(dbg.on) Object.assign(window.HOP, { KVR, KWX, KHAT, KPAINT, KSHOP, KBASE, kOwn, kCos, kCosOf, kcMsg, kCoins, kCoinPts, kVarPts, kBestKey, ttKey, ghEnc, ghDec, ghLoad, ghSave, ghInit, ghStep, ghGap, ghProgs, kEndTT, kUpdMenu, kUpdMenu2, kBuild, kParts, kPreview, shopOpen, shopDraw, shopClick, kNextCh, lobState, showLobby, kOnline, kShowRes, clientMsg, hostMsg, kTT });
+if(dbg.on) Object.assign(window.HOP, { netLost, rcTry, rcResume, kUndrop, wireClient, rcBanner, netTick, leaveNet, closeNet, cut: () => { window.__netCut = true; if(net.peer) net.peer.dead = true; }, heal: () => { window.__netCut = false; } });
+if(dbg.on) Object.assign(window.HOP, { dailyInfo, startDaily, dailyDone, dailyStreak, dayBefore, dmy, updDay, getLSRC: () => LSRC, runInfo: () => ({runT, runMsg}), genLevelSeed: genLevel });
 })();
 </script>
 </body>
